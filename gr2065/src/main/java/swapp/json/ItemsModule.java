@@ -1,4 +1,4 @@
-package swapp.json;;
+package swapp.json;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
