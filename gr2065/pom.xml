@@ -75,7 +75,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>main.java.swapp.ui.App</mainClass>
+                    <mainClass>swapp.ui.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
