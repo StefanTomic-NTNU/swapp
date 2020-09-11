@@ -3,7 +3,22 @@
 # Swap app 
  
 Swap er en app der man kan gi bort ting man ikke trenger. Dette gjøres ved at man oppretter en annonse. Deretter kan andre brukere trykke på annonsen og ta kontakt. 
- 
+
+## Kjøring av koden
+
+Kjøring av koden gjøres ved å skrive følgende kommando i terminalen:
+```
+mvn clean favfx:run
+```
+applikasjonen vil da kjøre på port 6080.
+
+## Testing av koden
+Koden testes ved å kjøre følgende kommando i terminalen:
+```
+mvn clean verify
+```
+Nå vil du få en rapport i terminalen som indikerer hvorvidt testene var suksessfulle. Nå er det også blitt laget en fil som viser testdekningsgrad. Testdekningsgrad-filen ligger i *target/coverage-reports* og heter *jacoco-sessions.html*.
+
 ## Organisaering av koden 
  
 - **src/main/java/swapp** for koden til applikasjonen
