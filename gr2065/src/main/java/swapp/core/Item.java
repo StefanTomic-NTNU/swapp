@@ -2,10 +2,12 @@ package swapp.core;
 
 public class Item {
 
-    private final String name;
+    private String name;
 
     public Item(String name) {
-        this.name = name;
+        if (!name.isBlank()) this.name = name;
+
+
     }
 
     public String getName() {
