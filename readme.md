@@ -4,6 +4,15 @@
  
 Swap er en app der man kan gi bort ting man ikke trenger. Dette gjøres ved at man oppretter en annonse. Deretter kan andre brukere trykke på annonsen og ta kontakt. 
 
+![](images/SwApp_feed.png)
+![](images/SwApp_add.png)
+
+Skjermbildene over viser hvordan appen ser ut. Til venstre ser man 
+flere annonser ligge under hverandre i en "feed". Dersom man trykker 
+på plussknappen nederst i midten, vil man få opp vinduet til høyre. 
+Der kan man legge til ny annonse med tittel, beskrivelse og epost. 
+Deretter trykker man på V'en nederst i midten for å opprette annonse. 
+
 ## Kjøring av koden
 
 Kjøring av koden gjøres ved å skrive følgende kommando i terminalen:
