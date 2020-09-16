@@ -1,8 +1,8 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.idi.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2020/gr2065/gr2065) 
 
-# Swap app 
+# SwApp app 
  
-Swap er en app der man kan gi bort ting man ikke trenger. Dette gjøres ved at man oppretter en annonse. Deretter kan andre brukere trykke på annonsen og ta kontakt. 
+SwApp er en app der man kan gi bort ting man ikke trenger. Dette gjøres ved at man oppretter en annonse. Deretter kan andre brukere trykke på annonsen og ta kontakt. 
 
 ![](images/SwApp_feed.png)
 ![](images/SwApp_add.png)
@@ -17,7 +17,7 @@ Deretter trykker man på V'en nederst i midten for å opprette annonse.
 
 Kjøring av koden gjøres ved å skrive følgende kommando i terminalen:
 ```
-mvn clean favfx:run
+mvn clean javafx:run
 ```
 På gitpod kjører applikasjonen på port 6080.
 
@@ -32,7 +32,7 @@ For å få rapport om testdekningsgrad, kjør følgende kommando i terminalen:
 ```
 mvn clean verify
 ```
-Kommandoen gjør at det geneereres en fil som viser testdekningsgrad. Testdekningsgrad-filen ligger i *target/site* og heter *index.html*.
+Kommandoen gjør at det genereres en fil som viser testdekningsgrad. Testdekningsgrad-filen ligger i *target/site/jacoco* og heter *index.html*.
 
 ## Organisaering av koden 
  
