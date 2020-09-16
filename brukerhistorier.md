@@ -37,7 +37,7 @@ Som bruker ønsker jeg kunne slette mine egne annonser.
 
 ### Viktig å kunne gjøre 
 
-- slette annonser
+- Slette annonser
 
 ## Se annonser (us-4)
 
