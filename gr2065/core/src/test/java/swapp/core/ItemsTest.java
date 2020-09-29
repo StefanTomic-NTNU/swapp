@@ -1,6 +1,5 @@
 package swapp.core;
 
-import org.testfx.framework.junit5.ApplicationTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 
-public class ItemsTest extends ApplicationTest {
+public class ItemsTest{
 
     @Test
     public void testCreateEmptyItems(){

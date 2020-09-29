@@ -1,12 +1,11 @@
 package swapp.core;
 
-import org.testfx.framework.junit5.ApplicationTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 
-public class ItemTest extends ApplicationTest {
+public class ItemTest {
 
     @Test
     public void testBlankName(){
