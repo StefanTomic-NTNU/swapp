@@ -61,6 +61,7 @@ public class AppController {
         return items;
     }
 
+    /*
     // File menu items
     private FileChooser fileChooser;
 
@@ -71,6 +72,7 @@ public class AppController {
         return fileChooser;
     }
 
+    // desktop metaphor
     @FXML
     void handleOpenAction(final ActionEvent event) {
         final FileChooser fileChooser = getFileChooser();
@@ -83,6 +85,7 @@ public class AppController {
             }
         }
     }
+    */
 
     private ObjectMapper objectMapper;
 
@@ -107,6 +110,13 @@ public class AppController {
         showExceptionDialog("Oops, problem saving to " + location, e);
     }
 
+    private void showOpenExceptionDialog(final File location, final Exception e) {
+        showExceptionDialog("Oops, problem opening from " + location, e);
+    }
+
+
+
+    /* desktop metaphor
     @FXML
     void handleSaveAction() {
         final FileChooser fileChooser = getFileChooser();
@@ -118,6 +128,40 @@ public class AppController {
                 showSaveExceptionDialog(selection, e);
             }
         }
+        
+    }
+    */
+    
+    File file;
+
+    void establishFile() {
+        if (file == null) {
+            file = new File("target/items");
+        } 
     }
 
+    void save(){
+        establishFile();
+        try (OutputStream outputStream = new FileOutputStream(file, false)) {
+                getObjectMapper().writeValue(outputStream, getItems());
+            } catch (final IOException e) {
+                showSaveExceptionDialog(file, e);
+            }
+    }
+
+    void open(){
+        establishFile();
+        try (InputStream inputStream = new FileInputStream(file)) {
+                getObjectMapper().readValue(inputStream, Items.class);
+                updateItems();
+            } catch (final IOException e) {
+                showOpenExceptionDialog(file, e);
+            }
+    }
+
+    @FXML
+    void handleSaveAction() {save();}
+
+    @FXML
+    void handleOpenAction() {open();}
 }
