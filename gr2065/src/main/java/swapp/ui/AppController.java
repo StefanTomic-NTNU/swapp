@@ -11,8 +11,12 @@ import javafx.stage.FileChooser;
 import swapp.core.Item;
 import swapp.core.Items;
 import swapp.json.ItemsModule;
+import java.net.URL;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+
 
 public class AppController {
 
@@ -35,8 +39,50 @@ public class AppController {
     private Items items;
 
     public AppController(){
+        list = new ListView<Item>();
         items = new Items();
+        loadItems();
     }
+
+
+
+    void loadItems() {  
+        getObjectMapper();
+        Reader reader = null;
+        try {
+            try {
+                reader = new FileReader(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
+            } catch (IOException ioex1) {
+                System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
+                URL url = getClass().getResource("items.json");
+                if (url != null) {
+                    reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+                } else {
+                    System.err.println("Fant ingen eksempelfil. Parser string direkte..");
+                    String exampleText = "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
+                    reader = new StringReader(exampleText);
+                }
+            }
+            items = objectMapper.readValue(reader, Items.class);
+        } catch(IOException ioex2) {
+            System.err.println("Legger til gjenstander direkte..");
+            items.addItem(new Item("eksempelgjenstand1"));
+            items.addItem(new Item("eksempelgjenstand2"));
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch(IOException ioex3) {}
+        }
+    }
+
+
+    @FXML
+    void initialize() {
+        updateItems();
+    }
+
 
     @FXML
     void handleClickMeButtonAction() {
@@ -60,32 +106,6 @@ public class AppController {
     public Items getItems(){
         return items;
     }
-
-    /*
-    // File menu items
-    private FileChooser fileChooser;
-
-    private FileChooser getFileChooser() {
-        if (fileChooser == null) {
-            fileChooser = new FileChooser();
-        }
-        return fileChooser;
-    }
-
-    // desktop metaphor
-    @FXML
-    void handleOpenAction(final ActionEvent event) {
-        final FileChooser fileChooser = getFileChooser();
-        final File selection = fileChooser.showOpenDialog(null);
-        if (selection != null) {
-            try (InputStream input = new FileInputStream(selection)) {
-                setItems(getObjectMapper().readValue(input, Items.class));
-            } catch (final IOException e) {
-                showExceptionDialog("Oops, problem when opening " + selection, e);
-            }
-        }
-    }
-    */
 
     private ObjectMapper objectMapper;
 
@@ -116,52 +136,19 @@ public class AppController {
 
 
 
-    /* desktop metaphor
-    @FXML
-    void handleSaveAction() {
-        final FileChooser fileChooser = getFileChooser();
-        final File selection = fileChooser.showSaveDialog(null);
-        if (selection != null) {
-            try (OutputStream outputStream = new FileOutputStream(selection, false)) {
-                getObjectMapper().writeValue(outputStream, getItems());
-            } catch (final IOException e) {
-                showSaveExceptionDialog(selection, e);
-            }
+    private void saveItems() {
+        try {
+            Writer writer = new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
+            objectMapper.writeValue(writer, items);
+        } catch(IOException ioex) {
+            System.err.println("Feil med fillagring.");
         }
-        
     }
-    */
+
+    @FXML
+    void handleSaveAction() {saveItems();}
+
+    @FXML
+    void handleOpenAction() {loadItems();}
     
-    File file;
-
-    void establishFile() {
-        if (file == null) {
-            file = new File("target/items");
-        } 
-    }
-
-    void save(){
-        establishFile();
-        try (OutputStream outputStream = new FileOutputStream(file, false)) {
-                getObjectMapper().writeValue(outputStream, getItems());
-            } catch (final IOException e) {
-                showSaveExceptionDialog(file, e);
-            }
-    }
-
-    void open(){
-        establishFile();
-        try (InputStream inputStream = new FileInputStream(file)) {
-                getObjectMapper().readValue(inputStream, Items.class);
-                updateItems();
-            } catch (final IOException e) {
-                showOpenExceptionDialog(file, e);
-            }
-    }
-
-    @FXML
-    void handleSaveAction() {save();}
-
-    @FXML
-    void handleOpenAction() {open();}
 }
