@@ -13,11 +13,17 @@ på plussknappen nederst i midten, vil man få opp vinduet til høyre.
 Der kan man legge til ny annonse med tittel, beskrivelse og epost. 
 Deretter trykker man på V'en nederst i midten for å opprette annonse. 
 
+## Setup
+Før du kan kjøre eller teste koden må du skrive følgende kommando i terminalen:
+```
+mvn install
+```
+
 ## Kjøring av koden
 
 Kjøring av koden gjøres ved å skrive følgende kommando i terminalen:
 ```
-mvn clean javafx:run
+mvn clean javafx:run -f fxml/pom.xml
 ```
 På gitpod kjører applikasjonen på port 6080.
 
