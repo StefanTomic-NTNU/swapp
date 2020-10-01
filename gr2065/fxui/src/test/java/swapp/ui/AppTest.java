@@ -23,32 +23,32 @@ import swapp.ui.AppController;
 
 public class AppTest extends ApplicationTest {
 
-    private Parent parent;
-    private AppController controller;
+  private Parent parent;
+  private AppController controller;
 
-    @Override
-    public void start(final Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("App.fxml"));
-        parent = fxmlLoader.load();
-        controller = fxmlLoader.getController();
-        stage.setScene(new Scene(parent));
-        stage.show();
+  @Override
+  public void start(final Stage stage) throws Exception {
+    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("App.fxml"));
+    parent = fxmlLoader.load();
+    controller = fxmlLoader.getController();
+    stage.setScene(new Scene(parent));
+    stage.show();
+  }
+
+
+  @Test
+  public void testAddition() {
+    final Button addButton = (Button) parent.lookup("#addButton");
+    final TextField textField = (TextField) parent.lookup("#textField");
+    final ListView<Item> list = (ListView) parent.lookup("#list");
+    String testText;
+    for (int i = 0; i < 3; i++) {
+      testText = "Gjenstand " + (i + 1);
+      clickOn(textField).write(testText);
+      // textField.setText(testText);
+      clickOn(addButton);
+      Assertions.assertTrue(list.getItems().get(i).toString().equals(testText));
     }
-
-
-    @Test
-    public void testAddition() {
-        final Button addButton = (Button) parent.lookup("#addButton");
-        final TextField textField = (TextField) parent.lookup("#textField");
-        final ListView<Item> list = (ListView) parent.lookup("#list");
-        String testText;
-        for (int i = 0; i<3; i++) {
-            testText = "Gjenstand " + (i+1);
-            clickOn(textField).write(testText);
-            //textField.setText(testText);
-            clickOn(addButton);
-            Assertions.assertTrue(list.getItems().get(i).toString().equals(testText));
-        }
-    }
+  }
 
 }

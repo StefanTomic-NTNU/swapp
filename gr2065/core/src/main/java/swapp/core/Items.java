@@ -1,38 +1,40 @@
 package swapp.core;
 
+import static java.util.Collections.addAll;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static java.util.Collections.addAll;
 
 public class Items {
 
-    final List<Item> items = new ArrayList<>();
+  final List<Item> items = new ArrayList<>();
 
-    public Items(){
+  public Items() {
 
-    }
+  }
 
-    public Items(final Item... items){
-        this.addItem(items);
-    }
+  public Items(final Item... items) {
+    this.addItem(items);
+  }
 
-    public Items(final Collection<Item> items){
-        this.items.addAll(items);
-    }
+  public Items(final Collection<Item> items) {
+    this.items.addAll(items);
+  }
 
-    public void addItem(Item item){
-        this.items.add(item);
-    }
+  public void addItem(Item item) {
+    this.items.add(item);
+  }
 
-    public void addItem(Item... item){
-        this.items.addAll(List.of(item));
-    }
-    public void removeItem(Item item){
-        this.items.remove(item);
-    }
+  public void addItem(Item... item) {
+    this.items.addAll(List.of(item));
+  }
 
-    public List<Item> getItems() {
-        return this.items;
-    }
+  public void removeItem(Item item) {
+    this.items.remove(item);
+  }
+
+  public List<Item> getItems() {
+    return this.items;
+  }
 }

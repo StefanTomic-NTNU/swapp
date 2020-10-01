@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>fxui</artifactId>
-    
+
     <dependencies>
         <dependency>
             <groupId>it1901.swapp</groupId>
