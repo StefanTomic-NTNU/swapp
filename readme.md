@@ -23,7 +23,7 @@ mvn install
 
 Kjøring av koden gjøres ved å skrive følgende kommando i terminalen:
 ```
-mvn clean javafx:run -f fxml/pom.xml
+mvn clean javafx:run -f fxui/pom.xml
 ```
 På gitpod kjører applikasjonen på port 6080.
 
