@@ -1,3 +1,7 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.format.settings.url": "gr2065/config/checkstyle/eclipse-java-google-style.xml",
+    "[java]": {
+        "editor.tabSize": 2
+    }
 }
