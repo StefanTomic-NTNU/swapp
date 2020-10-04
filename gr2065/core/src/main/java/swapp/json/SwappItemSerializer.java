@@ -4,15 +4,15 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import swapp.core.Item;
+import swapp.core.SwappItem;
 
 
-public class ItemSerializer extends JsonSerializer<Item> {
+public class SwappItemSerializer extends JsonSerializer<SwappItem> {
 
   public static final String ITEMNAME = "itemName";
 
   @Override
-  public void serialize(final Item item, final JsonGenerator jsonGen, final SerializerProvider provider)
+  public void serialize(final SwappItem item, final JsonGenerator jsonGen, final SerializerProvider provider)
       throws IOException {
     jsonGen.writeStartObject();
     jsonGen.writeFieldName(ITEMNAME);

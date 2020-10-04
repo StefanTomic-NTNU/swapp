@@ -18,7 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import swapp.core.Item;
+import swapp.core.SwappItem;
 import swapp.ui.AppController;
 
 public class AppTest extends ApplicationTest {
@@ -40,7 +40,7 @@ public class AppTest extends ApplicationTest {
   public void testAddition() {
     final Button addButton = (Button) parent.lookup("#addButton");
     final TextField textField = (TextField) parent.lookup("#textField");
-    final ListView<Item> list = (ListView) parent.lookup("#list");
+    final ListView<SwappItem> list = (ListView) parent.lookup("#list");
     String testText;
     for (int i = 0; i < 3; i++) {
       testText = "Gjenstand " + (i + 1);

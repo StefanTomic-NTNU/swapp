@@ -9,14 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-import swapp.core.Item;
-import swapp.core.Items;
-import swapp.json.ItemsModule;
+import swapp.core.SwappItem;
+import swapp.core.SwappItemList;
+import swapp.json.SwappItemModule;
 
 public class AppController {
 
   @FXML
-  private ListView<Item> list;
+  private ListView<SwappItem> list;
 
   @FXML
   private TextField textField;
@@ -25,42 +25,54 @@ public class AppController {
   private Button addButton;
 
   @FXML
+  private Button removeButton;
+
+  @FXML
   private MenuItem openButton;
 
   @FXML
   private MenuItem saveButton;
 
 
-  private Items items;
+  private SwappItemList swappList;
 
   public AppController() {
-    items = new Items();
+    swappList = new SwappItemList();
+  }
+
+  /**Initialize with lambda expression listener SwappItemList */
+  @FXML
+  public void initialize(){
+    updateSwappItems();
+    swappList.addSwappItemListListener(swappList -> updateSwappItems());
   }
 
   @FXML
-  void handleClickMeButtonAction() {
+  void addSwappItemButtonClicked() {
     if (!textField.getText().isBlank()) {
-      Item item = new Item(textField.getText());
-      items.addItem(item);
-      updateItems();
+      SwappItem item = new SwappItem(textField.getText());
+      swappList.addItem(item);
     }
     textField.setText("");
   }
 
-  public void updateItems() {
-    list.getItems().setAll(items.getItems());
+  @FXML
+  void removeSwappItemButtonClicked() {
+    SwappItem item = (SwappItem) list.getSelectionModel().getSelectedItem();
+    if (!(item==null)) {
+      swappList.removeItem(item);
+    }
   }
 
-  public void setItems(final Items items) {
-    this.items = items;
-    updateItems();
+  public void updateSwappItems() {
+    list.getItems().setAll(swappList.getItems());
   }
 
-  public Items getItems() {
-    return items;
+  public SwappItemList getItems() {
+    return swappList;
   }
 
-  // File menu items
+  // File menu swappList
   private FileChooser fileChooser;
 
   private FileChooser getFileChooser() {
@@ -76,7 +88,7 @@ public class AppController {
     final File selection = fileChooser.showOpenDialog(null);
     if (selection != null) {
       try (InputStream input = new FileInputStream(selection)) {
-        setItems(getObjectMapper().readValue(input, Items.class));
+        swappList.setSwappItemlist(getObjectMapper().readValue(input, SwappItemList.class));
       } catch (final IOException e) {
         showExceptionDialog("Oops, problem when opening " + selection, e);
       }
@@ -88,7 +100,7 @@ public class AppController {
   public ObjectMapper getObjectMapper() {
     if (objectMapper == null) {
       objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new ItemsModule());
+      objectMapper.registerModule(new SwappItemModule());
     }
     return objectMapper;
   }
