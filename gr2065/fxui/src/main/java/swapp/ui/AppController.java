@@ -1,17 +1,17 @@
 package swapp.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.*;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappItemModule;
+import java.net.URL;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+
 
 public class AppController {
 
@@ -24,39 +24,80 @@ public class AppController {
   @FXML
   private Button addButton;
 
-  @FXML
-  private Button removeButton;
+    @FXML
+    private Button removeButton;
 
-  @FXML
-  private MenuItem openButton;
+    @FXML
+    private MenuItem openButton;
 
-  @FXML
-  private MenuItem saveButton;
+    @FXML
+    private MenuItem saveButton;
 
 
-  private SwappItemList swappList;
+    private SwappItemList swappList;
 
-  public AppController() {
-    swappList = new SwappItemList();
-  }
+    public AppController(){
+        list = new ListView<SwappItem>();
+        swappList = new SwappItemList();
+        loadItems();
+    }
+
+
+
+
+    void loadItems() {  
+        getObjectMapper();
+        Reader reader = null;
+        try {
+            try {
+                reader = new FileReader(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
+            } catch (IOException ioex1) {
+                System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
+                URL url = getClass().getResource("items.json");
+                if (url != null) {
+                    reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+                } else {
+                    System.err.println("Fant ingen eksempelfil. Parser string direkte..");
+                    String exampleText = "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
+                    reader = new StringReader(exampleText);
+                }
+            }
+            swappList = objectMapper.readValue(reader, SwappItemList.class);
+        } catch(IOException ioex2) {
+            System.err.println("Legger til gjenstander direkte..");
+            swappList.addItem(new SwappItem("eksempelgjenstand1"));
+            swappList.addItem(new SwappItem("eksempelgjenstand2"));
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch(IOException ioex3) {
+              System.err.println("Problem med reader..");
+            }
+        }
+    }
+
 
   /**Initialize with lambda expression listener SwappItemList */
-  @FXML
-  public void initialize(){
-    updateSwappItems();
-    swappList.addSwappItemListListener(swappList -> updateSwappItems());
-  }
+    @FXML
+    void initialize() {
+        updateSwappItems();
+        swappList.addSwappItemListListener(swappList -> updateSwappItems());
+    }
+
 
   @FXML
   void addSwappItemButtonClicked() {
     if (!textField.getText().isBlank()) {
       SwappItem item = new SwappItem(textField.getText());
       swappList.addItem(item);
+            updateSwappItems();
+        }
+        textField.setText("");
     }
-    textField.setText("");
-  }
 
-  @FXML
+    @FXML
   void removeSwappItemButtonClicked() {
     SwappItem item = (SwappItem) list.getSelectionModel().getSelectedItem();
     if (!(item==null)) {
@@ -64,71 +105,67 @@ public class AppController {
     }
   }
 
-  public void updateSwappItems() {
+    public void updateSwappItems() {
     list.getItems().setAll(swappList.getItems());
   }
 
-  public SwappItemList getItems() {
-    return swappList;
-  }
-
-  // File menu swappList
-  private FileChooser fileChooser;
-
-  private FileChooser getFileChooser() {
-    if (fileChooser == null) {
-      fileChooser = new FileChooser();
+    public void setItems(final SwappItemList items){
+        this.swappList = items;
+        updateSwappItems();
     }
-    return fileChooser;
-  }
 
-  @FXML
-  void handleOpenAction(final ActionEvent event) {
-    final FileChooser fileChooser = getFileChooser();
-    final File selection = fileChooser.showOpenDialog(null);
-    if (selection != null) {
-      try (InputStream input = new FileInputStream(selection)) {
-        swappList.setSwappItemlist(getObjectMapper().readValue(input, SwappItemList.class));
-      } catch (final IOException e) {
-        showExceptionDialog("Oops, problem when opening " + selection, e);
-      }
+    public SwappItemList getItems(){
+        return swappList;
     }
-  }
 
-  private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-  public ObjectMapper getObjectMapper() {
-    if (objectMapper == null) {
-      objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new SwappItemModule());
+    public ObjectMapper getObjectMapper() {
+        if (objectMapper == null) {
+            objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new SwappItemModule());
+        }
+        return objectMapper;
     }
-    return objectMapper;
-  }
 
-  private void showExceptionDialog(final String message) {
-    final Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE);
-    alert.showAndWait();
-  }
-
-  private void showExceptionDialog(final String message, final Exception e) {
-    showExceptionDialog(message + ": " + e.getLocalizedMessage());
-  }
-
-  private void showSaveExceptionDialog(final File location, final Exception e) {
-    showExceptionDialog("Oops, problem saving to " + location, e);
-  }
-
-  @FXML
-  void handleSaveAction() {
-    final FileChooser fileChooser = getFileChooser();
-    final File selection = fileChooser.showSaveDialog(null);
-    if (selection != null) {
-      try (OutputStream outputStream = new FileOutputStream(selection, false)) {
-        getObjectMapper().writeValue(outputStream, getItems());
-      } catch (final IOException e) {
-        showSaveExceptionDialog(selection, e);
-      }
+    /* ubrukt kode
+    private void showExceptionDialog(final String message) {
+        final Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE);
+        alert.showAndWait();
     }
-  }
 
+    
+    private void showExceptionDialog(final String message, final Exception e) {
+        showExceptionDialog(message + ": " + e.getLocalizedMessage());
+    }
+
+    
+    private void showSaveExceptionDialog(final File location, final Exception e) {
+        showExceptionDialog("Oops, problem saving to " + location, e);
+    }
+
+    private void showOpenExceptionDialog(final File location, final Exception e) {
+        showExceptionDialog("Oops, problem opening from " + location, e);
+    }
+    */
+
+
+    private void saveItems() {
+      Writer writer = null;
+        try {
+            writer = new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
+            objectMapper.writeValue(writer, swappList);
+        } catch(IOException ioex) {
+            System.err.println("Feil med fillagring.");
+        } finally {
+          try { if (writer != null) writer.close(); } catch(IOException e) {System.err.println("Feil med fillagring..");}
+        }
+    }
+
+    @FXML
+    void handleSaveAction() {saveItems();}
+
+    @FXML
+    void handleOpenAction() {loadItems();}
+    
 }
