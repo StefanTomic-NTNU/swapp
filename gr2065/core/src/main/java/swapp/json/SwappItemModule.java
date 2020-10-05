@@ -4,15 +4,15 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-import swapp.core.Item;
-import swapp.core.Items;
+import swapp.core.SwappItem;
+import swapp.core.SwappItemList;
 
 
-public class ItemsModule extends Module {
+public class SwappItemModule extends Module {
 
   @Override
   public String getModuleName() {
-    return "ItemsModule";
+    return "SwappItemModule";
   }
 
   @Override
@@ -23,11 +23,11 @@ public class ItemsModule extends Module {
   private final SimpleSerializers serializers = new SimpleSerializers();
   private final SimpleDeserializers deserializers = new SimpleDeserializers();
 
-  public ItemsModule() {
-    serializers.addSerializer(Item.class, new ItemSerializer());
-    serializers.addSerializer(Items.class, new ItemsSerializer());
-    deserializers.addDeserializer(Item.class, new ItemDeserializer());
-    deserializers.addDeserializer(Items.class, new ItemsDeserializer());
+  public SwappItemModule() {
+    serializers.addSerializer(SwappItem.class, new SwappItemSerializer());
+    serializers.addSerializer(SwappItemList.class, new SwappItemListSerializer());
+    deserializers.addDeserializer(SwappItem.class, new SwappItemDeserializer());
+    deserializers.addDeserializer(SwappItemList.class, new SwappItemListDeserializer());
   }
 
   @Override

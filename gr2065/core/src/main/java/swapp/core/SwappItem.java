@@ -1,10 +1,10 @@
 package swapp.core;
 
-public class Item {
+public class SwappItem {
 
   private String name;
 
-  public Item(String name) {
+  public SwappItem(String name) {
     if (!name.isBlank()) {
       this.name = name;
     }

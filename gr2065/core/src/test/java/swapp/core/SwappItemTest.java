@@ -5,17 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 
-public class ItemTest {
+public class SwappItemTest {
 
     @Test
     public void testBlankName(){
-        Item item = new Item(" ");
+        SwappItem item = new SwappItem(" ");
         assertEquals(item.getName(), null);
     }
     
     @Test
     public void testGetname(){
-        Item item = new Item("name");
+        SwappItem item = new SwappItem("name");
         assertEquals(item.getName(), "name");
     }
 

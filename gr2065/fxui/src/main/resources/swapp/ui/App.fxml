@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.AppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.AppController">
    <center>
       <ListView fx:id="list" prefHeight="80.0" prefWidth="175.0" BorderPane.alignment="CENTER" />
    </center>
@@ -24,7 +24,8 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="addButton" layoutX="114.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleClickMeButtonAction" prefHeight="29.0" prefWidth="89.0" text="Add" />
+                  <Button fx:id="addButton" layoutX="114.0" layoutY="23.0" mnemonicParsing="false" onAction="#addSwappItemButtonClicked" prefHeight="29.0" prefWidth="89.0" text="Add" />
+                  <Button fx:id="removeButton" layoutX="210.0" layoutY="23.0" mnemonicParsing="false" onAction="#removeSwappItemButtonClicked" prefHeight="29.0" prefWidth="89.0" text="Remove" />
                </children>
             </AnchorPane>
         </items>

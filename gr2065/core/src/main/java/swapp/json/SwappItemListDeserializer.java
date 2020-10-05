@@ -9,26 +9,26 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import swapp.core.Item;
-import swapp.core.Items;
+import swapp.core.SwappItem;
+import swapp.core.SwappItemList;
 
 
-public class ItemsDeserializer extends JsonDeserializer<Items> {
+public class SwappItemListDeserializer extends JsonDeserializer<SwappItemList> {
 
-  private final ItemDeserializer itemDeserializer = new ItemDeserializer();
+  private final SwappItemDeserializer itemDeserializer = new SwappItemDeserializer();
 
   @Override
-  public Items deserialize(final JsonParser jsonParser, final DeserializationContext deserContext)
+  public SwappItemList deserialize(final JsonParser jsonParser, final DeserializationContext deserContext)
       throws IOException, JsonProcessingException {
     final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
     if (jsonNode instanceof ArrayNode) {
       final ArrayNode itemsArray = (ArrayNode) jsonNode;
-      final Collection<Item> items = new ArrayList<>(itemsArray.size());
+      final Collection<SwappItem> items = new ArrayList<>(itemsArray.size());
       for (final JsonNode itemNode : itemsArray) {
-        final Item item = itemDeserializer.deserialize(itemNode);
+        final SwappItem item = itemDeserializer.deserialize(itemNode);
         items.add(item);
       }
-      return new Items(items);
+      return new SwappItemList(items);
     }
     return null;
   }
