@@ -61,8 +61,9 @@ public class AppController {
                     String exampleText = "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
                     reader = new StringReader(exampleText);
                 }
-            }
-            swappList = objectMapper.readValue(reader, SwappItemList.class);
+            } 
+            SwappItemList list = objectMapper.readValue(reader, SwappItemList.class);
+            swappList.setSwappItemlist(list);
         } catch(IOException ioex2) {
             System.err.println("Legger til gjenstander direkte..");
             swappList.addItem(new SwappItem("eksempelgjenstand1"));
@@ -92,7 +93,7 @@ public class AppController {
     if (!textField.getText().isBlank()) {
       SwappItem item = new SwappItem(textField.getText());
       swappList.addItem(item);
-            updateSwappItems();
+            //updateSwappItems();
         }
         textField.setText("");
     }

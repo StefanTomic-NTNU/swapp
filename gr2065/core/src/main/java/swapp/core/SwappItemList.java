@@ -1,6 +1,5 @@
 package swapp.core;
 
-import static java.util.Collections.addAll;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,7 +21,7 @@ public class SwappItemList implements Iterable<SwappItem> {
     this.addItem(items);
   }
 
-  public void setSwappItemlist(SwappItemList swappList){
+  public void setSwappItemlist(SwappItemList swappList) {
     items = new ArrayList<>();
     addItem(swappList.getItems());
   }
