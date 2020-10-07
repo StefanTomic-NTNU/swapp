@@ -41,22 +41,25 @@ mvn clean verify
 Kommandoen gjør at det genereres en fil som viser testdekningsgrad. Testdekningsgrad-filen ligger i *target/site/jacoco* og heter *index.html*.
 
 ## Organisaering av koden 
- 
-- **src/main/java/swapp** for koden til applikasjonen
-- **src/test/java/swapp** for testkoden 
+
+Koden til prosjektet ligger i **gr2065**-mappen. Herunder er koden organisert slik:
+- **core/src/main/java/swapp** for koden til kjernelogikken i applikasjonen
+- **core/src/test/java/swapp** for testkoden til kjernelogikken
+- **fxui/src/main/java/swapp** for koden til brukergrensesnittet til applikasjonen
+- **fxui/src/test/java/swapp** for testkoden til brukergrensesnittet
  
 ## Domenelaget 
 Appen samler annonse-data i form av tekst. 
 
-Domenelaget finnes i **src/main/java/swapp/core**
+Domenelaget finnes i **core/src/main/java/swapp/core**
  
 ## Brukergrensesnittlaget 
 Brukergrensesnittet i appen viser liste med annonser, samt en knapp for å legge til ny annonse. 
 
-Brukergrensesnittet er laget med JavaFX og FXML og finnes i **src/main/java/swapp/ui**
+Brukergrensesnittet er laget med JavaFX og FXML og finnes i **fxui/src/main/java/swapp/ui**
 
 ## Persistenslaget 
-Persistenslaget inneholder alle klasser og logikk for lagring av annonse-data i domenelaget. Vårt persistenslag implementerer fillagring med JSON-syntaks, og finnes i **src/main/java/swapp/json**
+Persistenslaget inneholder alle klasser og logikk for lagring av annonse-data i domenelaget. Vårt persistenslag implementerer fillagring med JSON-syntaks, og finnes i **core/src/main/java/swapp/json**
 
 ## Bygging med maven 
 Prosjektet er konfigurert til å bruke byggeverktøyet maven, og har dermed en pom.xml-fil for konfigurasjon. 
