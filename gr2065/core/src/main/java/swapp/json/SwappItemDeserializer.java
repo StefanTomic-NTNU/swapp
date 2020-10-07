@@ -33,8 +33,13 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
     } else if (jsonNode instanceof ArrayNode) {
       final ArrayNode itemArray = (ArrayNode) jsonNode;
       if (itemArray.size() == ARRAY_JSON_NODE_SIZE) {
-        final String itemName = itemArray.get(0).asText();
-        return new SwappItem(itemName);
+        // Kode som er endret ved utvidelse av json-tester:
+        return deserialize(itemArray.get(0));
+        /* Kode som ikke ser ut til å ha fungert: 
+         *
+         * final String itemName = itemArray.get(0).asText();
+         * return new SwappItem(itemName);
+         */
       }
     }
     return null;

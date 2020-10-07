@@ -6,7 +6,8 @@ import java.util.Iterator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.junit.jupiter.api.BeforeAll;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,6 +64,34 @@ public class SwappItemListModuleTest {
   }
 
   @Test
+  public void testDeserializeSwappItemAsArrayNode() {
+    try {
+      SwappItem item = new SwappItem("item");
+      SwappItem[] items = {item};
+      ArrayNode arr = mapper.valueToTree(items);
+      SwappItemDeserializer des = new SwappItemDeserializer();
+      SwappItem item2 = des.deserialize(arr);
+      System.err.println(item2);
+      assertEquals(item.getName(), item2.getName());
+    } catch (JsonProcessingException e) {
+      fail();
+    }
+  }
+
+  @Test
+  public void testDeserializeSwappItemAsTextNode() {
+    try {
+      SwappItem item = new SwappItem("item");
+      TextNode text = mapper.valueToTree(item.getName());
+      SwappItemDeserializer des = new SwappItemDeserializer();
+      SwappItem item2 = des.deserialize(text);
+      assertEquals(null, item2);
+    } catch (JsonProcessingException e) {
+      fail();
+    }
+  }
+
+  @Test
   public void testSerializersDeserializers() {
     SwappItemList list = new SwappItemList();
     SwappItem item1 = new SwappItem("item1");
@@ -77,5 +106,6 @@ public class SwappItemListModuleTest {
     } catch (JsonProcessingException e) {
       fail();
     }
+
   }
 }
