@@ -71,5 +71,4 @@ public class SwappItemList implements Iterable<SwappItem> {
     return items.iterator();
   }
 
-  
 }

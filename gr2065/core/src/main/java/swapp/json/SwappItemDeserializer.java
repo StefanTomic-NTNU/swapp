@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import swapp.core.SwappItem;
 
-public class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
+class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
 
   private static final int ARRAY_JSON_NODE_SIZE = 1;
 

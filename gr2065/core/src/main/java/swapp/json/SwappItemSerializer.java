@@ -7,7 +7,7 @@ import java.io.IOException;
 import swapp.core.SwappItem;
 
 
-public class SwappItemSerializer extends JsonSerializer<SwappItem> {
+class SwappItemSerializer extends JsonSerializer<SwappItem> {
 
   public static final String ITEMNAME = "itemName";
 

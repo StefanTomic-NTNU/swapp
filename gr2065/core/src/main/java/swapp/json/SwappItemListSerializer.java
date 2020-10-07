@@ -8,7 +8,7 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 
 
-public class SwappItemListSerializer extends JsonSerializer<SwappItemList> {
+class SwappItemListSerializer extends JsonSerializer<SwappItemList> {
 
   @Override
   public void serialize(final SwappItemList items, final JsonGenerator jsonGen, final SerializerProvider provider)
