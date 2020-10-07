@@ -19,4 +19,10 @@ public class SwappItemTest {
         assertEquals(item.getName(), "name");
     }
 
+    @Test
+    public void testToString(){
+        SwappItem item = new SwappItem("name");
+        assertEquals("name", item.toString());
+    }
+
 }
