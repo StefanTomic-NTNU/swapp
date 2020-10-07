@@ -8,7 +8,7 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 
 
-public class SwappItemModule extends Module {
+class SwappItemModule extends Module {
 
   @Override
   public String getModuleName() {

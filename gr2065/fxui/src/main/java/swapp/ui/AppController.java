@@ -1,6 +1,5 @@
 package swapp.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
-import swapp.json.SwappItemModule;
+import swapp.json.SwappPersistence;
 
 
 public class AppController {
@@ -41,6 +40,7 @@ public class AppController {
   @FXML
   private MenuItem saveButton;
 
+  private SwappPersistence swappPersistence = new SwappPersistence();
 
   private SwappItemList swappList;
 
@@ -52,7 +52,6 @@ public class AppController {
   }
 
   void loadItems() {
-    getObjectMapper();
     Reader reader = null;
     try {
       try {
@@ -71,7 +70,7 @@ public class AppController {
           reader = new StringReader(exampleText);
         }
       }
-      SwappItemList list = objectMapper.readValue(reader, SwappItemList.class);
+      SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
@@ -89,7 +88,7 @@ public class AppController {
   }
 
 
-  /** Initialize with lambda expression listener SwappItemList. */
+  /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
     updateSwappItems();
@@ -126,43 +125,13 @@ public class AppController {
     return swappList;
   }
 
-  private ObjectMapper objectMapper;
-
-  /** Creates objectmapper or returns objectmapper. */
-  public ObjectMapper getObjectMapper() {
-    if (objectMapper == null) {
-      objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new SwappItemModule());
-    }
-    return objectMapper;
-  }
-
-  /*
-   * ubrukt kode
-   * 
-   * private void showExceptionDialog(final String message) { final Alert alert = new
-   * Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE); alert.showAndWait(); }
-   * 
-   * 
-   * private void showExceptionDialog(final String message, final Exception e) {
-   * showExceptionDialog(message + ": " + e.getLocalizedMessage()); }
-   * 
-   * 
-   * private void showSaveExceptionDialog(final File location, final Exception e) {
-   * showExceptionDialog("Oops, problem saving to " + location, e); }
-   * 
-   * private void showOpenExceptionDialog(final File location, final Exception e) {
-   * showExceptionDialog("Oops, problem opening from " + location, e); }
-   */
-
-
   private void autoSave() {
     Writer writer = null;
     try {
       writer =
           new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), 
           StandardCharsets.UTF_8);
-      objectMapper.writeValue(writer, swappList);
+      swappPersistence.writeSwappList(swappList, writer);
     } catch (IOException ioex) {
       System.err.println("Feil med fillagring.");
     } finally {

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class SwappItemListTest {
 
   private SwappItemList swappItemList;
@@ -28,7 +27,6 @@ public class SwappItemListTest {
     List<SwappItem> itemslist = swappItemList.getItems();
     assertEquals(itemslist.size(), 0);
   }
-
 
   @Test
   public void testCreatePopulatedItems() {

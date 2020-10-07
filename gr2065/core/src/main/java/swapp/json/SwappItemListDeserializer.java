@@ -13,7 +13,7 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 
 
-public class SwappItemListDeserializer extends JsonDeserializer<SwappItemList> {
+class SwappItemListDeserializer extends JsonDeserializer<SwappItemList> {
 
   private final SwappItemDeserializer itemDeserializer = new SwappItemDeserializer();
 
