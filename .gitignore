@@ -1,2 +1,5 @@
 # ignore maven builds 
 target/
+.classpath
+.project
+.settings
