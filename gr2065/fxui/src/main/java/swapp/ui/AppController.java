@@ -62,7 +62,8 @@ public class AppController {
           reader = new StringReader(exampleText);
         }
       }
-      swappList = objectMapper.readValue(reader, SwappItemList.class);
+      SwappItemList list = objectMapper.readValue(reader, SwappItemList.class);
+      swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
       swappList.addItem(new SwappItem("eksempelgjenstand1"));
@@ -93,7 +94,6 @@ public class AppController {
     if (!textField.getText().isBlank()) {
       SwappItem item = new SwappItem(textField.getText());
       swappList.addItem(item);
-      updateSwappItems();
     }
     textField.setText("");
   }
@@ -130,7 +130,9 @@ public class AppController {
   }
 
   /*
-   * ubrukt kode private void showExceptionDialog(final String message) { final Alert alert = new
+   * ubrukt kode
+   * 
+   * private void showExceptionDialog(final String message) { final Alert alert = new
    * Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE); alert.showAndWait(); }
    * 
    * 
@@ -165,6 +167,8 @@ public class AppController {
   }
 
   /*
+   * Metoder for dokumentmetafor:
+   * 
    * @FXML void handleSaveAction() {saveItems();}
    * 
    * @FXML void handleOpenAction() {loadItems();}
