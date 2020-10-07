@@ -12,7 +12,8 @@ class SwappItemSerializer extends JsonSerializer<SwappItem> {
   public static final String ITEMNAME = "itemName";
 
   @Override
-  public void serialize(final SwappItem item, final JsonGenerator jsonGen, final SerializerProvider provider)
+  public void serialize(
+      final SwappItem item, final JsonGenerator jsonGen, final SerializerProvider provider)
       throws IOException {
     jsonGen.writeStartObject();
     jsonGen.writeFieldName(ITEMNAME);
