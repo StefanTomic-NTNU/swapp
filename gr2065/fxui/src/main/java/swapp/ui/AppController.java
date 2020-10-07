@@ -84,8 +84,10 @@ public class AppController {
   @FXML
   void initialize() {
     updateSwappItems();
-    swappList.addSwappItemListListener(swappList -> updateSwappItems());
-    swappList.addSwappItemListListener(swappList -> autoSave());
+    swappList.addSwappItemListListener(swappList -> {
+      updateSwappItems();
+      autoSave();
+    });
   }
 
 
@@ -110,11 +112,7 @@ public class AppController {
     list.getItems().setAll(swappList.getItems());
   }
 
-  public void setItems(final SwappItemList items) {
-    this.swappList = items;
-    updateSwappItems();
-  }
-
+  
   public SwappItemList getItems() {
     return swappList;
   }
