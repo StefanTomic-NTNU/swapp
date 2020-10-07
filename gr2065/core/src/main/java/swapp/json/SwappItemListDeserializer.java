@@ -18,7 +18,8 @@ public class SwappItemListDeserializer extends JsonDeserializer<SwappItemList> {
   private final SwappItemDeserializer itemDeserializer = new SwappItemDeserializer();
 
   @Override
-  public SwappItemList deserialize(final JsonParser jsonParser, final DeserializationContext deserContext)
+  public SwappItemList deserialize(
+      final JsonParser jsonParser, final DeserializationContext deserContext)
       throws IOException, JsonProcessingException {
     final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
     if (jsonNode instanceof ArrayNode) {

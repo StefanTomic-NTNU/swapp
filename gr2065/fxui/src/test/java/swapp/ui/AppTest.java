@@ -38,14 +38,14 @@ public class AppTest extends ApplicationTest {
 
   @Test
   public void testAddition() {
-    
+
     final Button addButton = (Button) parent.lookup("#addButton");
     final TextField textField = (TextField) parent.lookup("#textField");
-    
+
     final ListView<SwappItem> list = (ListView) parent.lookup("#list");
     String testText;
     int listLength = list.getItems().size();
-    for (int i = listLength; i < listLength+3; i++) {
+    for (int i = listLength; i < listLength + 3; i++) {
       testText = "Gjenstand " + (i + 1);
       clickOn(textField).write(testText);
       clickOn(addButton);

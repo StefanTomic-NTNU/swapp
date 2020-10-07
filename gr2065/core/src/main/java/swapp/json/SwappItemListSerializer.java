@@ -11,7 +11,8 @@ import swapp.core.SwappItemList;
 public class SwappItemListSerializer extends JsonSerializer<SwappItemList> {
 
   @Override
-  public void serialize(final SwappItemList items, final JsonGenerator jsonGen, final SerializerProvider provider)
+  public void serialize(
+      final SwappItemList items, final JsonGenerator jsonGen, final SerializerProvider provider)
       throws IOException {
     jsonGen.writeStartArray(items.getItems().size());
     for (final SwappItem item : items.getItems()) {
