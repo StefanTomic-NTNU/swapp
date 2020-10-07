@@ -31,6 +31,9 @@ public class SwappItemList implements Iterable<SwappItem> {
     fireSwappItemListChanged();
   }
 
+  /**
+  * Adds collection of SwapItems to SwappItemList.
+  */
   public void addItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       this.addItem(item);
@@ -42,6 +45,9 @@ public class SwappItemList implements Iterable<SwappItem> {
     fireSwappItemListChanged();
   }
 
+  /**
+  * Removes multiple SwappItems from SwappItemList.
+  */
   public void removeItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       this.removeItem(item);
@@ -71,5 +77,4 @@ public class SwappItemList implements Iterable<SwappItem> {
     return items.iterator();
   }
 
-  
 }

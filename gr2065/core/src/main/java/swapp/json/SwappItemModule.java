@@ -8,7 +8,7 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 
 
-public class SwappItemModule extends Module {
+class SwappItemModule extends Module {
 
   @Override
   public String getModuleName() {
@@ -23,6 +23,9 @@ public class SwappItemModule extends Module {
   private final SimpleSerializers serializers = new SimpleSerializers();
   private final SimpleDeserializers deserializers = new SimpleDeserializers();
 
+  /**
+  * adds serializers and deserializers to module.
+  */
   public SwappItemModule() {
     serializers.addSerializer(SwappItem.class, new SwappItemSerializer());
     serializers.addSerializer(SwappItemList.class, new SwappItemListSerializer());

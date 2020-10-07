@@ -1,16 +1,23 @@
 package swapp.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import swapp.core.SwappItem;
-import swapp.core.SwappItemList;
-import swapp.json.SwappItemModule;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.net.URL;
-
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import swapp.core.SwappItem;
+import swapp.core.SwappItemList;
+import swapp.json.SwappPersistence;
 
 
 public class AppController {
@@ -33,24 +40,24 @@ public class AppController {
   @FXML
   private MenuItem saveButton;
 
+  private SwappPersistence swappPersistence = new SwappPersistence();
 
   private SwappItemList swappList;
 
+  /** Initializes appcontroller. */
   public AppController() {
     list = new ListView<SwappItem>();
     swappList = new SwappItemList();
     loadItems();
   }
 
-
-
   void loadItems() {
-    getObjectMapper();
     Reader reader = null;
     try {
       try {
         reader =
-            new FileReader(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
+            new FileReader(Paths.get(System.getProperty("user.home"), "items.json").toFile(), 
+            StandardCharsets.UTF_8);
       } catch (IOException ioex1) {
         System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
         URL url = getClass().getResource("items.json");
@@ -58,11 +65,12 @@ public class AppController {
           reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         } else {
           System.err.println("Fant ingen eksempelfil. Parser string direkte..");
-          String exampleText = "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
+          String exampleText = 
+              "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
           reader = new StringReader(exampleText);
         }
       }
-      SwappItemList list = objectMapper.readValue(reader, SwappItemList.class);
+      SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
@@ -80,7 +88,7 @@ public class AppController {
   }
 
 
-  /** Initialize with lambda expression listener SwappItemList */
+  /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
     updateSwappItems();
@@ -112,52 +120,25 @@ public class AppController {
     list.getItems().setAll(swappList.getItems());
   }
 
-  
+
   public SwappItemList getItems() {
     return swappList;
   }
-
-  private ObjectMapper objectMapper;
-
-  public ObjectMapper getObjectMapper() {
-    if (objectMapper == null) {
-      objectMapper = new ObjectMapper();
-      objectMapper.registerModule(new SwappItemModule());
-    }
-    return objectMapper;
-  }
-
-  /*
-   * ubrukt kode
-   * 
-   * private void showExceptionDialog(final String message) { final Alert alert = new
-   * Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE); alert.showAndWait(); }
-   * 
-   * 
-   * private void showExceptionDialog(final String message, final Exception e) {
-   * showExceptionDialog(message + ": " + e.getLocalizedMessage()); }
-   * 
-   * 
-   * private void showSaveExceptionDialog(final File location, final Exception e) {
-   * showExceptionDialog("Oops, problem saving to " + location, e); }
-   * 
-   * private void showOpenExceptionDialog(final File location, final Exception e) {
-   * showExceptionDialog("Oops, problem opening from " + location, e); }
-   */
-
 
   private void autoSave() {
     Writer writer = null;
     try {
       writer =
-          new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), StandardCharsets.UTF_8);
-      objectMapper.writeValue(writer, swappList);
+          new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), 
+          StandardCharsets.UTF_8);
+      swappPersistence.writeSwappList(swappList, writer);
     } catch (IOException ioex) {
       System.err.println("Feil med fillagring.");
     } finally {
       try {
-        if (writer != null)
+        if (writer != null) {
           writer.close();
+        }
       } catch (IOException e) {
         System.err.println("Feil med fillagring..");
       }
