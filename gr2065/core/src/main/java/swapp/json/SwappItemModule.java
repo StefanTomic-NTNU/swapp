@@ -24,7 +24,7 @@ class SwappItemModule extends Module {
   private final SimpleDeserializers deserializers = new SimpleDeserializers();
 
   /**
-  * adds serializers and deserializers to module.
+  * adds serializers and deserializers to module. 
   */
   public SwappItemModule() {
     serializers.addSerializer(SwappItem.class, new SwappItemSerializer());
