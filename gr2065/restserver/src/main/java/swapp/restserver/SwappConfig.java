@@ -10,6 +10,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import swapp.core.SwappItemList;
+import swapp.core.SwappItem;
 import swapp.json.SwappPersistence;
 import swapp.restapi.SwappListService;
 
@@ -17,11 +18,11 @@ public class SwappConfig extends ResourceConfig {
     private SwappItemList swappList;
 
     /**
-     * * Initialize this TodoConfig. * * @param todoModel todoModel instance to
+     * * Initialize this SwappConfig. * * @param swappList swappList instance to
      * serve
      */
     public SwappConfig(SwappItemList swappList) {
-        setSwappItemList(swappList);
+        setSwappList(swappList);
         register(SwappListService.class);
         register(SwappModuleObjectMapperProvider.class);
         register(JacksonFeature.class);
@@ -35,7 +36,7 @@ public class SwappConfig extends ResourceConfig {
 
     /** * Initialize this TodoConfig with a default TodoModel. */
     public SwappConfig() {
-        this(createDefaultSwappModel());
+        this(createDefaultSwappList());
     }
 
     public SwappItemList getSwappList() {
@@ -46,9 +47,9 @@ public class SwappConfig extends ResourceConfig {
         this.swappList = swappList;
     }
 
-    private static TodoModel createDefaultSwappList() {
+    private static SwappItemList createDefaultSwappList() {
         SwappPersistence swappPersistence = new SwappPersistence();
-        URL url = TodoConfig.class.getResource("default-swapplist.json");
+        URL url = SwappConfig.class.getResource("default-swapplist.json");
         if (url != null) {
             try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
                 return swappPersistence.readSwappList(reader);

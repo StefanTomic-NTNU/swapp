@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
-import swapp.json.SwappModule;
+import swapp.json.SwappItemModule;
 
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
@@ -16,7 +16,7 @@ public class SwappModuleObjectMapperProvider implements ContextResolver<ObjectMa
 
     public SwappModuleObjectMapperProvider() {
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new SwappModule(false));
+        objectMapper.registerModule(new SwappItemModule(false));
     }
 
     @Override

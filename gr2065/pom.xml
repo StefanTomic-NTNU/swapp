@@ -143,5 +143,6 @@
         <module>core</module>
         <module>fxui</module>
         <module>restapi</module>
+        <module>restserver</module>
     </modules>
 </project>

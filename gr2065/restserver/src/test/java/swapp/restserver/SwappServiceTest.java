@@ -19,7 +19,7 @@ import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import swapp.core.Swappitem;
+import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.restapi.SwappListService;
 
@@ -65,7 +65,7 @@ public class SwappServiceTest extends JerseyTest {
         assertEquals(200, getResponse.getStatus());
         try {
             SwappItemList swappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappItemList.class);
-            Iterator<Swappitem> it = swappList.iterator();
+            Iterator<SwappItem> it = swappList.iterator();
             assertTrue(it.hasNext());
             SwappItem swappItem1 = it.next();
             assertTrue(it.hasNext());
