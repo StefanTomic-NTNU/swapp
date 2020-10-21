@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SwappItemList implements Iterable<SwappItem> {
 
@@ -52,6 +53,20 @@ public class SwappItemList implements Iterable<SwappItem> {
     for (SwappItem item : items) {
       this.removeItem(item);
     }
+  }
+
+  public SwappItem putSwappItem(SwappItem swappItem){
+    addItem(swappItem);
+    return swappItem; 
+  }
+
+  public SwappItem getSwappItem(SwappItem swappItem){
+    if (items.contains(swappItem)) return swappItem;  
+    else return null;
+  }
+
+  public SwappItem getSwappItem(String name){
+    return items.stream().filter(x->x.getName().equals(name)).findFirst().get();
   }
 
   public List<SwappItem> getItems() {
