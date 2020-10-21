@@ -12,15 +12,15 @@ import swapp.json.SwappItemModule;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class SwappModuleObjectMapperProvider implements ContextResolver<ObjectMapper> {
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    public SwappModuleObjectMapperProvider() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new SwappItemModule(false));
-    }
+  public SwappModuleObjectMapperProvider() {
+    objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new SwappItemModule(false));
+  }
 
-    @Override
-    public ObjectMapper getContext(final Class<?> type) {
-        return objectMapper;
-    }
+  @Override
+  public ObjectMapper getContext(final Class<?> type) {
+    return objectMapper;
+  }
 }

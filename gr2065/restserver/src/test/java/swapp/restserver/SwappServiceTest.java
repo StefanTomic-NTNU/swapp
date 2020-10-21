@@ -24,71 +24,70 @@ import swapp.core.SwappItemList;
 import swapp.restapi.SwappListService;
 
 public class SwappServiceTest extends JerseyTest {
-    protected boolean shouldLog() {
-        return false;
-    }
+  protected boolean shouldLog() {
+    return false;
+  }
 
-    @Override
-    protected ResourceConfig configure() {
-        final SwappConfig config = new SwappConfig();
-        if (shouldLog()) {
-            enable(TestProperties.LOG_TRAFFIC);
-            enable(TestProperties.DUMP_ENTITY);
-            config.property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "WARNING");
-        }
-        return config;
+  @Override
+  protected ResourceConfig configure() {
+    final SwappConfig config = new SwappConfig();
+    if (shouldLog()) {
+      enable(TestProperties.LOG_TRAFFIC);
+      enable(TestProperties.DUMP_ENTITY);
+      config.property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "WARNING");
     }
+    return config;
+  }
 
-    @Override
-    protected TestContainerFactory getTestContainerFactory() throws TestContainerException {
-        return new GrizzlyTestContainerFactory();
+  @Override
+  protected TestContainerFactory getTestContainerFactory() throws TestContainerException {
+    return new GrizzlyTestContainerFactory();
+  }
+
+  private ObjectMapper objectMapper;
+
+  @Override
+  @BeforeEach
+  public void setUp() throws Exception {
+    super.setUp();
+    objectMapper = new SwappModuleObjectMapperProvider().getContext(getClass());
+  }
+
+  @AfterEach
+  public void tearDown() throws Exception {
+    super.tearDown();
+  }
+
+  @Test
+  public void testGet_todo() {
+    Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+    assertEquals(200, getResponse.getStatus());
+    try {
+      SwappItemList swappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappItemList.class);
+      Iterator<SwappItem> it = swappList.iterator();
+      assertTrue(it.hasNext());
+      SwappItem swappItem1 = it.next();
+      assertTrue(it.hasNext());
+      SwappItem swappItem2 = it.next();
+      assertFalse(it.hasNext());
+      assertEquals("swapp1", swappItem1.getName());
+      assertEquals("swapp2", swappItem2.getName());
+    } catch (JsonProcessingException e) {
+      fail(e.getMessage());
     }
+  }
 
-    private ObjectMapper objectMapper;
-
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        objectMapper = new SwappModuleObjectMapperProvider().getContext(getClass());
+  @Test
+  public void testGet_swapp_swapp1() {
+    Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+    assertEquals(200, getResponse.getStatus());
+    try {
+      SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
+      assertEquals("swapp1", swappItem.getName());
+    } catch (JsonProcessingException e) {
+      fail(e.getMessage());
     }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    @Test
-    public void testGet_todo() {
-        Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
-                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-        assertEquals(200, getResponse.getStatus());
-        try {
-            SwappItemList swappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappItemList.class);
-            Iterator<SwappItem> it = swappList.iterator();
-            assertTrue(it.hasNext());
-            SwappItem swappItem1 = it.next();
-            assertTrue(it.hasNext());
-            SwappItem swappItem2 = it.next();
-            assertFalse(it.hasNext());
-            assertEquals("swapp1", swappItem1.getName());
-            assertEquals("swapp2", swappItem2.getName());
-        } catch (JsonProcessingException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void testGet_swapp_swapp1() {
-        Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
-                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-        assertEquals(200, getResponse.getStatus());
-        try {
-            SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class),
-                    SwappItem.class);
-            assertEquals("swapp1", swappItem.getName());
-        } catch (JsonProcessingException e) {
-            fail(e.getMessage());
-        }
-    }
+  }
 }
