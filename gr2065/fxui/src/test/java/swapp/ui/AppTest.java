@@ -1,45 +1,62 @@
 package swapp.ui;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javafx.application.Application;
-import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import swapp.core.SwappItem;
-import swapp.ui.AppController;
+import swapp.core.SwappItemList;
+import swapp.json.SwappPersistence;
 
 public class AppTest extends ApplicationTest {
 
   private Parent parent;
   private AppController controller;
+  private SwappPersistence persistence = new SwappPersistence();
 
   @Override
   public void start(final Stage stage) throws Exception {
-    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("App.fxml"));
+    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
     parent = fxmlLoader.load();
     controller = fxmlLoader.getController();
+    try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
+      /*
+      SwappItemList swappItemList = persistence.readSwappList(reader);
+      */
+      SwappItemList swappItemList = new SwappItemList();
+      swappItemList.addItem(new SwappItem("testItem"));
+      this.controller.getItems().setSwappItemlist(swappItemList);
+    } catch (IOException ioException) {
+      System.err.println("Feil med innlasting av testfil.");
+    }
     stage.setScene(new Scene(parent));
     stage.show();
   }
 
+  @BeforeEach
+  public void setupList(){
+    
+  }
+  /*
+  @BeforeEach
+  public void setUpList() {
+    try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
+        SwappItemList swappItemList = persistence.readSwappList(reader);
+        controller.getItems().setSwappItemlist(swappItemList);
+      } catch (IOException ioException) {
+    }
+  }
+*/
   @Test
   public void testAddition() {
     final Button addButton = (Button) parent.lookup("#addButton");
