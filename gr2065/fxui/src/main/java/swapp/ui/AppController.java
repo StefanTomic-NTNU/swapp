@@ -1,5 +1,6 @@
 package swapp.ui;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -70,6 +71,14 @@ public class AppController {
           reader = new StringReader(exampleText);
         }
       }
+      /* For å printe ut fil til konsoll:
+      BufferedReader reader2 =
+            new BufferedReader(reader);
+      String linje;
+      while ((linje = reader2.readLine()) != null) {
+        System.out.println(linje);
+      }
+      */
       SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {

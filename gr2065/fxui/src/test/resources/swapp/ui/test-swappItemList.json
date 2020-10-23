@@ -1,10 +1,7 @@
-{
-  "items": [
-    {
-      "name": "TestItem1"
-    },
-    {
-      "name": "TestItem2"
-    }
-  ]
-}
+[
+    {"itemName":"testItem1"},
+    
+    {"itemName":"testItem2"},
+
+    {"itemName":"testItem3"}
+]

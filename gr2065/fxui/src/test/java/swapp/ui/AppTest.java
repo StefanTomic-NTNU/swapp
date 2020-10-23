@@ -27,15 +27,10 @@ public class AppTest extends ApplicationTest {
   @Override
   public void start(final Stage stage) throws Exception {
     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
-    parent = fxmlLoader.load();
-    controller = fxmlLoader.getController();
+    this.parent = fxmlLoader.load();
+    this.controller = fxmlLoader.getController();
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-      /*
-      SwappItemList swappItemList = persistence.readSwappList(reader);
-      */
-      SwappItemList swappItemList = new SwappItemList();
-      swappItemList.addItem(new SwappItem("testItem"));
-      this.controller.getItems().setSwappItemlist(swappItemList);
+      this.controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
@@ -47,16 +42,7 @@ public class AppTest extends ApplicationTest {
   public void setupList(){
     
   }
-  /*
-  @BeforeEach
-  public void setUpList() {
-    try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-        SwappItemList swappItemList = persistence.readSwappList(reader);
-        controller.getItems().setSwappItemlist(swappItemList);
-      } catch (IOException ioException) {
-    }
-  }
-*/
+
   @Test
   public void testAddition() {
     final Button addButton = (Button) parent.lookup("#addButton");
