@@ -31,10 +31,10 @@ public class AppTest extends ApplicationTest {
   public void start(final Stage stage) throws Exception {
     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
     this.parent = fxmlLoader.load();
-    //this.controller = fxmlLoader.getController();
-    ((AppController) fxmlLoader.getController()).setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
+    this.controller = (AppController)fxmlLoader.getController();
+    this.controller.setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-    ((AppController) fxmlLoader.getController()).getItems().setSwappItemlist(persistence.readSwappList(reader));
+    this.controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
@@ -42,10 +42,12 @@ public class AppTest extends ApplicationTest {
     stage.show();
   }
 
+  /*
   @BeforeEach
   public void setupList(){
     
   }
+  */
 
   @Test
   public void testAddition() {
@@ -76,9 +78,11 @@ public class AppTest extends ApplicationTest {
     clickOn(textField).write(item2.getName());
     clickOn(addButton);
     Assertions.assertEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
+    int lengthBeforeRemoval = list.getItems().size();
     list.getSelectionModel().selectLast();
     clickOn("#removeButton");
-    Assertions.assertNotEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
+    Assertions.assertEquals(lengthBeforeRemoval-1, list.getItems().size());
+    //Assertions.assertNotEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
 
   }
 
