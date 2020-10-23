@@ -1,8 +1,11 @@
 package swapp.ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.ModuleLayer.Controller;
+import java.nio.file.Paths;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +31,10 @@ public class AppTest extends ApplicationTest {
   public void start(final Stage stage) throws Exception {
     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
     this.parent = fxmlLoader.load();
-    this.controller = fxmlLoader.getController();
+    //this.controller = fxmlLoader.getController();
+    ((AppController) fxmlLoader.getController()).setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-      this.controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
+    ((AppController) fxmlLoader.getController()).getItems().setSwappItemlist(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
