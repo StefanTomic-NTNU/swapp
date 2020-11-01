@@ -1,5 +1,7 @@
 package swapp.ui;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,10 +46,17 @@ public class AppController {
 
   private SwappItemList swappList;
 
+  private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
+
   /** Initializes appcontroller. */
   public AppController() {
     list = new ListView<SwappItem>();
     swappList = new SwappItemList();
+    loadItems();
+  }
+
+  public void setFile(File file) {
+    this.file = file;
     loadItems();
   }
 
@@ -56,7 +65,7 @@ public class AppController {
     try {
       try {
         reader =
-            new FileReader(Paths.get(System.getProperty("user.home"), "items.json").toFile(), 
+            new FileReader(file, 
             StandardCharsets.UTF_8);
       } catch (IOException ioex1) {
         System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
@@ -70,6 +79,14 @@ public class AppController {
           reader = new StringReader(exampleText);
         }
       }
+      /* For å printe ut fil til konsoll:
+      BufferedReader reader2 =
+            new BufferedReader(reader);
+      String linje;
+      while ((linje = reader2.readLine()) != null) {
+        System.out.println(linje);
+      }
+      */
       SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
@@ -129,7 +146,7 @@ public class AppController {
     Writer writer = null;
     try {
       writer =
-          new FileWriter(Paths.get(System.getProperty("user.home"), "items.json").toFile(), 
+          new FileWriter(file, 
           StandardCharsets.UTF_8);
       swappPersistence.writeSwappList(swappList, writer);
     } catch (IOException ioex) {
