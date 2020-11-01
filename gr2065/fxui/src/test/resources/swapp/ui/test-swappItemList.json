@@ -1,7 +1,7 @@
 [
-    {"itemName":"testItem1"},
+    {"itemName":"testItem1", "itemStatus":"Ny", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"},
     
-    {"itemName":"testItem2"},
+    {"itemName":"testItem2", "itemStatus":"Ny", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"},
 
-    {"itemName":"testItem3"}
+    {"itemName":"testItem3", "itemStatus":"Ny", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"}
 ]

@@ -144,6 +144,8 @@ public class AppController {
       swappList.addItem(item);
     }
     nameField.setText("");
+    descriptionFieldArea.setText("");
+    statusChoiceBox.getSelectionModel().clearSelection();
   }
 
   @FXML

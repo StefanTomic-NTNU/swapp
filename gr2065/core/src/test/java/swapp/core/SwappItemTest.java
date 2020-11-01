@@ -11,7 +11,7 @@ public class SwappItemTest {
 
   @BeforeEach
   public void beforeEach() {
-    item1 = new SwappItem("name", "Gis bort", "description", "contactInfo");
+    item1 = new SwappItem("name", "Ny", "description", "contactInfo");
   }
 
   @Test
@@ -27,7 +27,7 @@ public class SwappItemTest {
 
   @Test
   public void testGetStatus() {
-    assertEquals(item1.getStatus(), "Gis bort");
+    assertEquals(item1.getStatus(), "Ny");
   }
 
   @Test

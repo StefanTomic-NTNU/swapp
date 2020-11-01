@@ -39,17 +39,17 @@ public class SwappItemListModuleTest {
   @BeforeEach
   public void beforeEach() {
     items = new SwappItemList();
-    item1 = new SwappItem("name1", "Gis bort", "description1", "contactInfo1");
-    item2 = new SwappItem("name2", "Gis bort", "description2", "contactInfo2");
+    item1 = new SwappItem("name1", "Ny", "description1", "contactInfo1");
+    item2 = new SwappItem("name2", "Ny", "description2", "contactInfo2");
   }
 
   //private final static String ItemsListWithTwoItems = "[{\"itemName\":\"item1\"},{\"itemName\":\"item2\"}]";
   //private final static String ItemsListWithTwoItems = 
-  //  "[{\"itemName\":\"name1\"}{\"itemStatus\":\"Gis bort\"}{\"itemDescription\":\"description1\"}{\"itemContactInfo\":\"contactInfo1\"},{\"itemName\":\"name2\"}{\"itemStatus\":\"Gis bort\"}{\"itemDescription\":\"description2\"}{\"itemContactInfo\":\"contactInfo2\"}]";
+  //  "[{\"itemName\":\"name1\"}{\"itemStatus\":\"Ny\"}{\"itemDescription\":\"description1\"}{\"itemContactInfo\":\"contactInfo1\"},{\"itemName\":\"name2\"}{\"itemStatus\":\"Ny\"}{\"itemDescription\":\"description2\"}{\"itemContactInfo\":\"contactInfo2\"}]";
   private final static String ItemsListWithTwoItems = 
-    "[{\"itemName\":\"name1\",\"itemStatus\":\"Gis bort\""
+    "[{\"itemName\":\"name1\",\"itemStatus\":\"Ny\""
     + ",\"itemDescription\":\"description1\",\"itemContactInfo\":\"contactInfo1\"},"
-    + "{\"itemName\":\"name2\",\"itemStatus\":\"Gis bort\""
+    + "{\"itemName\":\"name2\",\"itemStatus\":\"Ny\""
     + ",\"itemDescription\":\"description2\",\"itemContactInfo\":\"contactInfo2\"}]"; 
   
   @Test

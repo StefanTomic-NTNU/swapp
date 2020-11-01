@@ -1,6 +1,7 @@
 package swapp.ui;
 
 import java.io.File;
+import javafx.scene.input.KeyCode;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.testfx.framework.junit5.ApplicationTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
@@ -42,29 +46,68 @@ public class AppTest extends ApplicationTest {
     stage.show();
   }
 
+  
+
   /*
-  @BeforeEach
-  public void setupList(){
-    
+  @BeforeAll
+  public void setUp() {
+    final Button addButton = (Button) parent.lookup("#addButton");
+    final TextField nameField = (TextField) parent.lookup("#nameField");
+    final TextField contactInfoField = (TextField) parent.lookup("#contactInfoField");
+    final TextArea descriptionField = (TextArea) parent.lookup("#descriptionField");
+    final ChoiceBox statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
+    final ListView<SwappItem> list = (ListView) parent.lookup("#list");
   }
   */
 
+ //TODO Clean up test..
   @Test
   public void testAddition() {
+    String testName;
+    String testDescription;
+    String testContactInfo;
     final Button addButton = (Button) parent.lookup("#addButton");
-    final TextField textField = (TextField) parent.lookup("#textField");
+    final TextField nameField = (TextField) parent.lookup("#nameField");
+    final TextField contactInfoField = (TextField) parent.lookup("#contactInfoField");
+    final TextArea descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
+    final ChoiceBox statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
     final ListView<SwappItem> list = (ListView) parent.lookup("#list");
-    String testText;
     int listLength = list.getItems().size();
-    for (int i = listLength; i < listLength + 3; i++) {
-      testText = "Gjenstand " + (i + 1);
-      clickOn(textField).write(testText);
+    
+    /*
+    for (int i = listLength; i < listLength + 2; i++) {
+      */
+      //testName = "Gjenstand " + (i + 1);
+      testName = "Gjenstand 1";
+      testDescription = "Bla bla bla";
+      testContactInfo = "kontaktinfo@email.no";
+      clickOn(nameField).write(testName);
+      clickOn(descriptionFieldArea).write(testDescription);
+      if (contactInfoField.getText().isBlank()) {
+        clickOn(contactInfoField).write(testContactInfo);
+      }
+      clickOn(statusChoiceBox);
+      type(KeyCode.DOWN);
+      type(KeyCode.ENTER);
       clickOn(addButton);
-      Assertions.assertTrue(list.getItems().get(i).toString().equals(testText));
-    }
+      System.out.println(testName + "  " + "  " + statusChoiceBox.getItems().get(1).toString() + "  " + testDescription + "  " + testContactInfo);
+      Assertions.assertTrue(list.getItems().get(3).toString().equals(testName + "  " + "  " + statusChoiceBox.getItems().get(1).toString() + "  " + testDescription + "  " + testContactInfo));
+      testName = "Gjenstand 2";
+
+      clickOn(nameField).write(testName);
+      clickOn(descriptionFieldArea).write(testDescription);
+      clickOn(statusChoiceBox);
+      type(KeyCode.DOWN);
+      type(KeyCode.ENTER);
+      clickOn(addButton);
+    //}
+    
+      System.out.println(testName + "  " + "  " + statusChoiceBox.getItems().get(0).toString() + "  " + testDescription + "  " + testContactInfo);
+      Assertions.assertTrue(list.getItems().get(4).toString().equals(testName + "  " + "  " + statusChoiceBox.getItems().get(0).toString() + "  " + testDescription + "  " + testContactInfo));
 
   }
 
+  /*
   // TODO look through cell see ep.8 todolist
   @Test
   public void testRemove() {
@@ -85,5 +128,6 @@ public class AppTest extends ApplicationTest {
     //Assertions.assertNotEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
 
   }
+  */
 
 }
