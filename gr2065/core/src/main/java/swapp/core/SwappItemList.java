@@ -56,8 +56,12 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public SwappItem putSwappItem(SwappItem swappItem){
-    addItem(swappItem);
-    return swappItem; 
+    if (getSwappItem(swappItem.getName())==null){
+      addItem(swappItem);
+      return null;
+    }else{
+      return swappItem; 
+    } 
   }
 
   public SwappItem getSwappItem(SwappItem swappItem){
@@ -71,6 +75,10 @@ public class SwappItemList implements Iterable<SwappItem> {
 
   public List<SwappItem> getItems() {
     return this.items;
+  }
+
+  public SwappItemList getSwappList(){
+    return this;
   }
 
   public void addSwappItemListListener(SwappItemListListener listener) {

@@ -23,8 +23,10 @@ public class SwappItemResource {
 
   /**
    * * Initializes this TodoListResource with appropriate context information. * Each method will
-   * check and use what it needs. * * @param todoModel the TodoModel, needed for DELETE and rename
-   * * @param name the todo list name, needed for most requests * @param todoList the TodoList, or
+   * check and use what it needs. * 
+   * @param todoModel the TodoModel, needed for DELETE and rename
+   * @param name the todo list name, needed for most requests 
+   * @param todoList the TodoList, or
    * null, needed for PUT
    */
   public SwappItemResource(SwappItemList swappList, String name, SwappItem swappItem) {
