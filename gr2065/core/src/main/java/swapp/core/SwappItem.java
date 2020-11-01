@@ -37,9 +37,8 @@ public class SwappItem {
     if (!name.isBlank()) {this.name = name;}
   }
 
-  //TODO hva er egt SwappApp? Hva med kjøpesum og lokasjon?
   public void setStatus(String status) {
-    if (status.equals("Til salgs") || status.equals("Solgt") || status.equals("Ønskes kjøpt") || status.equals("Gis bort")) {
+    if (status.equals("Ny") || status.equals("Litt brukt") || status.equals("Godt brukt")) {
       this.status = status;
     }
   }
@@ -54,7 +53,7 @@ public class SwappItem {
 
   @Override
   public String toString() {
-    return name + " " + "/n" + status + "/n" + description + "/n" + contactInfo;
+    return name + "  " + "  " + status + "  " + description + "  " + contactInfo;
   }
 
 

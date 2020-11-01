@@ -14,8 +14,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
@@ -27,8 +29,8 @@ public class AppController {
   @FXML
   private ListView<SwappItem> list;
 
-  @FXML
-  private TextField textField;
+//  @FXML
+//  private TextField textField;
 
   @FXML
   private Button addButton;
@@ -42,11 +44,30 @@ public class AppController {
   @FXML
   private MenuItem saveButton;
 
+  @FXML
+  private TextField nameField;
+
+  @FXML
+  private ChoiceBox statusChoiceBox;
+  
+  @FXML
+  private TextArea descriptionFieldArea;
+
+  @FXML
+  private TextField contactInfoField;
+
+  
   private SwappPersistence swappPersistence = new SwappPersistence();
 
   private SwappItemList swappList;
 
   private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
+
+  private final static String SwappItemListWithTwoItems = 
+    "[{\"itemName\":\"name1\",\"itemStatus\":\"Ny\""
+    + ",\"itemDescription\":\"description1\",\"itemContactInfo\":\"contactInfo1\"},"
+    + "{\"itemName\":\"name2\",\"itemStatus\":\"Ny\""
+    + ",\"itemDescription\":\"description2\",\"itemContactInfo\":\"contactInfo2\"}]";
 
   /** Initializes appcontroller. */
   public AppController() {
@@ -74,8 +95,7 @@ public class AppController {
           reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         } else {
           System.err.println("Fant ingen eksempelfil. Parser string direkte..");
-          String exampleText = 
-              "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
+          String exampleText = SwappItemListWithTwoItems;
           reader = new StringReader(exampleText);
         }
       }
@@ -91,8 +111,8 @@ public class AppController {
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
-      swappList.addItem(new SwappItem("eksempelgjenstand1"));
-      swappList.addItem(new SwappItem("eksempelgjenstand2"));
+      swappList.addItem(new SwappItem("name1", "Ny", "description1", "contactInfo1"));
+      swappList.addItem(new SwappItem("name2", "Ny", "description2", "contactInfo2"));
     } finally {
       try {
         if (reader != null) {
@@ -108,6 +128,7 @@ public class AppController {
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
+    statusChoiceBox.getItems().addAll("Ny", "Litt brukt", "Godt brukt");
     updateSwappItems();
     swappList.addSwappItemListListener(swappList -> {
       updateSwappItems();
@@ -118,11 +139,11 @@ public class AppController {
 
   @FXML
   void addSwappItemButtonClicked() {
-    if (!textField.getText().isBlank()) {
-      SwappItem item = new SwappItem(textField.getText());
+    if (!nameField.getText().isBlank()) {
+      SwappItem item = new SwappItem(nameField.getText(), statusChoiceBox.getSelectionModel().getSelectedItem().toString(), descriptionFieldArea.getText(), contactInfoField.getText());
       swappList.addItem(item);
     }
-    textField.setText("");
+    nameField.setText("");
   }
 
   @FXML

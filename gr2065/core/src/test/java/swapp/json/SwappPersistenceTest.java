@@ -27,8 +27,8 @@ public class SwappPersistenceTest {
     @BeforeEach
     public void beforeEach() {
       swappItemList = new SwappItemList();
-      item1 = new SwappItem("name1", "Gis bort", "description1", "contactInfo1");
-      item2 = new SwappItem("name2", "Gis bort", "description2", "contactInfo2");
+      item1 = new SwappItem("name1", "Ny", "description1", "contactInfo1");
+      item2 = new SwappItem("name2", "Ny", "description2", "contactInfo2");
     }
 
     /*
