@@ -40,16 +40,16 @@ public class SwappItem {
   //TODO hva er egt SwappApp? Hva med kjøpesum og lokasjon?
   public void setStatus(String status) {
     if (status.equals("Til salgs") || status.equals("Solgt") || status.equals("Ønskes kjøpt") || status.equals("Gis bort")) {
-      this.name = status;
+      this.status = status;
     }
   }
 
   public void setDescription(String description) {
-    if (!description.isBlank()) {this.name = description;}
+    if (!description.isBlank()) {this.description = description;}
   }
 
   public void setContactInfo(String contactInfo) {
-    if (!contactInfo.isBlank()) {this.name = contactInfo;}
+    if (!contactInfo.isBlank()) {this.contactInfo = contactInfo;}
   }
 
   @Override
