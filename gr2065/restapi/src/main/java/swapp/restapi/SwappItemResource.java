@@ -16,10 +16,10 @@ import swapp.core.SwappItemList;
 
 /** * Used for all requests referring to TodoLists by name. */
 public class SwappItemResource {
-  private static final Logger LOG = LoggerFactory.getLogger(SwappItemResource.class);
+  /**private static final Logger LOG = LoggerFactory.getLogger(SwappItemResource.class);
   private final SwappItemList swappList;
   private final String name;
-  private final SwappItem swappItem;
+  private final SwappItem swappItem;*/
 
   /**
    * * Initializes this TodoListResource with appropriate context information. * Each method will
@@ -29,11 +29,9 @@ public class SwappItemResource {
    * @param todoList the TodoList, or
    * null, needed for PUT
    */
-  public SwappItemResource(SwappItemList swappList, String name, SwappItem swappItem) {
-    this.swappList = swappList;
-    this.name = name;
-    this.swappItem = swappItem;
-  }
+  public SwappItemResource() {
+    
+  }/*
 
   private void checkSwappItem() {
     if (this.swappItem == null) {
@@ -42,7 +40,7 @@ public class SwappItemResource {
   }
 
   /** * Gets the corresponding TodoList. * * @return the corresponding TodoList */
-  @GET
+  /*@GET/*
   @Produces(MediaType.APPLICATION_JSON)
   public SwappItem getSwappItem() {
     checkSwappItem();
@@ -53,7 +51,7 @@ public class SwappItemResource {
   /**
    * * Replaces or adds a TodoList. * * @param todoListArg the todoList to add * @return true if it
    * was added, false if it replaced
-   */
+   *//*
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -62,14 +60,14 @@ public class SwappItemResource {
     return this.swappList.putSwappItem(swappItemArg) == null;
   }
 
-  /** * Adds a TodoList with the given name, if it doesn't exist already. */
+  /** * Adds a TodoList with the given name, if it doesn't exist already. *//*
   @PUT
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappItem() {
     return putSwappItem(null);
   }
 
-  /** * Renames the TodoList. * * @param newName the newName */
+  /** * Renames the TodoList. * * @param newName the newName *//*
   @POST
   @Path("/rename")
   @Produces(MediaType.APPLICATION_JSON)
@@ -82,12 +80,12 @@ public class SwappItemResource {
     return true;
   }
 
-  /** * Removes the TodoList. */
+  /** * Removes the TodoList. *//*
   @DELETE
   @Produces(MediaType.APPLICATION_JSON)
   public boolean removeSwappItem() {
     checkSwappItem();
     this.swappList.removeItem(this.swappItem);
     return true;
-  }
+  }*/
 }

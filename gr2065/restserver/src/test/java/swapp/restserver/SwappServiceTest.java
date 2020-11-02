@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
+
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,7 +61,7 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   @Test
-  public void testGet_todo() {
+  public void testGet_swapp() {
     Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
     assertEquals(200, getResponse.getStatus());
@@ -79,15 +81,19 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   @Test
-  public void testGet_swapp_swapp1() {
-    Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-    assertEquals(200, getResponse.getStatus());
+  public void testPut() throws JsonProcessingException {
+    SwappItemList other = new SwappItemList(new SwappItem("testputname"));
+    Response putResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+        .put(Entity.entity(objectMapper.writeValueAsString(other), MediaType.APPLICATION_JSON));
+    assertEquals(200, putResponse.getStatus());
     try {
-      SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
-      assertEquals("swapp1", swappItem.getName());
+      SwappItemList newSwappList = objectMapper.readValue(putResponse.readEntity(String.class), SwappItemList.class);
+      assertEquals("testputname", newSwappList.getItems().get(0).getName());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
   }
+
+
 }
