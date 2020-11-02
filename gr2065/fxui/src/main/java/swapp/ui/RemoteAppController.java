@@ -26,7 +26,8 @@ public class RemoteAppController {
     private SwappItemList swappList;
 
     @FXML
-    String endpointUri;
+    String endpointUri = "http://localhost:8999/swapp/";
+
     private RemoteSwappAccess remoteSwappAccess;
 
     public RemoteAppController() {
@@ -42,33 +43,32 @@ public class RemoteAppController {
     public void initialize() {
         updateSwappListView();
         swappList.addSwappItemListListener(swappList -> {
-            updateSwappListView();
+            //updateSwappListView();
         });
     }
 
     public void updateSwappListView() {
-        listView.getItems().setAll(remoteSwappAccess.getSwappList().getItems());
+        SwappItemList tmp = remoteSwappAccess.getSwappList();
+        listView.getItems().setAll(tmp.getItems());
     }
 
-
+    @FXML
     void addSwappItemButtonClicked() {
         if (!textField.getText().isBlank()) {
             SwappItem item = new SwappItem(textField.getText());
-            SwappItemList newSwappList = new SwappItemList(this.swappList.getItems());
-            newSwappList.addItem(item); 
-            remoteSwappAccess.addSwappList(newSwappList);
+            remoteSwappAccess.addSwappItem(item); 
+            //remoteSwappAccess.notifySwappListChanged(this.swappList);
+            updateSwappListView();
         }
         textField.setText("");
     }
 
-
+    @FXML
     void removeSwappItemButtonClicked() {
-        if (!textField.getText().isBlank()) {
-            SwappItem item = new SwappItem(textField.getText());
-            SwappItemList newSwappList = new SwappItemList(this.swappList.getItems());
-            newSwappList.removeItem(item);
-            remoteSwappAccess.removeSwappList(newSwappList);
+        if (listView.getSelectionModel().getSelectedItem() != null) {
+            SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
+            remoteSwappAccess.removeSwappItem(item);
+            updateSwappListView();
         }
-        textField.setText("");
     }
 }

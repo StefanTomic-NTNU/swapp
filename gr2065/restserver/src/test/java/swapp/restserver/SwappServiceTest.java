@@ -82,14 +82,21 @@ public class SwappServiceTest extends JerseyTest {
 
   @Test
   public void testPut() throws JsonProcessingException {
-    SwappItemList other = new SwappItemList(new SwappItem("testputname"));
+    SwappItemList other = new SwappItemList(new SwappItem("swapp1put"), new SwappItem("swapp2put"));
     Response putResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .put(Entity.entity(objectMapper.writeValueAsString(other), MediaType.APPLICATION_JSON));
     assertEquals(200, putResponse.getStatus());
     try {
       SwappItemList newSwappList = objectMapper.readValue(putResponse.readEntity(String.class), SwappItemList.class);
-      assertEquals("testputname", newSwappList.getItems().get(0).getName());
+      Iterator<SwappItem> it = newSwappList.iterator();
+      assertTrue(it.hasNext());
+      SwappItem swappItem1 = it.next();
+      assertTrue(it.hasNext());
+      SwappItem swappItem2 = it.next();
+      assertFalse(it.hasNext());
+      assertEquals("swapp1put", swappItem1.getName());
+      assertEquals("swapp2put", swappItem2.getName());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

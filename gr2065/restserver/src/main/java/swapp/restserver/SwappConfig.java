@@ -33,7 +33,7 @@ public class SwappConfig extends ResourceConfig {
     });
   }
 
-  /** * Initialize this TodoConfig with a default TodoModel. */
+  /** * Initialize this TodoConfig with a default TodoModel. */ 
   public SwappConfig() {
     this(createDefaultSwappList());
   }

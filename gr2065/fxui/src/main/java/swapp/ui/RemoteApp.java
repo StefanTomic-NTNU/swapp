@@ -16,7 +16,7 @@ public class RemoteApp extends Application {
   }
 
   public static void main(final String[] args) {
-    launch(args);
+    launch(RemoteApp.class, args);
   }
 
 }

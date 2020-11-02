@@ -44,7 +44,7 @@ public class RemoteSwappAccess {
         throw new RuntimeException(e);
       }
     }
-    return swappList;
+    return this.swappList;
   }
 
 
@@ -69,22 +69,21 @@ public class RemoteSwappAccess {
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItemList swappListRes = objectMapper.readValue(responseString, SwappItemList.class);
-      if (this.swappList.getItems() != swappListRes.getItems()){
-        this.swappList.putSwappList(newSwappList);
-      }
-      
+      this.swappList.putSwappList(swappListRes);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
 
   
-  public void addSwappList(SwappItemList other) {
-    putSwappList(other);
+  public void addSwappItem(SwappItem other) {
+    this.swappList.addItem(other);
+    notifySwappListChanged(this.swappList);
   }
 
-  public void removeSwappList(SwappItemList other){
-    putSwappList(other);
+  public void removeSwappItem(SwappItem other){
+    this.swappList.removeItem(other);
+    notifySwappListChanged(this.swappList);;
   }
 
 

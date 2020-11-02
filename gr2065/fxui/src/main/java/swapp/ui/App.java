@@ -16,7 +16,7 @@ public class App extends Application {
   }
 
   public static void main(final String[] args) {
-    launch(args);
+    launch(App.class, args);
   }
 
 }

@@ -24,7 +24,7 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public void setSwappItemlist(SwappItemList swappList) {
-    items = new ArrayList<>();
+    this.items = new ArrayList<>();
     addItem(swappList.getItems());
   }
 
