@@ -19,6 +19,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.RadioButton;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
@@ -47,8 +51,8 @@ public class AppController {
   @FXML
   private TextField nameField;
 
-  @FXML
-  private ChoiceBox statusChoiceBox;
+  //@FXML
+  //private ChoiceBox statusChoiceBox;
   
   @FXML
   private TextArea descriptionFieldArea;
@@ -56,11 +60,20 @@ public class AppController {
   @FXML
   private TextField contactInfoField;
 
+
+  @FXML
+  private RadioButton nyRadio;
+
+  @FXML
+  private RadioButton litt_bruktRadio;
+
+  @FXML
+  private RadioButton godt_bruktRadio;
   
   private SwappPersistence swappPersistence = new SwappPersistence();
-
   private SwappItemList swappList;
-
+  
+  private ToggleGroup toggleGroup;
   private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
 
   private final static String SwappItemListWithTwoItems = 
@@ -73,6 +86,7 @@ public class AppController {
   public AppController() {
     list = new ListView<SwappItem>();
     swappList = new SwappItemList();
+
     loadItems();
   }
 
@@ -128,7 +142,13 @@ public class AppController {
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
-    statusChoiceBox.getItems().addAll("Ny", "Litt brukt", "Godt brukt");
+    //statusChoiceBox.getItems().addAll("Ny", "Litt brukt", "Godt brukt");
+    
+    toggleGroup = new ToggleGroup();
+    nyRadio.setToggleGroup(toggleGroup);
+    litt_bruktRadio.setToggleGroup(toggleGroup);
+    godt_bruktRadio.setToggleGroup(toggleGroup);
+    
     updateSwappItems();
     swappList.addSwappItemListListener(swappList -> {
       updateSwappItems();
@@ -140,12 +160,16 @@ public class AppController {
   @FXML
   void addSwappItemButtonClicked() {
     if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), statusChoiceBox.getSelectionModel().getSelectedItem().toString(), descriptionFieldArea.getText(), contactInfoField.getText());
+      String name =nameField.getText();
+      String status =((RadioButton)toggleGroup.getSelectedToggle()).getText();
+      String description = descriptionFieldArea.getText();
+      String contactInfo =contactInfoField.getText();
+      SwappItem item = new SwappItem(name, /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ status, description, contactInfo);
       swappList.addItem(item);
     }
     nameField.setText("");
     descriptionFieldArea.setText("");
-    statusChoiceBox.getSelectionModel().clearSelection();
+    //statusChoiceBox.getSelectionModel().clearSelection();
   }
 
   @FXML

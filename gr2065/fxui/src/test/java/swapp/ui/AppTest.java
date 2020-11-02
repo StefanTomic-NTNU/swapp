@@ -20,6 +20,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
@@ -27,58 +31,64 @@ import swapp.json.SwappPersistence;
 
 public class AppTest extends ApplicationTest {
 
+  
   private Parent parent;
   private AppController controller;
   private SwappPersistence persistence = new SwappPersistence();
 
+  private String testName;
+  private String testDescription;
+  private String testContactInfo;
+  
+  
   @Override
   public void start(final Stage stage) throws Exception {
     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
     this.parent = fxmlLoader.load();
     this.controller = (AppController)fxmlLoader.getController();
-    this.controller.setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
+    controller.setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-    this.controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
+      controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
+
+    
+    
     stage.setScene(new Scene(parent));
     stage.show();
   }
 
+  Button addButton;
+  TextField nameField;
+  TextField contactInfoField;
+  TextArea descriptionFieldArea;
+  //ChoiceBox statusChoiceBox;
+  RadioButton nyRadio;
+  RadioButton litt_bruktRadio;
+  RadioButton godt_bruktRadio;
+  ListView<SwappItem> list;
+  
+  @BeforeEach
+  public void setUp() {
+    addButton = (Button) parent.lookup("#addButton");
+    nameField = (TextField) parent.lookup("#nameField");
+    contactInfoField = (TextField) parent.lookup("#contactInfoField");
+    descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
+    //statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
+    nyRadio = (RadioButton) parent.lookup("#nyRadio");
+    litt_bruktRadio = (RadioButton) parent.lookup("#litt_bruktRadio");
+    godt_bruktRadio = (RadioButton) parent.lookup("#godt_bruktRadio");
+    list = (ListView) parent.lookup("#list");
+  }
   
 
-  /*
-  @BeforeAll
-  public void setUp() {
-    final Button addButton = (Button) parent.lookup("#addButton");
-    final TextField nameField = (TextField) parent.lookup("#nameField");
-    final TextField contactInfoField = (TextField) parent.lookup("#contactInfoField");
-    final TextArea descriptionField = (TextArea) parent.lookup("#descriptionField");
-    final ChoiceBox statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
-    final ListView<SwappItem> list = (ListView) parent.lookup("#list");
-  }
-  */
-
- //TODO Clean up test..
   @Test
   public void testAddition() {
-    String testName;
-    String testDescription;
-    String testContactInfo;
-    final Button addButton = (Button) parent.lookup("#addButton");
-    final TextField nameField = (TextField) parent.lookup("#nameField");
-    final TextField contactInfoField = (TextField) parent.lookup("#contactInfoField");
-    final TextArea descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
-    final ChoiceBox statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
-    final ListView<SwappItem> list = (ListView) parent.lookup("#list");
+    setUp();
     int listLength = list.getItems().size();
-    
-    /*
     for (int i = listLength; i < listLength + 2; i++) {
-      */
-      //testName = "Gjenstand " + (i + 1);
-      testName = "Gjenstand 1";
+      testName = "Gjenstand " + (i + 1);
       testDescription = "Bla bla bla";
       testContactInfo = "kontaktinfo@email.no";
       clickOn(nameField).write(testName);
@@ -86,24 +96,17 @@ public class AppTest extends ApplicationTest {
       if (contactInfoField.getText().isBlank()) {
         clickOn(contactInfoField).write(testContactInfo);
       }
+      /*
       clickOn(statusChoiceBox);
-      type(KeyCode.DOWN);
+        while (!statusChoiceBox.getSelectionModel().getSelectedItem().equals("Ny")) {
+          type(KeyCode.DOWN);
+        }
       type(KeyCode.ENTER);
+      */
+      clickOn(litt_bruktRadio);
       clickOn(addButton);
-      System.out.println(testName + "  " + "  " + statusChoiceBox.getItems().get(1).toString() + "  " + testDescription + "  " + testContactInfo);
-      Assertions.assertTrue(list.getItems().get(3).toString().equals(testName + "  " + "  " + statusChoiceBox.getItems().get(1).toString() + "  " + testDescription + "  " + testContactInfo));
-      testName = "Gjenstand 2";
-
-      clickOn(nameField).write(testName);
-      clickOn(descriptionFieldArea).write(testDescription);
-      clickOn(statusChoiceBox);
-      type(KeyCode.DOWN);
-      type(KeyCode.ENTER);
-      clickOn(addButton);
-    //}
-    
-      System.out.println(testName + "  " + "  " + statusChoiceBox.getItems().get(0).toString() + "  " + testDescription + "  " + testContactInfo);
-      Assertions.assertTrue(list.getItems().get(4).toString().equals(testName + "  " + "  " + statusChoiceBox.getItems().get(0).toString() + "  " + testDescription + "  " + testContactInfo));
+      Assertions.assertTrue(list.getItems().get(i).toString().equals(testName + "  " + "  " + /*statusChoiceBox.getItems().get(0).toString()*/"Litt brukt" + "  " + testDescription + "  " + testContactInfo));
+    }
 
   }
 

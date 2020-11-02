@@ -8,6 +8,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -23,8 +25,10 @@
                <children>
                   <TextField id="contactInfoField" fx:id="contactInfoField" layoutX="236.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Contact info" />
                   <TextField id="nameField" fx:id="nameField" layoutX="18.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Item name" />
-                  <ChoiceBox id="statusChoiceBox" fx:id="statusChoiceBox" layoutX="18.0" layoutY="50.0" prefHeight="25.0" prefWidth="151.0" />
-                  <TextArea id="descriptionFieldArea" fx:id="descriptionFieldArea" layoutX="184.0" layoutY="51.0" prefHeight="58.0" prefWidth="254.0" promptText="Item description" wrapText="true"/>
+                  <TextArea id="descriptionFieldArea" fx:id="descriptionFieldArea" layoutX="112.0" layoutY="51.0" prefHeight="65.0" prefWidth="326.0" promptText="Item description" wrapText="true" />
+                  <RadioButton fx:id="litt_bruktRadio" layoutX="18.0" layoutY="80.0" mnemonicParsing="false" text="Litt brukt" />
+                  <RadioButton fx:id="godt_bruktRadio" layoutX="18.0" layoutY="101.0" mnemonicParsing="false" text="Godt brukt" />
+                  <RadioButton fx:id="nyRadio" layoutX="18.0" layoutY="58.0" mnemonicParsing="false" text="Ny" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="114.0" prefWidth="342.0">
