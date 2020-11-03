@@ -1,5 +1,6 @@
 package swapp.core;
 
+
 public class SwappItem {
 
   private String name;
@@ -18,8 +19,15 @@ public class SwappItem {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
   @Override
   public String toString() {
     return name;
   }
+
+  
 }

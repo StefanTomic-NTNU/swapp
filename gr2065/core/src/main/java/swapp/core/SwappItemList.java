@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class SwappItemList implements Iterable<SwappItem> {
 
@@ -22,7 +24,7 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public void setSwappItemlist(SwappItemList swappList) {
-    items = new ArrayList<>();
+    this.items = new ArrayList<>();
     addItem(swappList.getItems());
   }
 
@@ -54,8 +56,35 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
+  public SwappItemList putSwappList(SwappItemList other){
+    if (!getItems().equals(other.getItems())){
+      setSwappItemlist(other);
+    }return this; 
+  }
+
+  public SwappItem getSwappItem(SwappItem swappItem){
+    if (items.contains(swappItem)) return swappItem;  
+    else return null;
+  }
+
+  public boolean hasSwappItem(String name){
+    return getSwappItem(name)!=null;
+  }
+
+  public SwappItem getSwappItem(String name){
+    return items.stream().filter(x->x.getName().equals(name)).findFirst().get();
+  }
+
   public List<SwappItem> getItems() {
     return this.items;
+  }
+
+  public SwappItemList getSwappList(){
+    return this;
+  }
+
+  public boolean isvalidName(String name){
+    return !name.isBlank();
   }
 
   public void addSwappItemListListener(SwappItemListListener listener) {
