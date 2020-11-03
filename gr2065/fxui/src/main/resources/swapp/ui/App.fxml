@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.AppController">
    <center>
-      <ListView fx:id="list" prefHeight="80.0" prefWidth="175.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="list" onMouseClicked="#viewSwappItem" prefHeight="80.0" prefWidth="175.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <SplitPane dividerPositions="0.49665551839464883" prefHeight="72.0" prefWidth="600.0" BorderPane.alignment="CENTER">

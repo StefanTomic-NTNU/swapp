@@ -27,6 +27,20 @@ mvn clean javafx:run -f fxui/pom.xml
 ```
 På gitpod kjører applikasjonen på port 6080.
 
+## Run localaccess
+```
+mvn -pl fxui javafx:run
+```
+
+## Run remote
+```
+mvn -pl integrationtests jetty:run -D"jetty.port=8999"
+```
+
+```
+mvn -Premoteapp -pl fxui javafx:run
+```
+
 ## Testing av koden
 Koden testes ved å kjøre følgende kommando i terminalen:
 ```

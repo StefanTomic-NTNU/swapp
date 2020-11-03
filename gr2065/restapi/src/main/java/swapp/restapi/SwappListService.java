@@ -45,7 +45,14 @@ public class SwappListService {
     LOG.debug("putSwappList({})", swappItemList);
     return this.swappList.putSwappList(swappItemList);
   }
-  
+
+  @GET
+  @Path("/{name}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public SwappItem getSwappItem(@PathParam("name") String name){
+    LOG.debug("getSwappItem({})", name);
+    return this.swappList.getSwappItem(name);
+  }  
 
 
 

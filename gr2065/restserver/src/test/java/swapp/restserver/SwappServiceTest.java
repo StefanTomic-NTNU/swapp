@@ -2,6 +2,7 @@ package swapp.restserver;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
@@ -100,6 +101,21 @@ public class SwappServiceTest extends JerseyTest {
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
+  }
+
+  @Test
+  public void testGetSwappItem() throws JsonProcessingException{
+    Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+    assertEquals(200, getResponse.getStatus());
+    try {
+      SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
+      assertEquals("swapp1", swappItem.getName());
+      assertNotEquals(swappItem.getName(), "swapp2");
+    } catch (JsonProcessingException e) {
+      fail(e.getMessage());
+    }
+    
   }
 
 

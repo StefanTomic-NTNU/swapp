@@ -14,12 +14,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
@@ -31,7 +36,7 @@ public class AppController {
 
   @FXML
   private ChoiceBox<String> filterChoiceBox;
-  
+
   @FXML
   private TextField textField;
 
@@ -66,7 +71,7 @@ public class AppController {
     loadItems();
   }
 
-  public void filterSwappItemByStatusChoiceBox(){
+  public void filterSwappItemByStatusChoiceBox() {
     updateSwappItems();
   }
 
@@ -108,12 +113,13 @@ public class AppController {
     }
   }
 
-  public void initializeChoiceBox(){
+  public void initializeChoiceBox() {
     filterChoiceBox.getItems().add("All");
     filterChoiceBox.getItems().add("New");
     filterChoiceBox.getItems().add("Used");
     filterChoiceBox.setValue("All");
-    filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwappItems());
+    filterChoiceBox.getSelectionModel().selectedItemProperty()
+        .addListener((v, oldValue, newValue) -> updateSwappItems());
   }
 
   /** Initialize with lambda expression for listeners of SwappItemList. */
@@ -169,6 +175,18 @@ public class AppController {
         System.err.println("Feil med fillagring..");
       }
     }
+  }
+
+  @FXML
+  public void viewSwappItem() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
+    Parent root = (Parent) loader.load();
+    ViewSwappItemController itemController = loader.getController();
+    itemController.initSwappitem((SwappItem) list.getSelectionModel().getSelectedItem());
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 800, 400));
+    stage.setTitle("Item");
+    stage.show();
   }
 
   /*

@@ -22,6 +22,7 @@ public class RemoteSwappAccess {
   private ObjectMapper objectMapper;
 
   private SwappItemList swappList;
+  private SwappItem swappItem;
 
   public RemoteSwappAccess(URI endpointBaseUri) {
     this.endpointBaseUri = endpointBaseUri;
@@ -30,13 +31,10 @@ public class RemoteSwappAccess {
 
   public SwappItemList getSwappList() {
     if (swappList == null) {
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
-          .header("Accept", "application/json")
-          .GET()
-          .build();
+      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json").GET().build();
       try {
-        final HttpResponse<String> response =
-            HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+        final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+            HttpResponse.BodyHandlers.ofString());
         final String responseString = response.body();
         this.swappList = objectMapper.readValue(responseString, SwappItemList.class);
         System.out.println("TodoModel: " + this.swappList);
@@ -47,26 +45,41 @@ public class RemoteSwappAccess {
     return this.swappList;
   }
 
-
   private String uriParam(String s) {
     return URLEncoder.encode(s, StandardCharsets.UTF_8);
   }
 
-  private URI todoListUri(String name) {
+  private URI swapptUri(String name) {
     return endpointBaseUri.resolve(uriParam(name));
   }
+
+  public SwappItem getSwappItem(String name) {
+    if (!this.swappList.getSwappItem(name).equals(this.swappItem)){
+      final HttpRequest request = HttpRequest.newBuilder(swapptUri(name)).header("Accept", "application/json").GET()
+          .build();
+      try {
+        final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+            HttpResponse.BodyHandlers.ofString());
+        String responseString = response.body();
+        System.out.println("getTodoList(" + name + ") response: " + responseString);
+        SwappItem newSwappItem = objectMapper.readValue(responseString, SwappItem.class);
+        this.swappItem = newSwappItem;
+      } catch (IOException | InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return this.swappItem;
+  }
+
 
 
   private void putSwappList(SwappItemList newSwappList) {
     try {
       String json = objectMapper.writeValueAsString(newSwappList);
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
-          .header("Accept", "application/json")
-          .header("Content-Type", "application/json")
-          .PUT(BodyPublishers.ofString(json))
-          .build();
-      final HttpResponse<String> response =
-          HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json")
+          .header("Content-Type", "application/json").PUT(BodyPublishers.ofString(json)).build();
+      final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+          HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItemList swappListRes = objectMapper.readValue(responseString, SwappItemList.class);
       this.swappList.putSwappList(swappListRes);
@@ -75,21 +88,20 @@ public class RemoteSwappAccess {
     }
   }
 
-  
   public void addSwappItem(SwappItem other) {
     this.swappList.addItem(other);
     notifySwappListChanged(this.swappList);
   }
 
-  public void removeSwappItem(SwappItem other){
+  public void removeSwappItem(SwappItem other) {
     this.swappList.removeItem(other);
-    notifySwappListChanged(this.swappList);;
+    notifySwappListChanged(this.swappList);
+    ;
   }
 
-
   /**
-   * Notifies that the TodoList has changed, e.g. TodoItems
-   * have been mutated, added or removed.
+   * Notifies that the TodoList has changed, e.g. TodoItems have been mutated,
+   * added or removed.
    *
    * @param todoList the TodoList that has changed
    */
@@ -97,4 +109,3 @@ public class RemoteSwappAccess {
     putSwappList(other);
   }
 }
-
