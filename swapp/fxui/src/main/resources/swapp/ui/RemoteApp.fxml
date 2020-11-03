@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.AppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.RemoteAppController">
    <center>
       <ListView fx:id="listView" prefHeight="80.0" prefWidth="175.0" BorderPane.alignment="CENTER" />
    </center>
@@ -23,9 +23,9 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="344.0">
                <children>
-                  <TextField id="contactInfoField" fx:id="contactInfoField" layoutX="236.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Contact info" />
-                  <TextField id="nameField" fx:id="nameField" layoutX="18.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Item name" />
-                  <TextArea id="descriptionFieldArea" fx:id="descriptionFieldArea" layoutX="112.0" layoutY="51.0" prefHeight="65.0" prefWidth="326.0" promptText="Item description" wrapText="true" />
+                  <TextField id="contactInfo" fx:id="contactInfoField" layoutX="236.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Contact info" />
+                  <TextField id="name" fx:id="nameField" layoutX="18.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Item name" />
+                  <TextArea id="description" fx:id="descriptionFieldArea" layoutX="112.0" layoutY="51.0" prefHeight="65.0" prefWidth="326.0" promptText="Item description" wrapText="true" />
                   <RadioButton fx:id="litt_bruktRadio" layoutX="18.0" layoutY="80.0" mnemonicParsing="false" text="Litt brukt" />
                   <RadioButton fx:id="godt_bruktRadio" layoutX="18.0" layoutY="101.0" mnemonicParsing="false" text="Godt brukt" />
                   <RadioButton fx:id="nyRadio" layoutX="18.0" layoutY="58.0" mnemonicParsing="false" text="Ny" />

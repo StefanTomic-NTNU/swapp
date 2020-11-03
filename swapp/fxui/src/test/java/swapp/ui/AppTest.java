@@ -58,7 +58,7 @@ public class AppTest extends ApplicationTest {
   RadioButton nyRadio;
   RadioButton litt_bruktRadio;
   RadioButton godt_bruktRadio;
-  ListView<SwappItem> list;
+  ListView<SwappItem> listView;
   
   @BeforeEach
   public void setUp() {
@@ -69,7 +69,7 @@ public class AppTest extends ApplicationTest {
     nyRadio = (RadioButton) parent.lookup("#nyRadio");
     litt_bruktRadio = (RadioButton) parent.lookup("#litt_bruktRadio");
     godt_bruktRadio = (RadioButton) parent.lookup("#godt_bruktRadio");
-    list = (ListView) parent.lookup("#list");
+    listView = (ListView) parent.lookup("#listView");
   }
 
   private String testName;
@@ -78,17 +78,18 @@ public class AppTest extends ApplicationTest {
 
   @Test
   public void testAdd() {
+    setUp();
     testName = "testName";
     testDescription = "Bla bla bla";
     testContactInfo = "kontaktinfo@email.no";
     clickOn(nameField).write(testName);
+    clickOn(litt_bruktRadio);
     clickOn(descriptionFieldArea).write(testDescription);
     if (contactInfoField.getText().isBlank()) {
       clickOn(contactInfoField).write(testContactInfo);
     }
-    clickOn(litt_bruktRadio);
     clickOn(addButton);
-    Assertions.assertTrue(list.getItems().get(list.getItems().size()-1)
+    Assertions.assertTrue(listView.getItems().get(listView.getItems().size()-1)
     .toString().equals(testName + "  " + "  " + "Litt brukt" + "  " + 
     testDescription + "  " + testContactInfo));
   }

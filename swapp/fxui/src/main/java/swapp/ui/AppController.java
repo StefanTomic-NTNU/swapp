@@ -12,6 +12,8 @@ import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -27,14 +29,16 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
 
-
 public class AppController {
 
   @FXML
-  private ListView<SwappItem> list;
+  private ListView<SwappItem> listView;
 
-//  @FXML
-//  private TextField textField;
+  @FXML
+  private ChoiceBox<String> filterChoiceBox;
+  
+  @FXML
+  private TextField textField;
 
   @FXML
   private Button addButton;
@@ -50,16 +54,12 @@ public class AppController {
 
   @FXML
   private TextField nameField;
-
-  //@FXML
-  //private ChoiceBox statusChoiceBox;
   
   @FXML
   private TextArea descriptionFieldArea;
 
   @FXML
   private TextField contactInfoField;
-
 
   @FXML
   private RadioButton nyRadio;
@@ -72,7 +72,6 @@ public class AppController {
   
   private SwappPersistence swappPersistence = new SwappPersistence();
   private SwappItemList swappList;
-  
   private ToggleGroup toggleGroup;
   private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
 
@@ -84,7 +83,8 @@ public class AppController {
 
   /** Initializes appcontroller. */
   public AppController() {
-    list = new ListView<SwappItem>();
+    listView = new ListView<SwappItem>();
+    filterChoiceBox = new ChoiceBox<>();
     swappList = new SwappItemList();
 
     loadItems();
@@ -95,13 +95,15 @@ public class AppController {
     loadItems();
   }
 
+  public void filterSwappItemByStatusChoiceBox(){
+    updateSwappItems();
+  }
+
   void loadItems() {
     Reader reader = null;
     try {
       try {
-        reader =
-            new FileReader(file, 
-            StandardCharsets.UTF_8);
+        reader = new FileReader(file, StandardCharsets.UTF_8);
       } catch (IOException ioex1) {
         System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
         URL url = getClass().getResource("items.json");
@@ -109,18 +111,14 @@ public class AppController {
           reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         } else {
           System.err.println("Fant ingen eksempelfil. Parser string direkte..");
-          String exampleText = SwappItemListWithTwoItems;
-          reader = new StringReader(exampleText);
+          reader = new StringReader(SwappItemListWithTwoItems);
         }
       }
-      /* For å printe ut fil til konsoll:
-      BufferedReader reader2 =
-            new BufferedReader(reader);
-      String linje;
-      while ((linje = reader2.readLine()) != null) {
-        System.out.println(linje);
-      }
-      */
+      /*
+       * For å printe ut fil til konsoll: BufferedReader reader2 = new
+       * BufferedReader(reader); String linje; while ((linje = reader2.readLine()) !=
+       * null) { System.out.println(linje); }
+       */
       SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
@@ -138,17 +136,27 @@ public class AppController {
     }
   }
 
+  public void initializeChoiceBox(){
+    filterChoiceBox.getItems().add("All");
+    filterChoiceBox.getItems().add("New");
+    filterChoiceBox.getItems().add("Used");
+    filterChoiceBox.setValue("All");
+    filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwappItems());
+  }
+
+  public void inizializeToggleGroup() {
+    toggleGroup = new ToggleGroup();
+    nyRadio.setToggleGroup(toggleGroup);
+    litt_bruktRadio.setToggleGroup(toggleGroup);
+    godt_bruktRadio.setToggleGroup(toggleGroup);
+  }
 
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
     //statusChoiceBox.getItems().addAll("Ny", "Litt brukt", "Godt brukt");
-    
-    toggleGroup = new ToggleGroup();
-    nyRadio.setToggleGroup(toggleGroup);
-    litt_bruktRadio.setToggleGroup(toggleGroup);
-    godt_bruktRadio.setToggleGroup(toggleGroup);
-    
+    inizializeToggleGroup();
+    initializeChoiceBox();
     updateSwappItems();
     swappList.addSwappItemListListener(swappList -> {
       updateSwappItems();
@@ -156,34 +164,29 @@ public class AppController {
     });
   }
 
-
   @FXML
   void addSwappItemButtonClicked() {
     if (!nameField.getText().isBlank()) {
-      String name =nameField.getText();
-      String status =((RadioButton)toggleGroup.getSelectedToggle()).getText();
-      String description = descriptionFieldArea.getText();
-      String contactInfo =contactInfoField.getText();
-      SwappItem item = new SwappItem(name, /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ status, description, contactInfo);
+      SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
       swappList.addItem(item);
+      nameField.setText("");
+      descriptionFieldArea.setText("");
     }
-    nameField.setText("");
-    descriptionFieldArea.setText("");
+    
     //statusChoiceBox.getSelectionModel().clearSelection();
   }
 
   @FXML
   void removeSwappItemButtonClicked() {
-    SwappItem item = (SwappItem) list.getSelectionModel().getSelectedItem();
+    SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
     if (!(item == null)) {
       swappList.removeItem(item);
     }
   }
 
   public void updateSwappItems() {
-    list.getItems().setAll(swappList.getItems());
+    listView.getItems().setAll(swappList.getItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
   }
-
 
   public SwappItemList getItems() {
     return swappList;
@@ -192,9 +195,7 @@ public class AppController {
   private void autoSave() {
     Writer writer = null;
     try {
-      writer =
-          new FileWriter(file, 
-          StandardCharsets.UTF_8);
+      writer = new FileWriter(file, StandardCharsets.UTF_8);
       swappPersistence.writeSwappList(swappList, writer);
     } catch (IOException ioex) {
       System.err.println("Feil med fillagring.");
