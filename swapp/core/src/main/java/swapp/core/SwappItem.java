@@ -7,9 +7,6 @@ public class SwappItem {
   private String description;
   private String contactInfo;
 
-  /**
-  * Creates a new SwappItem with the given name.
-  */
   public SwappItem(String name, String status, String description, String contactInfo) {
     this.setName(name);
     this.setStatus(status);
@@ -56,9 +53,4 @@ public class SwappItem {
     return name + "  " + "  " + status + "  " + description + "  " + contactInfo;
   }
 
-
-  public static void main(String[] args) {
-    SwappItem item = new SwappItem("Toyota", "Lager rare lyder ved oppstart", "Til salgs", "magdi@gmail.com");
-    System.out.println(item);
-  }
 }
