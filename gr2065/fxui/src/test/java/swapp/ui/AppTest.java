@@ -36,11 +36,6 @@ public class AppTest extends ApplicationTest {
   private AppController controller;
   private SwappPersistence persistence = new SwappPersistence();
 
-  private String testName;
-  private String testDescription;
-  private String testContactInfo;
-  
-  
   @Override
   public void start(final Stage stage) throws Exception {
     final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
@@ -52,9 +47,6 @@ public class AppTest extends ApplicationTest {
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
-
-    
-    
     stage.setScene(new Scene(parent));
     stage.show();
   }
@@ -63,7 +55,6 @@ public class AppTest extends ApplicationTest {
   TextField nameField;
   TextField contactInfoField;
   TextArea descriptionFieldArea;
-  //ChoiceBox statusChoiceBox;
   RadioButton nyRadio;
   RadioButton litt_bruktRadio;
   RadioButton godt_bruktRadio;
@@ -75,39 +66,31 @@ public class AppTest extends ApplicationTest {
     nameField = (TextField) parent.lookup("#nameField");
     contactInfoField = (TextField) parent.lookup("#contactInfoField");
     descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
-    //statusChoiceBox = (ChoiceBox) parent.lookup("#statusChoiceBox");
     nyRadio = (RadioButton) parent.lookup("#nyRadio");
     litt_bruktRadio = (RadioButton) parent.lookup("#litt_bruktRadio");
     godt_bruktRadio = (RadioButton) parent.lookup("#godt_bruktRadio");
     list = (ListView) parent.lookup("#list");
   }
-  
+
+  private String testName;
+  private String testDescription;
+  private String testContactInfo;
 
   @Test
-  public void testAddition() {
-    setUp();
-    int listLength = list.getItems().size();
-    for (int i = listLength; i < listLength + 2; i++) {
-      testName = "Gjenstand " + (i + 1);
-      testDescription = "Bla bla bla";
-      testContactInfo = "kontaktinfo@email.no";
-      clickOn(nameField).write(testName);
-      clickOn(descriptionFieldArea).write(testDescription);
-      if (contactInfoField.getText().isBlank()) {
-        clickOn(contactInfoField).write(testContactInfo);
-      }
-      /*
-      clickOn(statusChoiceBox);
-        while (!statusChoiceBox.getSelectionModel().getSelectedItem().equals("Ny")) {
-          type(KeyCode.DOWN);
-        }
-      type(KeyCode.ENTER);
-      */
-      clickOn(litt_bruktRadio);
-      clickOn(addButton);
-      Assertions.assertTrue(list.getItems().get(i).toString().equals(testName + "  " + "  " + /*statusChoiceBox.getItems().get(0).toString()*/"Litt brukt" + "  " + testDescription + "  " + testContactInfo));
+  public void testAdd() {
+    testName = "testName";
+    testDescription = "Bla bla bla";
+    testContactInfo = "kontaktinfo@email.no";
+    clickOn(nameField).write(testName);
+    clickOn(descriptionFieldArea).write(testDescription);
+    if (contactInfoField.getText().isBlank()) {
+      clickOn(contactInfoField).write(testContactInfo);
     }
-
+    clickOn(litt_bruktRadio);
+    clickOn(addButton);
+    Assertions.assertTrue(list.getItems().get(list.getItems().size()-1)
+    .toString().equals(testName + "  " + "  " + "Litt brukt" + "  " + 
+    testDescription + "  " + testContactInfo));
   }
 
   /*
