@@ -101,6 +101,11 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
+  public List<SwappItem> getItemsByStatus(String status) {
+    if (status.equals("All")) return getItems();
+    return this.items.stream().filter(s->s.getName().equals(status)).collect(Collectors.toList());
+  }
+
   @Override
   public Iterator<SwappItem> iterator() {
     return items.iterator();
