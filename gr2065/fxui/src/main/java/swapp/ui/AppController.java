@@ -108,6 +108,7 @@ public class AppController {
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
+    list.setCellFactory(list -> new SwappItemListViewCell());
     updateSwappItems();
     swappList.addSwappItemListListener(swappList -> {
       updateSwappItems();

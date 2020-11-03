@@ -41,6 +41,7 @@ public class RemoteAppController {
 
     @FXML
     public void initialize() {
+        listView.setCellFactory(list -> new SwappItemListViewCell());
         updateSwappListView();
         swappList.addSwappItemListListener(swappList -> {
             //updateSwappListView();
