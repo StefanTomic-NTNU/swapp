@@ -12,8 +12,11 @@ import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -21,12 +24,14 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
 
-
 public class AppController {
 
   @FXML
   private ListView<SwappItem> list;
 
+  @FXML
+  private ChoiceBox<String> filterChoiceBox;
+  
   @FXML
   private TextField textField;
 
@@ -51,6 +56,7 @@ public class AppController {
   /** Initializes appcontroller. */
   public AppController() {
     list = new ListView<SwappItem>();
+    filterChoiceBox = new ChoiceBox<>();
     swappList = new SwappItemList();
     loadItems();
   }
@@ -60,13 +66,15 @@ public class AppController {
     loadItems();
   }
 
+  public void filterSwappItemByStatusChoiceBox(){
+    updateSwappItems();
+  }
+
   void loadItems() {
     Reader reader = null;
     try {
       try {
-        reader =
-            new FileReader(file, 
-            StandardCharsets.UTF_8);
+        reader = new FileReader(file, StandardCharsets.UTF_8);
       } catch (IOException ioex1) {
         System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
         URL url = getClass().getResource("items.json");
@@ -74,19 +82,15 @@ public class AppController {
           reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         } else {
           System.err.println("Fant ingen eksempelfil. Parser string direkte..");
-          String exampleText = 
-              "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
+          String exampleText = "{{\"itemName\":\"eksempelgjenstand1\"},{\"itemName\":\"eksempelgjenstand2\"}}";
           reader = new StringReader(exampleText);
         }
       }
-      /* For å printe ut fil til konsoll:
-      BufferedReader reader2 =
-            new BufferedReader(reader);
-      String linje;
-      while ((linje = reader2.readLine()) != null) {
-        System.out.println(linje);
-      }
-      */
+      /*
+       * For å printe ut fil til konsoll: BufferedReader reader2 = new
+       * BufferedReader(reader); String linje; while ((linje = reader2.readLine()) !=
+       * null) { System.out.println(linje); }
+       */
       SwappItemList list = swappPersistence.readSwappList(reader);
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
@@ -104,17 +108,24 @@ public class AppController {
     }
   }
 
+  public void initializeChoiceBox(){
+    filterChoiceBox.getItems().add("All");
+    filterChoiceBox.getItems().add("New");
+    filterChoiceBox.getItems().add("Used");
+    filterChoiceBox.setValue("All");
+    filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwappItems());
+  }
 
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
+    initializeChoiceBox();
     updateSwappItems();
     swappList.addSwappItemListListener(swappList -> {
       updateSwappItems();
       autoSave();
     });
   }
-
 
   @FXML
   void addSwappItemButtonClicked() {
@@ -134,9 +145,8 @@ public class AppController {
   }
 
   public void updateSwappItems() {
-    list.getItems().setAll(swappList.getItems());
+    list.getItems().setAll(swappList.getItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
   }
-
 
   public SwappItemList getItems() {
     return swappList;
@@ -145,9 +155,7 @@ public class AppController {
   private void autoSave() {
     Writer writer = null;
     try {
-      writer =
-          new FileWriter(file, 
-          StandardCharsets.UTF_8);
+      writer = new FileWriter(file, StandardCharsets.UTF_8);
       swappPersistence.writeSwappList(swappList, writer);
     } catch (IOException ioex) {
       System.err.println("Feil med fillagring.");

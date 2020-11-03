@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import swapp.core.SwappItem;
@@ -23,6 +24,9 @@ public class RemoteAppController {
     @FXML
     private Button removeButton;
 
+    @FXML
+    private ChoiceBox<String> filterChoiceBox;
+
     private SwappItemList swappList;
 
     @FXML
@@ -32,6 +36,7 @@ public class RemoteAppController {
 
     public RemoteAppController() {
         swappList = new SwappItemList();
+        filterChoiceBox = new ChoiceBox<>();
         try {
             remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri));
         } catch (Exception e) {
@@ -41,23 +46,32 @@ public class RemoteAppController {
 
     @FXML
     public void initialize() {
+        initializeChoiceBox();
         updateSwappListView();
         swappList.addSwappItemListListener(swappList -> {
-            //updateSwappListView();
+            // updateSwappListView();
         });
     }
 
+    public void initializeChoiceBox(){
+        filterChoiceBox.getItems().add("All");
+        filterChoiceBox.getItems().add("New");
+        filterChoiceBox.getItems().add("Used");
+        filterChoiceBox.setValue("All");
+        filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwappListView());
+      }
+
     public void updateSwappListView() {
         SwappItemList tmp = remoteSwappAccess.getSwappList();
-        listView.getItems().setAll(tmp.getItems());
+        listView.getItems().setAll(tmp.getItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
     void addSwappItemButtonClicked() {
         if (!textField.getText().isBlank()) {
             SwappItem item = new SwappItem(textField.getText());
-            remoteSwappAccess.addSwappItem(item); 
-            //remoteSwappAccess.notifySwappListChanged(this.swappList);
+            remoteSwappAccess.addSwappItem(item);
+            // remoteSwappAccess.notifySwappListChanged(this.swappList);
             updateSwappListView();
         }
         textField.setText("");

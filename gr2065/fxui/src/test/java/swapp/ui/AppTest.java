@@ -53,7 +53,7 @@ public class AppTest extends ApplicationTest {
   public void testAddition() {
     final Button addButton = (Button) parent.lookup("#addButton");
     final TextField textField = (TextField) parent.lookup("#textField");
-    final ListView<SwappItem> list = (ListView) parent.lookup("#list");
+    final ListView<SwappItem> list = (ListView<SwappItem>) parent.lookup("#list");
     String testText;
     int listLength = list.getItems().size();
     for (int i = listLength; i < listLength + 3; i++) {
