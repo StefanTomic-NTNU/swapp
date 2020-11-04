@@ -24,8 +24,8 @@ public class SwappItemListTest {
   @BeforeEach
   public void beforeEach() {
     swappItemList = new SwappItemList();
-    item1 = new SwappItem("name1", "Ny", "description1", "contactInfo1");
-    item2 = new SwappItem("name2", "Ny", "description2", "contactInfo2");
+    item1 = new SwappItem("name1");
+    item2 = new SwappItem("name2");
   }
 
   @Test
@@ -37,8 +37,6 @@ public class SwappItemListTest {
 
   @Test
   public void testCreatePopulatedItemList() {
-    //SwappItem item1 = new SwappItem("name1", "status1", "description1", "contactInfo1");
-    //SwappItem item2 = new SwappItem("name2", "status2", "description2", "contactInfo2");
     swappItemList.addItem(item1, item2);
     List<SwappItem> itemslist = swappItemList.getItems();
     assertEquals(itemslist.get(0).getName(), "name1");
@@ -47,8 +45,6 @@ public class SwappItemListTest {
 
   @Test
   public void testCreateListPopulatedItemList() {
-    //SwappItem item1 = new SwappItem("name1", "status1", "description1", "contactInfo1");
-    //SwappItem item2 = new SwappItem("name2", "status2", "description2", "contactInfo2");
     SwappItemList swappItemList2 = new SwappItemList(item1, item2);
     List<SwappItem> itemslist = swappItemList2.getItems();
     assertEquals(itemslist.get(0).getName(), "name1");
@@ -57,33 +53,37 @@ public class SwappItemListTest {
 
   @Test
   public void testGetItems() {
-    //SwappItem item1 = new SwappItem("name1", "status1", "description1", "contactInfo1");
     swappItemList.addItem(item1);
     assertEquals(swappItemList.getItems().get(0).getName(), "name1");
   }
 
   @Test
   public void testSetSwappItemList() {
-    //SwappItem item1 = new SwappItem("name1", "status1", "description1", "contactInfo1");
-    //SwappItem item2 = new SwappItem("name2", "status2", "description2", "contactInfo2");
     swappItemList.setSwappItemlist(new SwappItemList(item1, item2));
     assertEquals(swappItemList.getItems().get(0).getName(), "name1");
     assertEquals(swappItemList.getItems().get(1).getName(), "name2");
   }
 
   @Test
+  public void testSetSwappItemListWithDuplicate() {
+    SwappItem item3 = new SwappItem("name1");
+    assertThrows(IllegalArgumentException.class, () -> {
+        swappItemList.setSwappItemlist(new SwappItemList(item1, item3));
+    });
+  }
+
+  /*Unødvendig test?
+  @Test
   public void testAddOneItem() {
-    //SwappItem item = new SwappItem("name");
     swappItemList.addItem(item1);
     List<SwappItem> itemlist = new ArrayList<>();
     itemlist.add(item1);
     assertEquals(swappItemList.getItems(), itemlist);
   }
+  */
 
   @Test
   public void testAddMultipleItems() {
-    //SwappItem item1 = new SwappItem("item1");
-    //SwappItem item2 = new SwappItem("item2");
     swappItemList.addItem(item1, item2);
     List<SwappItem> itemlist = new ArrayList<>();
     itemlist.add(item1);
@@ -91,18 +91,17 @@ public class SwappItemListTest {
     assertEquals(swappItemList.getItems(), itemlist);
   }
 
+  /*Unødvendig test?
   @Test
   public void testRemoveItem() {
-    //SwappItem item1 = new SwappItem("item1");
     swappItemList.addItem(item1);
     swappItemList.removeItem(item1);
     assertEquals(swappItemList.getItems().size(), 0);;
   }
+  */
 
   @Test
   public void testRemoveMultipleItems() {
-    //SwappItem item1 = new SwappItem("item1");
-    //SwappItem item2 = new SwappItem("item2");
     swappItemList.addItem(item1, item2);
     List<SwappItem> itemlist = new ArrayList<>();
     itemlist.add(item1);
@@ -134,7 +133,6 @@ public class SwappItemListTest {
     SwappItemListListener listener = mock(SwappItemListListener.class);
     swappItemList.addSwappItemListListener(listener);
     verify(listener, times(0)).swappListChanged(swappItemList);
-    //SwappItem item = new SwappItem("name");
     swappItemList.addItem(item1);
     verify(listener, times(1)).swappListChanged(swappItemList);
     swappItemList.removeItem(item1);
@@ -143,12 +141,9 @@ public class SwappItemListTest {
 
   @Test
   public void testRemoveSwappItemListListener() {
-    //SwappItemList swappItemList = new SwappItemList();
     SwappItemListListener listener = list -> {
       receivedNotificationCount++;
     };
-    //SwappItem item1 = new SwappItem("item1");
-    //SwappItem item2 = new SwappItem("item2");
     swappItemList.addSwappItemListListener(listener);
     assertTrue(receivedNotificationCount == 0);
     swappItemList.addItem(item1);
@@ -162,11 +157,9 @@ public class SwappItemListTest {
   
   @Test
   public void testIterator() {
-    //SwappItem item1 = new SwappItem("item1");
-    //SwappItem item2 = new SwappItem("item2");
     swappItemList.addItem(item1, item2);
     for (SwappItem item : swappItemList) {
-      assertTrue(item.getName().equals("name1") || item.getName().equals("name2"));
+      assertTrue(item.equals(item1) || item.equals(item2));
     }
   }
   

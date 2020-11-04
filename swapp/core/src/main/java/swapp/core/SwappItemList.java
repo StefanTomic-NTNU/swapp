@@ -38,7 +38,10 @@ public class SwappItemList implements Iterable<SwappItem> {
   */
   public void addItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
-      this.addItem(item);
+      if (!this.items.contains(item)) {
+        this.addItem(item);
+        //TODO blir det riktig å kaste en exception her, eller bør man bare ignorere gjenstanden?
+      } else {throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");}
     }
   }
 
@@ -103,7 +106,7 @@ public class SwappItemList implements Iterable<SwappItem> {
 
   public List<SwappItem> getItemsByStatus(String status) {
     if (status.equals("All")) return getItems();
-    return this.items.stream().filter(s->s.getName().equals(status)).collect(Collectors.toList());
+    return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
   }
 
   @Override

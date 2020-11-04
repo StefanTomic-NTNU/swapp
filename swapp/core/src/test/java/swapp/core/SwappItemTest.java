@@ -1,7 +1,9 @@
 package swapp.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -16,8 +18,9 @@ public class SwappItemTest {
 
   @Test
   public void testBlankName() {
-    SwappItem item2 = new SwappItem(" ", " "," "," ");
-    assertEquals(item2.getName(), null);
+    assertThrows(IllegalArgumentException.class, () -> {
+        SwappItem item2 = new SwappItem(" ");
+    });
   }
 
   @Test
@@ -40,11 +43,22 @@ public class SwappItemTest {
     assertEquals(item1.getContactInfo(), "contactInfo");
   }
 
-  /*
+  
     @Test
     public void testToString(){
         SwappItem item = new SwappItem("name");
-        assertEquals("name", item.toString());
+        assertEquals(item.getName() + "  " + "  " + 
+        item.getStatus() + "  " + item.getDescription() + 
+        "  " + item.getContactInfo(), item.toString());
     }
-    */
+
+    @Test
+    public void testEquals(){
+        SwappItem item1 = new SwappItem("name", "Ny", "description1", "contactInfo1");
+        SwappItem item2 = new SwappItem("name", "Ny", "description2", "contactInfo2");
+        SwappItem item3 = new SwappItem("name3", "Ny", "description2", "contactInfo1");
+        assertEquals(item1, item2);
+        assertNotEquals(item1, item3);
+    }
+    
 }

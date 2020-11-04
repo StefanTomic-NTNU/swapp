@@ -27,15 +27,14 @@ public class SwappPersistenceTest {
     @BeforeEach
     public void beforeEach() {
       list = new SwappItemList();
-      item1 = new SwappItem("name1", "Ny", "description1", "contactInfo1");
-      item2 = new SwappItem("name2", "Ny", "description2", "contactInfo2");
+      item1 = new SwappItem("name1");
+      item2 = new SwappItem("name2");
     }
-
-    private SwappItem nextItem;
     
     @Test
     public void testSerializersDeserializers(){
         list.addItem(item1, item2);
+        SwappItem nextItem;
         try {
             StringWriter writer = new StringWriter();
             swappPersistence.writeSwappList(list, writer);
@@ -43,6 +42,11 @@ public class SwappPersistenceTest {
             SwappItemList list2 = swappPersistence.readSwappList(new StringReader(json));
             Iterator<SwappItem> it = list2.iterator();
             assertTrue(it.hasNext());
+            nextItem = it.next();
+            assertEquals(nextItem, item1);
+            nextItem = it.next();
+            assertEquals(nextItem, item2);
+            /* Hvis vi skal endre på equals() igjen kan dette være nyttig:
             nextItem = it.next();
             assertEquals(nextItem.getName(), item1.getName());
             assertEquals(nextItem.getStatus(), item1.getStatus());
@@ -55,6 +59,7 @@ public class SwappPersistenceTest {
             assertEquals(nextItem.getDescription(), item2.getDescription());
             assertEquals(nextItem.getContactInfo(), item2.getContactInfo());
             assertFalse(it.hasNext());
+            */
           } catch (IOException e) {
             fail();
           }
