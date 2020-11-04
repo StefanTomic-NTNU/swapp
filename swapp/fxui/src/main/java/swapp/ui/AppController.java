@@ -62,13 +62,13 @@ public class AppController {
   private TextField contactInfoField;
 
   @FXML
-  private RadioButton nyRadio;
+  private RadioButton newRadio;
 
   @FXML
-  private RadioButton litt_bruktRadio;
+  private RadioButton usedRadio;
 
   @FXML
-  private RadioButton godt_bruktRadio;
+  private RadioButton damagedRadio;
   
   private SwappPersistence swappPersistence = new SwappPersistence();
   private SwappItemList swappList;
@@ -76,10 +76,10 @@ public class AppController {
   private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
 
   private final static String SwappItemListWithTwoItems = 
-    "[{\"itemName\":\"name1\",\"itemStatus\":\"Ny\""
-    + ",\"itemDescription\":\"description1\",\"itemContactInfo\":\"contactInfo1\"},"
-    + "{\"itemName\":\"name2\",\"itemStatus\":\"Ny\""
-    + ",\"itemDescription\":\"description2\",\"itemContactInfo\":\"contactInfo2\"}]";
+    "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
+    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
+    + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
+    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]"; 
 
   /** Initializes appcontroller. */
   public AppController() {
@@ -123,8 +123,8 @@ public class AppController {
       swappList.setSwappItemlist(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
-      swappList.addItem(new SwappItem("name1", "Ny", "description1", "contactInfo1"));
-      swappList.addItem(new SwappItem("name2", "Ny", "description2", "contactInfo2"));
+      swappList.addItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
+      swappList.addItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
     } finally {
       try {
         if (reader != null) {
@@ -146,15 +146,15 @@ public class AppController {
 
   public void inizializeToggleGroup() {
     toggleGroup = new ToggleGroup();
-    nyRadio.setToggleGroup(toggleGroup);
-    litt_bruktRadio.setToggleGroup(toggleGroup);
-    godt_bruktRadio.setToggleGroup(toggleGroup);
+    newRadio.setToggleGroup(toggleGroup);
+    usedRadio.setToggleGroup(toggleGroup);
+    damagedRadio.setToggleGroup(toggleGroup);
   }
 
   /** Initialize with lambda expression for listeners of SwappItemList. */
   @FXML
   void initialize() {
-    //statusChoiceBox.getItems().addAll("Ny", "Litt brukt", "Godt brukt");
+    //statusChoiceBox.getItems().addAll("New", "Used", "Damaged");
     inizializeToggleGroup();
     initializeChoiceBox();
     updateSwappItems();
@@ -167,10 +167,13 @@ public class AppController {
   @FXML
   void addSwappItemButtonClicked() {
     if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
-      swappList.addItem(item);
-      nameField.setText("");
-      descriptionFieldArea.setText("");
+      SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ 
+      ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
+      if (!swappList.getItems().contains(item)) {
+        swappList.addItem(item);
+        nameField.setText("");
+        descriptionFieldArea.setText("");
+      }
     }
     
     //statusChoiceBox.getSelectionModel().clearSelection();

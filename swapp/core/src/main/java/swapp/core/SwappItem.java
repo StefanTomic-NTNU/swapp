@@ -7,7 +7,7 @@ public class SwappItem {
   private String status;
   private String description;
   private String contactInfo;
-  public final static String defaultStatus = "Ny";
+  public final static String defaultStatus = "New";
   public final static String defaultDescription = "";
   public final static String defaultContactInfo = "anonymous@email.com";
   
@@ -48,7 +48,7 @@ public class SwappItem {
   }
 
   public void setStatus(String status) {
-    if (status.equals("Ny") || status.equals("Litt brukt") || status.equals("Godt brukt")) {
+    if (status.equals("New") || status.equals("Used") || status.equals("Damaged")) {
       this.status = status;
     }
   }

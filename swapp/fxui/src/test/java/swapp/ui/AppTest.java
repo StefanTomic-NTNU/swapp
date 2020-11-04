@@ -55,9 +55,9 @@ public class AppTest extends ApplicationTest {
   TextField nameField;
   TextField contactInfoField;
   TextArea descriptionFieldArea;
-  RadioButton nyRadio;
-  RadioButton litt_bruktRadio;
-  RadioButton godt_bruktRadio;
+  RadioButton newRadio;
+  RadioButton usedRadio;
+  RadioButton damagedRadio;
   ListView<SwappItem> listView;
   
   @BeforeEach
@@ -66,9 +66,9 @@ public class AppTest extends ApplicationTest {
     nameField = (TextField) parent.lookup("#nameField");
     contactInfoField = (TextField) parent.lookup("#contactInfoField");
     descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
-    nyRadio = (RadioButton) parent.lookup("#nyRadio");
-    litt_bruktRadio = (RadioButton) parent.lookup("#litt_bruktRadio");
-    godt_bruktRadio = (RadioButton) parent.lookup("#godt_bruktRadio");
+    newRadio = (RadioButton) parent.lookup("#newRadio");
+    usedRadio = (RadioButton) parent.lookup("#usedRadio");
+    damagedRadio = (RadioButton) parent.lookup("#damagedRadio");
     listView = (ListView) parent.lookup("#listView");
   }
 
@@ -83,14 +83,14 @@ public class AppTest extends ApplicationTest {
     testDescription = "Bla bla bla";
     testContactInfo = "kontaktinfo@email.no";
     clickOn(nameField).write(testName);
-    clickOn(litt_bruktRadio);
+    clickOn(usedRadio);
     clickOn(descriptionFieldArea).write(testDescription);
     if (contactInfoField.getText().isBlank()) {
       clickOn(contactInfoField).write(testContactInfo);
     }
     clickOn(addButton);
     Assertions.assertTrue(listView.getItems().get(listView.getItems().size()-1)
-    .toString().equals(testName + "  " + "  " + "Litt brukt" + "  " + 
+    .toString().equals(testName + "  " + "  " + "Used" + "  " + 
     testDescription + "  " + testContactInfo));
   }
 

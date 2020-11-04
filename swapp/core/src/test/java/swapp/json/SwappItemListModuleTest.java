@@ -45,9 +45,9 @@ public class SwappItemListModuleTest {
   }
 
   private final static String ItemsListWithTwoItems = 
-    "[{\"itemName\":\"name1\",\"itemStatus\":\"Ny\""
+    "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
     + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
-    + "{\"itemName\":\"name2\",\"itemStatus\":\"Ny\""
+    + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
     + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]"; 
   
   @Test

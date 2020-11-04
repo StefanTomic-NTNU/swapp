@@ -51,13 +51,13 @@ public class RemoteAppController {
   private TextField contactInfoField;
 
   @FXML
-  private RadioButton nyRadio;
+  private RadioButton newRadio;
 
   @FXML
-  private RadioButton litt_bruktRadio;
+  private RadioButton usedRadio;
 
   @FXML
-  private RadioButton godt_bruktRadio;
+  private RadioButton damagedRadio;
 
     private SwappItemList swappList;
     private ToggleGroup toggleGroup;
@@ -97,9 +97,9 @@ public class RemoteAppController {
 
     public void inizializeToggleGroup() {
       toggleGroup = new ToggleGroup();
-      nyRadio.setToggleGroup(toggleGroup);
-      litt_bruktRadio.setToggleGroup(toggleGroup);
-      godt_bruktRadio.setToggleGroup(toggleGroup);
+      newRadio.setToggleGroup(toggleGroup);
+      usedRadio.setToggleGroup(toggleGroup);
+      damagedRadio.setToggleGroup(toggleGroup);
     }
 
     public void updateSwappListView() {
@@ -115,10 +115,12 @@ public class RemoteAppController {
         String description = descriptionFieldArea.getText();
         String contactInfo =contactInfoField.getText();
         SwappItem item = new SwappItem(name, /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ status, description, contactInfo);
-        remoteSwappAccess.addSwappItem(item);
-        updateSwappListView();
-        nameField.setText("");
-        descriptionFieldArea.setText("");
+        if (!remoteSwappAccess.getSwappList().getItems().contains(item)) {
+          remoteSwappAccess.addSwappItem(item);
+          updateSwappListView();
+          nameField.setText("");
+          descriptionFieldArea.setText("");
+        }
       }
     }
 

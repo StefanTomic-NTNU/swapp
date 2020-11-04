@@ -1,8 +1,23 @@
 [
     {
-        "itemName": "swapp1"
+        "itemName":"sampleItem1", 
+        "itemStatus":"New", 
+        "itemDescription":"bla bla", 
+        "itemContactInfo":"contactInfo"
     },
+    
     {
-        "itemName": "swapp2"
+        "itemName":"sampleItem2", 
+        "itemStatus":"Used", 
+        "itemDescription":"bla bla", 
+        "itemContactInfo":"contactInfo"
+    },
+
+    {
+        "itemName":"sampleItem3", 
+        "itemStatus":"Damaged", 
+        "itemDescription":"bla bla", 
+        "itemContactInfo":"contactInfo"
     }
 ]
+

@@ -13,7 +13,7 @@ public class SwappItemTest {
 
   @BeforeEach
   public void beforeEach() {
-    item1 = new SwappItem("name", "Ny", "description", "contactInfo");
+    item1 = new SwappItem("name", "New", "description", "contactInfo");
   }
 
   @Test
@@ -30,7 +30,7 @@ public class SwappItemTest {
 
   @Test
   public void testGetStatus() {
-    assertEquals(item1.getStatus(), "Ny");
+    assertEquals(item1.getStatus(), "New");
   }
 
   @Test
@@ -54,9 +54,9 @@ public class SwappItemTest {
 
     @Test
     public void testEquals(){
-        SwappItem item1 = new SwappItem("name", "Ny", "description1", "contactInfo1");
-        SwappItem item2 = new SwappItem("name", "Ny", "description2", "contactInfo2");
-        SwappItem item3 = new SwappItem("name3", "Ny", "description2", "contactInfo1");
+        SwappItem item1 = new SwappItem("name", "New", "description1", "contactInfo1");
+        SwappItem item2 = new SwappItem("name", "New", "description2", "contactInfo2");
+        SwappItem item3 = new SwappItem("name3", "New", "description2", "contactInfo1");
         assertEquals(item1, item2);
         assertNotEquals(item1, item3);
     }

@@ -48,7 +48,7 @@ public class SwappConfig extends ResourceConfig {
 
   private static SwappItemList createDefaultSwappList() {
     SwappPersistence swappPersistence = new SwappPersistence();
-    URL url = SwappConfig.class.getResource("sample-swappitemlist.json");
+    URL url = SwappConfig.class.getResource("default-swapplist.json");
     if (url != null) {
       try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
         return swappPersistence.readSwappList(reader);
@@ -58,8 +58,8 @@ public class SwappConfig extends ResourceConfig {
     }
     SwappItemList swappList = new SwappItemList();
     
-    swappList.addItem(new SwappItem("name1", "Ny", "description1", "contactInfo1"));
-    swappList.addItem(new SwappItem("name2", "Ny", "description2", "contactInfo2"));
+    swappList.addItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
+    swappList.addItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
     
     return swappList;
   }

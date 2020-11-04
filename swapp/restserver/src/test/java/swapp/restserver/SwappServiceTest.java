@@ -76,10 +76,10 @@ public class SwappServiceTest extends JerseyTest {
       SwappItem swappItem1 = it.next();
       assertTrue(it.hasNext());
       SwappItem swappItem2 = it.next();
-      assertEquals(swappItem1.getName(), "name1");
-      assertEquals(swappItem1.getStatus(), "Ny");
-      assertEquals(swappItem1.getDescription(), "description1");
-      assertEquals(swappItem1.getContactInfo(), "contactInfo1");
+      assertEquals(swappItem1.getName(), "sampleItem1");
+      assertEquals(swappItem1.getStatus(), "New");
+      assertEquals(swappItem1.getDescription(), "bla bla");
+      assertEquals(swappItem1.getContactInfo(), "contactInfo");
       //assertFalse(it.hasNext());
       //assertEquals("swapp2", swappItem2.getName());
     } catch (JsonProcessingException e) {
@@ -89,7 +89,7 @@ public class SwappServiceTest extends JerseyTest {
 
   @Test
   public void testPut() throws JsonProcessingException {
-    SwappItemList other = new SwappItemList(new SwappItem("swapp1put", "Ny", "bla bla", "contactInfo"), new SwappItem("swapp2put", "Ny", "bla bla", "contactInfo"));
+    SwappItemList other = new SwappItemList(new SwappItem("swapp1put", "New", "bla bla", "contactInfo"), new SwappItem("swapp2put", "New", "bla bla", "contactInfo"));
     Response putResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .put(Entity.entity(objectMapper.writeValueAsString(other), MediaType.APPLICATION_JSON));
@@ -103,7 +103,7 @@ public class SwappServiceTest extends JerseyTest {
       SwappItem swappItem2 = it.next();
       assertFalse(it.hasNext());
       assertEquals(swappItem1.getName(), "swapp1put");
-      assertEquals(swappItem1.getStatus(), "Ny");
+      assertEquals(swappItem1.getStatus(), "New");
       assertEquals(swappItem1.getDescription(), "bla bla");
       assertEquals(swappItem1.getContactInfo(), "contactInfo");
     } catch (JsonProcessingException e) {

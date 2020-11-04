@@ -23,18 +23,17 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
       throws IOException, JsonProcessingException {
     
 
-    //TODO se over endringer. Ser ikke hvorfor deserialization av ArrayNodes er nødvendig.
+    //TODO se over endringer. Ser ikke hensikten med deserialization av ArrayNodes.
     //Har derfor ikke skrevet noen test for ArrayNodes
 
-    //final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
-    //return deserialize(jsonNode);
+    final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
+    return deserialize(jsonNode);
 
-    TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
-    return deserialize((JsonNode)treeNode);
+    //TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
+    //return deserialize((JsonNode)treeNode);
   }
 
 
-  //Dette er metoden vi har brukt før
   /**
   * Deserializes jsonNode.
   */
@@ -61,7 +60,7 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
   }
 
   
-//Dette er likt måten Hallvard gjør det på
+//Dette er mer likt måten Hallvard gjør det på
 /*
   public SwappItem deserialize(JsonNode jsonNode) {
     if (jsonNode instanceof ObjectNode) {
