@@ -91,6 +91,7 @@ public class RemoteAppController {
         filterChoiceBox.getItems().add("All");
         filterChoiceBox.getItems().add("New");
         filterChoiceBox.getItems().add("Used");
+        filterChoiceBox.getItems().add("Damaged");
         filterChoiceBox.setValue("All");
         filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwappListView());
       }

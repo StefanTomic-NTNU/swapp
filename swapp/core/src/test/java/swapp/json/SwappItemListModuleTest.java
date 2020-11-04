@@ -70,6 +70,8 @@ public class SwappItemListModuleTest {
     }
   }
 
+
+  //TODO legg til flere tester?
   /* Forstår ikke hensikten med en slik test
   @Test
   public void testDeserializeSwappItemAsArrayNode() {
