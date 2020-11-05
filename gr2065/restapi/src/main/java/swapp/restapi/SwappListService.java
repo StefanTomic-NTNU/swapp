@@ -18,6 +18,20 @@ import org.slf4j.LoggerFactory;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.File;
+import java.io.Writer;
+import java.io.FileWriter;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import swapp.core.SwappItem;
+import swapp.core.SwappItemList;
+import swapp.json.SwappPersistence;
+
 @Path(SwappListService.SWAPP_LIST_SERVICE_PATH)
 public class SwappListService {
   public static final String SWAPP_LIST_SERVICE_PATH = "swapp";
@@ -25,6 +39,28 @@ public class SwappListService {
   
   @Inject
   private SwappItemList swappList;
+
+  private File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
+  
+  private void updateServer(SwappItemList swappItemList){
+    //adds value to default-swapplist.json
+  Writer writer = null;
+  SwappPersistence swappPersistence = new SwappPersistence();
+  try {
+    writer = new FileWriter(file, StandardCharsets.UTF_8);
+    swappPersistence.writeSwappList(swappList, writer);
+  } catch (IOException ioex) {
+    System.err.println("Feil med fillagring.");
+  } finally {
+    try {
+      if (writer != null) {
+        writer.close();
+      }
+    } catch (IOException e) {
+      System.err.println("Feil med fillagring..");
+    }
+  }
+}
 
   /**
    * The root resource, i.e. /swapp 
@@ -43,7 +79,9 @@ public class SwappListService {
   @Produces
   public SwappItemList putSwappList(SwappItemList swappItemList){
     LOG.debug("putSwappList({})", swappItemList);
-    return this.swappList.putSwappList(swappItemList);
+    SwappItemList newSwappItemlist = this.swappList.putSwappList(swappItemList);
+    updateServer(newSwappItemlist);
+    return newSwappItemlist;
   }
 
   @GET
