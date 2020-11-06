@@ -1,0 +1,7 @@
+[
+    {"itemName":"testItem1", "itemStatus":"New", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"},
+    
+    {"itemName":"testItem2", "itemStatus":"New", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"},
+
+    {"itemName":"testItem3", "itemStatus":"New", "itemDescription":"bla bla", "itemContactInfo":"contactInfo"}
+]
