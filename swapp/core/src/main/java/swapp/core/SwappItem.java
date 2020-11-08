@@ -63,6 +63,17 @@ public class SwappItem {
     if (!contactInfo.isBlank()) {this.contactInfo = contactInfo;}
   }
 
+   public boolean allAttributesEquals(String name, String status, String description, String contactInfo) {
+    return (name.equals(this.name) && 
+      status.equals(this.status) &&
+      description.equals(this.description) &&
+      contactInfo.equals(this.contactInfo));
+  }
+
+  public boolean allAttributesEquals(SwappItem other) {
+    return allAttributesEquals(other.getName(), other.getStatus(), other.getDescription(), other.getContactInfo());
+  }
+
   @Override
   public String toString() {
     return name + "  " + "  " + status + "  " + description + "  " + contactInfo;

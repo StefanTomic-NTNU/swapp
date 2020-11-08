@@ -118,7 +118,7 @@ public class RemoteSwappAccess {
           HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       System.out.println(responseString);
-      this.swappList.deleteSwappItem(responseString);
+      this.swappList.removeSwappItem(responseString);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }

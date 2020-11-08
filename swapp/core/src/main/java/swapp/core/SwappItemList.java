@@ -59,7 +59,7 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
-  public void deleteSwappItem(String name) {
+  public void removeSwappItem(String name) {
     int j=0;
     for (int i=0; i<this.items.size(); i++) {
       if (items.get(i).getName().equals(name)) {
@@ -91,10 +91,6 @@ public class SwappItemList implements Iterable<SwappItem> {
 
   public List<SwappItem> getSwappItems() {
     return this.items;
-  }
-
-  public boolean isvalidName(String name){
-    return !name.isBlank();
   }
 
   public void addSwappItemListListener(SwappItemListListener listener) {

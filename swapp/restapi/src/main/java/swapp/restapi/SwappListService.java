@@ -100,7 +100,7 @@ public class SwappListService {
   @Produces(MediaType.APPLICATION_JSON)
   public String deleteSwappItem(@PathParam("name") String name) {
     LOG.debug("deleteSwappItem({})", name);
-    swappList.deleteSwappItem(name);
+    swappList.removeSwappItem(name);
     updateServer(swappList);
     return name;
   }

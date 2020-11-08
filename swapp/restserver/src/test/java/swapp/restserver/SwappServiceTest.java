@@ -133,10 +133,7 @@ public class SwappServiceTest extends JerseyTest {
     assertEquals(200, postResponse.getStatus());
     try {
       SwappItem swappItem2 = objectMapper.readValue(postResponse.readEntity(String.class), SwappItem.class);
-      assertEquals(swappItem2.getName(), "testPost");
-      assertEquals(swappItem2.getStatus(), "New");
-      assertEquals(swappItem2.getDescription(), "postDescription");
-      assertEquals(swappItem2.getContactInfo(), "postContactInfo");
+      assertTrue(swappItem2.allAttributesEquals(swappItem));
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
