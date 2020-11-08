@@ -109,14 +109,17 @@ public class RemoteSwappAccess {
   }
 
   public void removeSwappItem(String name) {
-        try {
+    try {
       HttpRequest request = HttpRequest.newBuilder(swapptUri(name))
-          .header("Accept", "application/json")
-          .DELETE()
-          .build();
+        .header("Accept", "application/json")
+        .DELETE()
+        .build();
       final HttpResponse<String> response =
-          HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
+      //SwappItem deletedItem = objectMapper.readValue(responseString, SwappItem.class);
+      System.out.println();
+      //System.out.println(deletedItem.toString());
       System.out.println(responseString);
       this.swappList.deleteSwappItem(responseString);
     } catch (IOException | InterruptedException e) {

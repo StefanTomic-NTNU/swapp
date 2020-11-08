@@ -59,7 +59,7 @@ public class AppController {
 
   @FXML
   private TextField nameField;
-  
+
   @FXML
   private TextArea descriptionFieldArea;
 
@@ -74,17 +74,16 @@ public class AppController {
 
   @FXML
   private RadioButton damagedRadio;
-  
+
   private SwappPersistence swappPersistence = new SwappPersistence();
   private SwappItemList swappList;
   private ToggleGroup toggleGroup;
   private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
 
-  private final static String SwappItemListWithTwoItems = 
-    "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
-    + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]"; 
+  private final static String SwappItemListWithTwoItems = "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
+      + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
+      + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
+      + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]";
 
   /** Initializes appcontroller. */
   public AppController() {
@@ -162,7 +161,7 @@ public class AppController {
   @FXML
   void initialize() {
     listView.setCellFactory(list -> new SwappItemListViewCell());
-    //statusChoiceBox.getItems().addAll("New", "Used", "Damaged");
+    // statusChoiceBox.getItems().addAll("New", "Used", "Damaged");
     inizializeToggleGroup();
     initializeChoiceBox();
     updateSwappItems();
@@ -175,16 +174,20 @@ public class AppController {
   @FXML
   void addSwappItemButtonClicked() {
     if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ 
-      ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
+      SwappItem item = new SwappItem(nameField.getText(), /*
+                                                           * statusChoiceBox.getSelectionModel().getSelectedItem().
+                                                           * toString()
+                                                           */
+          ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(),
+          contactInfoField.getText());
       if (!swappList.getItems().contains(item)) {
         swappList.addItem(item);
         nameField.setText("");
         descriptionFieldArea.setText("");
       }
     }
-    
-    //statusChoiceBox.getSelectionModel().clearSelection();
+
+    // statusChoiceBox.getSelectionModel().clearSelection();
   }
 
   @FXML

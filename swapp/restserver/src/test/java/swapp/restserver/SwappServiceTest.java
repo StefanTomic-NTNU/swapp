@@ -111,6 +111,9 @@ public class SwappServiceTest extends JerseyTest {
         .path("swapp1put")
         .request("application/json; charset=UTF-8")
         .delete();
+        SwappItem deletedItem = objectMapper.readValue(deleteResponse.readEntity(String.class), SwappItem.class);
+      assertEquals(deletedItem, swappItem1);
+      assertNotEquals(deletedItem, swappItem2);
       Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
       SwappItemList getSwappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappItemList.class);

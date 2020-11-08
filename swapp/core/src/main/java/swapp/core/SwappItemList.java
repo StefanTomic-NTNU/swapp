@@ -46,8 +46,10 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public void removeItem(SwappItem... item) {
-    this.items.removeAll(List.of(item));
-    fireSwappItemListChanged();
+    if (items.containsAll(List.of(item))){
+      this.items.removeAll(List.of(item));
+      fireSwappItemListChanged();
+    }
   }
 
   /**
@@ -55,19 +57,18 @@ public class SwappItemList implements Iterable<SwappItem> {
   */
   public void removeItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
-      this.removeItem(item);
+      this.deleteSwappItem(item.getName());
     }
   }
 
-  public void  deleteSwappItem(String name) {
-    int j=0;
-    for (int i=0; i<this.items.size(); i++) {
-      if (items.get(i).getName().equals(name)) {
-        j=i;
-      }
+  public SwappItem deleteSwappItem(String name) {
+    SwappItem deleteSwappItem = getSwappItem(name);
+    if (hasSwappItem(name)){
+      items.remove(getSwappItem(name));
+      fireSwappItemListChanged();
     }
-    this.items.remove(j);
-    fireSwappItemListChanged();
+    return deleteSwappItem;
+
   }
 
   public SwappItemList putSwappList(SwappItemList other){
