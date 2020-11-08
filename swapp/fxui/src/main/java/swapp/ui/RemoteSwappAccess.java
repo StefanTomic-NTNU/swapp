@@ -90,7 +90,6 @@ public class RemoteSwappAccess {
 
 
   public void addSwappItem(SwappItem item) {
-    
     try {
       String json = objectMapper.writeValueAsString(item);
       HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
@@ -109,24 +108,40 @@ public class RemoteSwappAccess {
     }
   }
 
+  public void removeSwappItem(String name) {
+        try {
+      HttpRequest request = HttpRequest.newBuilder(swapptUri(name))
+          .header("Accept", "application/json")
+          .DELETE()
+          .build();
+      final HttpResponse<String> response =
+          HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+      String responseString = response.body();
+      System.out.println(responseString);
+      this.swappList.deleteSwappItem(responseString);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 /*
   public void addSwappItem(SwappItem other) {
     this.swappList.addItem(other);
     notifySwappListChanged(this.swappList);
   }
-*/
+
   public void removeSwappItem(SwappItem other) {
     this.swappList.removeItem(other);
     notifySwappListChanged(this.swappList);
-    ;
   }
 
-  /**
+  
    * Notifies that the TodoList has changed, e.g. TodoItems have been mutated,
    * added or removed.
    *
    * @param todoList the TodoList that has changed
-   */
+   
+*/
   public void notifySwappListChanged(SwappItemList other) {
     putSwappList(other);
   }

@@ -136,7 +136,7 @@ public class RemoteAppController {
     void removeSwappItemButtonClicked() {
         if (listView.getSelectionModel().getSelectedItem() != null) {
             SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
-            remoteSwappAccess.removeSwappItem(item);
+            remoteSwappAccess.removeSwappItem(item.getName());
             updateSwappListView();
         }
     }
