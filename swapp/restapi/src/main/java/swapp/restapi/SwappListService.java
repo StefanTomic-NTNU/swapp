@@ -42,7 +42,6 @@ public class SwappListService {
   private SwappItemList swappList;
 
   private File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
-  
   private void updateServer(SwappItemList swappItemList){
     //adds value to default-swapplist.json
   Writer writer = null;

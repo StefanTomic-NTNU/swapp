@@ -1,5 +1,7 @@
 package swapp.restserver;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,9 +15,11 @@ import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
 import swapp.restapi.SwappListService;
+import java.nio.file.Paths;
 
 public class SwappConfig extends ResourceConfig {
   private SwappItemList swappList;
+  private static File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
 
   /**
    * * Initialize this SwappConfig. * * @param swappList swappList instance to serve
@@ -35,7 +39,7 @@ public class SwappConfig extends ResourceConfig {
 
   /** * Initialize this TodoConfig with a default TodoModel. */ 
   public SwappConfig() {
-    this(createDefaultSwappList());
+    this(startSwappList());
   }
 
   public SwappItemList getSwappList() {
@@ -46,15 +50,12 @@ public class SwappConfig extends ResourceConfig {
     this.swappList = swappList;
   }
 
-  private static SwappItemList createDefaultSwappList() {
+  private static SwappItemList startSwappList() {
     SwappPersistence swappPersistence = new SwappPersistence();
-    URL url = SwappConfig.class.getResource("default-swapplist.json");
-    if (url != null) {
-      try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-        return swappPersistence.readSwappList(reader);
-      } catch (IOException e) {
-        System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
-      }
+    try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
+      return swappPersistence.readSwappList(reader);
+    } catch (IOException e) {
+      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
     }
     SwappItemList swappList = new SwappItemList();
     
@@ -63,4 +64,5 @@ public class SwappConfig extends ResourceConfig {
     
     return swappList;
   }
+
 }
