@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,15 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
+  public SwappItemList putSwappItem(SwappItem newItem){
+    if (hasSwappItem(newItem.getName())){
+      SwappItem oldItem = getSwappItem(newItem.getName());
+      items.remove(oldItem);
+      items.add(newItem);
+    }
+    return this;
+  }
+
   public SwappItem deleteSwappItem(String name) {
     SwappItem deleteSwappItem = getSwappItem(name);
     if (hasSwappItem(name)){
@@ -68,7 +78,11 @@ public class SwappItemList implements Iterable<SwappItem> {
       fireSwappItemListChanged();
     }
     return deleteSwappItem;
+  }
 
+  //TODO return predicate
+  public boolean sameSwappItemInfo(SwappItem other){
+    return items.stream().anyMatch(p->p.isSameInfo(other));
   }
 
   public SwappItemList putSwappList(SwappItemList other){

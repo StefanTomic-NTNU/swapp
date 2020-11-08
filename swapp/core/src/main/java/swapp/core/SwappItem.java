@@ -61,6 +61,10 @@ public class SwappItem {
     if (!contactInfo.isBlank()) {this.contactInfo = contactInfo;}
   }
 
+  public boolean isSameInfo(SwappItem other){
+    return other.getDescription().equals(this.description) && other.getStatus().equals(this.status);
+  }
+
   @Override
   public String toString() {
     return name + "  " + "  " + status + "  " + description + "  " + contactInfo;

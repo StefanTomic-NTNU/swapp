@@ -225,16 +225,21 @@ public class AppController {
   }
 
   @FXML
-  public void viewSwappItem() throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
-    Parent root = (Parent) loader.load();
-    ViewSwappItemController itemController = loader.getController();
-    itemController.initSwappitem((SwappItem) listView.getSelectionModel().getSelectedItem());
-    Stage stage = new Stage();
-    stage.setScene(new Scene(root, 800, 400));
-    stage.setTitle("Item");
-    stage.show();
-  }
+    public void viewSwappItem() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
+        Parent root = (Parent) loader.load();
+        ViewSwappItemController itemController = loader.getController();
+        SwappItem swappItem = listView.getSelectionModel().getSelectedItem();
+        System.out.println(swappItem + "viewSwappItem()");
+        itemController.initSwappitem(swappItem);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root, 800, 400));
+        stage.setTitle("Item");
+        stage.showAndWait();
+        SwappItem newItem = itemController.getSwappItem();
+        this.swappList.setSwappItemlist(swappList.putSwappItem(newItem));
+        updateSwappItems();
+    }
 
   /*
    * Metoder for dokumentmetafor:

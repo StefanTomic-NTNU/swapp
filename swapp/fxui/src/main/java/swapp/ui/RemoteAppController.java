@@ -152,7 +152,9 @@ public class RemoteAppController {
         Stage stage = new Stage();
         stage.setScene(new Scene(root, 800, 400));
         stage.setTitle("Item");
-        stage.show();
-
+        stage.showAndWait();
+        SwappItem newItem = itemController.getSwappItem();
+        remoteSwappAccess.putSwappList(newItem);
+        updateSwappListView();
     }
 }

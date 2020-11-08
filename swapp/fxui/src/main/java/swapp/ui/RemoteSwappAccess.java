@@ -73,19 +73,24 @@ public class RemoteSwappAccess {
 
 
 
-  private void putSwappList(SwappItemList newSwappList) {
-    try {
-      String json = objectMapper.writeValueAsString(newSwappList);
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json")
-          .header("Content-Type", "application/json").PUT(BodyPublishers.ofString(json)).build();
-      final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
-          HttpResponse.BodyHandlers.ofString());
-      String responseString = response.body();
-      SwappItemList swappListRes = objectMapper.readValue(responseString, SwappItemList.class);
-      this.swappList.putSwappList(swappListRes);
-    } catch (IOException | InterruptedException e) {
-      throw new RuntimeException(e);
+  public SwappItemList putSwappList(SwappItem newItem) {
+    SwappItemList oldList = new SwappItemList(this.getSwappList().getItems());
+    if (!oldList.sameSwappItemInfo(newItem)){
+      SwappItemList newSwappList =  oldList.putSwappItem(newItem);
+      try {
+        String json = objectMapper.writeValueAsString(newSwappList);
+        HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json")
+            .header("Content-Type", "application/json").PUT(BodyPublishers.ofString(json)).build();
+        final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+            HttpResponse.BodyHandlers.ofString());
+        String responseString = response.body();
+        SwappItemList swappListRes = objectMapper.readValue(responseString, SwappItemList.class);
+        this.swappList.putSwappList(swappListRes);
+      } catch (IOException | InterruptedException e) {
+        throw new RuntimeException(e);
+      }
     }
+    return oldList;
   }
 
 

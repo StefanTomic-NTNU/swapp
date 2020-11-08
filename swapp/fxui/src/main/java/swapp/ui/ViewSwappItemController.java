@@ -26,6 +26,9 @@ public class ViewSwappItemController {
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button publishButton;
+
     private SwappItem swappItem;
 
     public void initSwappitem(SwappItem swappItem) {
@@ -37,9 +40,20 @@ public class ViewSwappItemController {
 
     public void setText() {
         titleTextField.setText(swappItem.getName());
-        infoTextField.setText(swappItem.getName());
-        statusTextField.setText(swappItem.getName());
-        emailTextField.setText(swappItem.getName());
+        infoTextField.setText(swappItem.getDescription());
+        statusTextField.setText(swappItem.getStatus());
+        emailTextField.setText(swappItem.getContactInfo());
+    }
+
+    public void publishSwappItem(){
+        String title = titleTextField.getText();
+        String newInfo = infoTextField.getText();
+        String newstatus = statusTextField.getText();
+        String newEmail = emailTextField.getText();
+        SwappItem newItem = new SwappItem(title, newstatus, newInfo, newEmail);
+        this.swappItem = newItem;
+        Stage stage = (Stage) publishButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -47,6 +61,10 @@ public class ViewSwappItemController {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
 
+    }
+
+    public SwappItem getSwappItem(){
+        return this.swappItem;
     }
 
 }
