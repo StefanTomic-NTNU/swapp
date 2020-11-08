@@ -39,7 +39,7 @@ public class SwappConfig extends ResourceConfig {
 
   /** * Initialize this TodoConfig with a default TodoModel. */ 
   public SwappConfig() {
-    this(createDefaultSwappList());
+    this(startSwappList());
   }
 
   public SwappItemList getSwappList() {
@@ -50,7 +50,7 @@ public class SwappConfig extends ResourceConfig {
     this.swappList = swappList;
   }
 
-  private static SwappItemList createDefaultSwappList() {
+  private static SwappItemList startSwappList() {
     SwappPersistence swappPersistence = new SwappPersistence();
     try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
       return swappPersistence.readSwappList(reader);
@@ -64,4 +64,5 @@ public class SwappConfig extends ResourceConfig {
     
     return swappList;
   }
+
 }
