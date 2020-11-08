@@ -25,15 +25,42 @@ import org.junit.jupiter.api.Test;
 import swapp.core.SwappItem;
 import swapp.core.SwappItemList;
 import swapp.restapi.SwappListService;
+import swapp.json.SwappPersistence;
+import java.io.Reader;
+import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 
 public class SwappServiceTest extends JerseyTest {
   protected boolean shouldLog() {
     return false;
   }
 
+  private SwappItemList createTestSwappList() {
+    SwappPersistence swappPersistence = new SwappPersistence();
+    URL url = SwappConfig.class.getResource("default-swapplist.json");
+    if (url != null) {
+      try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+        return swappPersistence.readSwappList(reader);
+      } catch (IOException e) {
+        System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
+      }
+    }
+    SwappItemList swappList = new SwappItemList();
+    
+    swappList.addItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
+    swappList.addItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
+    
+    return swappList;
+  }
+
+
   @Override
   protected ResourceConfig configure() {
-    final SwappConfig config = new SwappConfig();
+    final SwappConfig config = new SwappConfig(this.createTestSwappList());
     if (shouldLog()) {
       enable(TestProperties.LOG_TRAFFIC);
       enable(TestProperties.DUMP_ENTITY);
