@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.File;
 import java.io.Writer;
+//import java.lang.invoke.PolymorphicSignature;
 import java.io.FileWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -84,6 +85,23 @@ public class SwappListService {
     return newSwappItemlist;
   }
 
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public SwappItem addSwappItem(SwappItem item) {
+    swappList.addItem(item);
+    return item;
+  }
+
+  @DELETE
+  @Path("/{name}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String deleteSwappItem(@PathParam("name") String name) {
+    swappList.removeItem(name);
+    return name;
+  }
+
+
   @GET
   @Path("/{name}")
   @Produces(MediaType.APPLICATION_JSON)
@@ -91,7 +109,6 @@ public class SwappListService {
     LOG.debug("getSwappItem({})", name);
     return this.swappList.getSwappItem(name);
   }  
-
 
 
 }

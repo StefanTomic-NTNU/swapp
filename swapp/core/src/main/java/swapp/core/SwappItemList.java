@@ -59,6 +59,15 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
+  public void removeItem(String name) {
+    for (SwappItem item : items) {
+      if (item.getName().equals(name)) {
+        this.items.remove(item);
+      }
+    }
+    fireSwappItemListChanged();
+  }
+
   public SwappItemList putSwappList(SwappItemList other){
     if (!getItems().equals(other.getItems())){
       setSwappItemlist(other);

@@ -88,11 +88,32 @@ public class RemoteSwappAccess {
     }
   }
 
+
+  public void addSwappItem(SwappItem item) {
+    try {
+      String json = objectMapper.writeValueAsString(item);
+      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri)
+        .header("Accept", "application/json")
+        .header("Content-Type", "application/json")
+        .POST(BodyPublishers.ofString(json))
+        .build();
+      final HttpResponse<String> response = HttpClient.newBuilder()
+        .build()
+        .send(request,HttpResponse.BodyHandlers.ofString());
+      String responseString = response.body();
+      SwappItem swappItemRes = objectMapper.readValue(responseString, SwappItem.class);
+      this.swappList.addItem(swappItemRes);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+/*
   public void addSwappItem(SwappItem other) {
     this.swappList.addItem(other);
     notifySwappListChanged(this.swappList);
   }
-
+*/
   public void removeSwappItem(SwappItem other) {
     this.swappList.removeItem(other);
     notifySwappListChanged(this.swappList);
