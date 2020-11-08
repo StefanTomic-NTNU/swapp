@@ -73,7 +73,7 @@ public class RemoteSwappAccess {
 
 
 
-  private void putSwappList(SwappItemList newSwappList) {
+  private void putSwappItemList(SwappItemList newSwappList) {
     try {
       String json = objectMapper.writeValueAsString(newSwappList);
       HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json")
@@ -82,7 +82,7 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItemList swappListRes = objectMapper.readValue(responseString, SwappItemList.class);
-      this.swappList.putSwappList(swappListRes);
+      this.swappList.putSwappItemList(swappListRes);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
@@ -102,7 +102,7 @@ public class RemoteSwappAccess {
         .send(request,HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItem swappItemRes = objectMapper.readValue(responseString, SwappItem.class);
-      this.swappList.addItem(swappItemRes);
+      this.swappList.addSwappItem(swappItemRes);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
@@ -131,7 +131,7 @@ public class RemoteSwappAccess {
   }
 
   public void removeSwappItem(SwappItem other) {
-    this.swappList.removeItem(other);
+    this.swappList.removeSwappItem(other);
     notifySwappListChanged(this.swappList);
   }
 
@@ -143,6 +143,6 @@ public class RemoteSwappAccess {
    
 */
   public void notifySwappListChanged(SwappItemList other) {
-    putSwappList(other);
+    putSwappItemList(other);
   }
 }

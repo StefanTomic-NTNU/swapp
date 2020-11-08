@@ -112,7 +112,7 @@ public class RemoteAppController {
 
     public void updateSwappListView() {
         SwappItemList tmp = remoteSwappAccess.getSwappList();
-        listView.getItems().setAll(tmp.getItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+        listView.getItems().setAll(tmp.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
@@ -123,7 +123,7 @@ public class RemoteAppController {
         String description = descriptionFieldArea.getText();
         String contactInfo =contactInfoField.getText();
         SwappItem item = new SwappItem(name, /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ status, description, contactInfo);
-        if (!remoteSwappAccess.getSwappList().getItems().contains(item)) {
+        if (!remoteSwappAccess.getSwappList().getSwappItems().contains(item)) {
           remoteSwappAccess.addSwappItem(item);
           updateSwappListView();
           nameField.setText("");

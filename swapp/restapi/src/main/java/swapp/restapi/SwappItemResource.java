@@ -85,7 +85,7 @@ public class SwappItemResource {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean removeSwappItem() {
     checkSwappItem();
-    this.swappList.removeItem(this.swappItem);
+    this.swappList.removeSwappItem(this.swappItem);
     return true;
   }*/
 }

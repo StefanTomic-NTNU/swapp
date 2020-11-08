@@ -125,11 +125,11 @@ public class AppController {
        * null) { System.out.println(linje); }
        */
       SwappItemList list = swappPersistence.readSwappList(reader);
-      swappList.setSwappItemlist(list);
+      swappList.setSwappItemList(list);
     } catch (IOException ioex2) {
       System.err.println("Legger til gjenstander direkte..");
-      swappList.addItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
-      swappList.addItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
+      swappList.addSwappItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
+      swappList.addSwappItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
     } finally {
       try {
         if (reader != null) {
@@ -177,8 +177,8 @@ public class AppController {
     if (!nameField.getText().isBlank()) {
       SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ 
       ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
-      if (!swappList.getItems().contains(item)) {
-        swappList.addItem(item);
+      if (!swappList.getSwappItems().contains(item)) {
+        swappList.addSwappItem(item);
         nameField.setText("");
         descriptionFieldArea.setText("");
       }
@@ -191,15 +191,15 @@ public class AppController {
   void removeSwappItemButtonClicked() {
     SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
     if (!(item == null)) {
-      swappList.removeItem(item);
+      swappList.removeSwappItem(item);
     }
   }
 
   public void updateSwappItems() {
-    listView.getItems().setAll(swappList.getItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    listView.getItems().setAll(swappList.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
   }
 
-  public SwappItemList getItems() {
+  public SwappItemList getSwappItemList() {
     return swappList;
   }
 

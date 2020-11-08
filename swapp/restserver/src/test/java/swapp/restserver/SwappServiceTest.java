@@ -114,10 +114,10 @@ public class SwappServiceTest extends JerseyTest {
       Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
       SwappItemList getSwappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappItemList.class);
-      assertTrue(getSwappList.getItems().size() == 1);
+      assertTrue(getSwappList.getSwappItems().size() == 1);
       //String deletedItem = objectMapper.readValue(deleteResponse.readEntity(String.class), String.class);
       //assertEquals("swapp1put", deletedItem);
-      assertTrue(getSwappList.getItems().get(0).getName().equals("swapp2put"));
+      assertTrue(getSwappList.getSwappItems().get(0).getName().equals("swapp2put"));
 
     } catch (JsonProcessingException e) {
       fail(e.getMessage());

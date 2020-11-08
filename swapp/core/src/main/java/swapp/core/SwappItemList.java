@@ -16,19 +16,20 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public SwappItemList(final SwappItem... items) {
-    this.addItem(items);
+    this.addSwappItem(items);
   }
 
   public SwappItemList(Collection<SwappItem> items) {
-    this.addItem(items);
+    this.addSwappItem(items);
   }
 
-  public void setSwappItemlist(SwappItemList swappList) {
+  public void setSwappItemList(SwappItemList swappList) {
     this.items = new ArrayList<>();
-    addItem(swappList.getItems());
+    addSwappItem(swappList.getSwappItems());
   }
 
-  public void addItem(SwappItem... item) {
+  public void addSwappItem(SwappItem... item) {
+
     this.items.addAll(List.of(item));
     fireSwappItemListChanged();
   }
@@ -36,16 +37,15 @@ public class SwappItemList implements Iterable<SwappItem> {
   /**
   * Adds collection of SwapItems to SwappItemList.
   */
-  public void addItem(Collection<SwappItem> items) {
+  public void addSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       if (!this.items.contains(item)) {
-        this.addItem(item);
-        //TODO blir det riktig å kaste en exception her, eller bør man bare ignorere gjenstanden?
+        this.addSwappItem(item);
       } else {throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");}
     }
   }
 
-  public void removeItem(SwappItem... item) {
+  public void removeSwappItem(SwappItem... item) {
     this.items.removeAll(List.of(item));
     fireSwappItemListChanged();
   }
@@ -53,13 +53,13 @@ public class SwappItemList implements Iterable<SwappItem> {
   /**
   * Removes multiple SwappItems from SwappItemList.
   */
-  public void removeItem(Collection<SwappItem> items) {
+  public void removeSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
-      this.removeItem(item);
+      this.removeSwappItem(item);
     }
   }
 
-  public void  deleteSwappItem(String name) {
+  public void deleteSwappItem(String name) {
     int j=0;
     for (int i=0; i<this.items.size(); i++) {
       if (items.get(i).getName().equals(name)) {
@@ -70,9 +70,9 @@ public class SwappItemList implements Iterable<SwappItem> {
     fireSwappItemListChanged();
   }
 
-  public SwappItemList putSwappList(SwappItemList other){
-    if (!getItems().equals(other.getItems())){
-      setSwappItemlist(other);
+  public SwappItemList putSwappItemList(SwappItemList other){
+    if (!getSwappItems().equals(other.getSwappItems())){
+      setSwappItemList(other);
     }return this; 
   }
 
@@ -89,12 +89,8 @@ public class SwappItemList implements Iterable<SwappItem> {
     return items.stream().filter(x->x.getName().equals(name)).findFirst().get();
   }
 
-  public List<SwappItem> getItems() {
+  public List<SwappItem> getSwappItems() {
     return this.items;
-  }
-
-  public SwappItemList getSwappList(){
-    return this;
   }
 
   public boolean isvalidName(String name){
@@ -115,8 +111,8 @@ public class SwappItemList implements Iterable<SwappItem> {
     }
   }
 
-  public List<SwappItem> getItemsByStatus(String status) {
-    if (status.equals("All")) return getItems();
+  public List<SwappItem> getSwappItemsByStatus(String status) {
+    if (status.equals("All")) return getSwappItems();
     return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
   }
 

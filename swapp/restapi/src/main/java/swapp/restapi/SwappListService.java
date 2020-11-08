@@ -78,9 +78,9 @@ public class SwappListService {
   @PUT
   @Consumes
   @Produces
-  public SwappItemList putSwappList(SwappItemList swappItemList){
-    LOG.debug("putSwappList({})", swappItemList);
-    SwappItemList newSwappItemlist = this.swappList.putSwappList(swappItemList);
+  public SwappItemList putSwappItemList(SwappItemList swappItemList){
+    LOG.debug("putSwappItemList({})", swappItemList);
+    SwappItemList newSwappItemlist = this.swappList.putSwappItemList(swappItemList);
     updateServer(newSwappItemlist);
     return newSwappItemlist;
   }
@@ -90,7 +90,7 @@ public class SwappListService {
   @Produces(MediaType.APPLICATION_JSON)
   public SwappItem addSwappItem(SwappItem item) {
     LOG.debug("addSwappItem({})", item.getName());
-    swappList.addItem(item);
+    swappList.addSwappItem(item);
     updateServer(swappList);
     return swappList.getSwappItem(item);
   }

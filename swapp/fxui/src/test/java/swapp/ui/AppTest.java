@@ -43,7 +43,7 @@ public class AppTest extends ApplicationTest {
     this.controller = (AppController)fxmlLoader.getController();
     controller.setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-      controller.getItems().setSwappItemlist(persistence.readSwappList(reader));
+      controller.getSwappItemList().setSwappItemList(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
     }
@@ -107,12 +107,12 @@ public class AppTest extends ApplicationTest {
     clickOn(addButton);
     clickOn(textField).write(item2.getName());
     clickOn(addButton);
-    Assertions.assertEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
-    int lengthBeforeRemoval = list.getItems().size();
+    Assertions.assertEquals(list.getSwappItems().get(list.getSwappItems().size() - 1).getName(), item2.getName());
+    int lengthBeforeRemoval = list.getSwappItems().size();
     list.getSelectionModel().selectLast();
     clickOn("#removeButton");
-    Assertions.assertEquals(lengthBeforeRemoval-1, list.getItems().size());
-    //Assertions.assertNotEquals(list.getItems().get(list.getItems().size() - 1).getName(), item2.getName());
+    Assertions.assertEquals(lengthBeforeRemoval-1, list.getSwappItems().size());
+    //Assertions.assertNotEquals(list.getSwappItems().get(list.getSwappItems().size() - 1).getName(), item2.getName());
 
   }
   */

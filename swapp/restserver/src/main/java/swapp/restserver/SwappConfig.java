@@ -58,8 +58,8 @@ public class SwappConfig extends ResourceConfig {
     }
     SwappItemList swappList = new SwappItemList();
     
-    swappList.addItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
-    swappList.addItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
+    swappList.addSwappItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
+    swappList.addSwappItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
     
     return swappList;
   }

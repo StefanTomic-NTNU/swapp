@@ -14,8 +14,8 @@ class SwappItemListSerializer extends JsonSerializer<SwappItemList> {
   public void serialize(
       final SwappItemList items, final JsonGenerator jsonGen, final SerializerProvider provider)
       throws IOException {
-    jsonGen.writeStartArray(items.getItems().size());
-    for (final SwappItem item : items.getItems()) {
+    jsonGen.writeStartArray(items.getSwappItems().size());
+    for (final SwappItem item : items.getSwappItems()) {
       jsonGen.writeObject(item);
     }
     jsonGen.writeEndArray();

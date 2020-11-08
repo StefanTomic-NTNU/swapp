@@ -50,6 +50,8 @@ public class SwappItem {
   public void setStatus(String status) {
     if (status.equals("New") || status.equals("Used") || status.equals("Damaged")) {
       this.status = status;
+    } else {
+      throw new IllegalArgumentException("Status must be either 'New', 'Used', or 'Damaged'");
     }
   }
 
@@ -65,7 +67,6 @@ public class SwappItem {
   public String toString() {
     return name + "  " + "  " + status + "  " + description + "  " + contactInfo;
   }
-
 
   //TODO se på Equals metode
   //Virker som at spotbugs ønsker at equals sammenligner hashkoden til objektene. Dette ser også ut til å være god kodeskikk

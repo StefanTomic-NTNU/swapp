@@ -33,7 +33,7 @@ public class SwappPersistenceTest {
     
     @Test
     public void testSerializersDeserializers(){
-        list.addItem(item1, item2);
+        list.addSwappItem(item1, item2);
         SwappItem nextItem;
         try {
             StringWriter writer = new StringWriter();

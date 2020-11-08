@@ -40,8 +40,8 @@ public class SwappItemListModuleTest {
     items = new SwappItemList();
     item1 = new SwappItem("name1");
     item2 = new SwappItem("name2");
-    items.addItem(item1);
-    items.addItem(item2);
+    items.addSwappItem(item1);
+    items.addSwappItem(item2);
   }
 
   private final static String ItemsListWithTwoItems = 
@@ -63,8 +63,8 @@ public class SwappItemListModuleTest {
   public void testDeserializers() {
     try {
       SwappItemList deserializedItems = mapper.readValue(ItemsListWithTwoItems, SwappItemList.class);
-      assertEquals(deserializedItems.getItems().get(0), items.getItems().get(0));
-      assertEquals(deserializedItems.getItems().get(1), items.getItems().get(1));
+      assertEquals(deserializedItems.getSwappItems().get(0), items.getSwappItems().get(0));
+      assertEquals(deserializedItems.getSwappItems().get(1), items.getSwappItems().get(1));
     } catch (JsonProcessingException e) {
       fail();
     }
@@ -111,8 +111,8 @@ public class SwappItemListModuleTest {
     try {
       String json = mapper.writeValueAsString(items);
       SwappItemList items2 = mapper.readValue(json, SwappItemList.class);
-      assertEquals(items.getItems().get(0).getName(), items2.getItems().get(0).getName());
-      assertEquals(items.getItems().get(1).getName(), items2.getItems().get(1).getName());
+      assertEquals(items.getSwappItems().get(0).getName(), items2.getSwappItems().get(0).getName());
+      assertEquals(items.getSwappItems().get(1).getName(), items2.getSwappItems().get(1).getName());
     } catch (JsonProcessingException e) {
       fail();
     }
