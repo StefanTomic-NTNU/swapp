@@ -118,10 +118,12 @@ public class RemoteSwappAccess {
         HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       //SwappItem deletedItem = objectMapper.readValue(responseString, SwappItem.class);
-      System.out.println();
+      //System.out.println("responsstring");
       //System.out.println(deletedItem.toString());
-      System.out.println(responseString);
-      this.swappList.deleteSwappItem(responseString);
+      SwappItem swappItemRes = objectMapper.readValue(responseString, SwappItem.class);
+      //System.out.println(responseString);
+      //System.out.println(swappItemRes.toString());
+      this.swappList.deleteSwappItem(swappItemRes.getName());
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
