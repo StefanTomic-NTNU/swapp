@@ -89,8 +89,10 @@ public class SwappListService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public SwappItem addSwappItem(SwappItem item) {
+    LOG.debug("addSwappItem({})", item.getName());
     swappList.addItem(item);
-    return item;
+    updateServer(swappList);
+    return swappList.getSwappItem(item);
   }
 
   @DELETE
