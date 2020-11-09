@@ -81,7 +81,7 @@ public class SwappListService {
     LOG.debug("putSwappList({})", swappItemList);
     SwappItemList newSwappItemlist = this.swappList.putSwappList(swappItemList);
     updateServer(newSwappItemlist);
-    return newSwappItemlist;
+    return this.swappList;
   }
 
   @POST

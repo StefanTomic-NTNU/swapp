@@ -19,9 +19,11 @@
       <TextField fx:id="emailTextField" prefHeight="44.0" prefWidth="600.0" promptText="Email" />
       <HBox prefHeight="47.0" prefWidth="600.0">
          <children>
-            <Button fx:id="backButton" cancelButton="true" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="43.0" prefWidth="110.0" text="Back" />
-            <Separator prefHeight="39.0" prefWidth="418.0" />
-            <Button fx:id="publishButton" mnemonicParsing="false" onAction="#publishSwappItem" prefHeight="42.0" prefWidth="75.0" text="Publish" />
+            <Button fx:id="backButton" cancelButton="true" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="75.0" prefWidth="308.0" text="Back" />
+            <Separator prefHeight="39.0" prefWidth="219.0" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteItem" prefHeight="42.0" prefWidth="280.0" text="Delete" />
+            <Separator prefHeight="39.0" prefWidth="265.0" />
+            <Button fx:id="publishButton" mnemonicParsing="false" onAction="#publishSwappItem" prefHeight="44.0" prefWidth="250.0" text="Publish" />
          </children>
       </HBox>
    </children>

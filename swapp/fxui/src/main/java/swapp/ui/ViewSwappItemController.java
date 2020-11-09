@@ -29,6 +29,12 @@ public class ViewSwappItemController {
     @FXML
     private Button publishButton;
 
+    @FXML
+    private Button deleteButton;
+
+    private boolean deleteFlag;
+
+
     private SwappItem swappItem;
 
     public void initSwappitem(SwappItem swappItem) {
@@ -45,6 +51,7 @@ public class ViewSwappItemController {
         emailTextField.setText(swappItem.getContactInfo());
     }
 
+    @FXML
     public void publishSwappItem(){
         String title = titleTextField.getText();
         String newInfo = infoTextField.getText();
@@ -52,6 +59,7 @@ public class ViewSwappItemController {
         String newEmail = emailTextField.getText();
         SwappItem newItem = new SwappItem(title, newstatus, newInfo, newEmail);
         this.swappItem = newItem;
+        setText();
         Stage stage = (Stage) publishButton.getScene().getWindow();
         stage.close();
     }
@@ -60,11 +68,24 @@ public class ViewSwappItemController {
     public void backButtonPressed() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
+    }
 
+    @FXML
+    public void deleteItem(){
+        if (swappItem!=null){
+            deleteFlag = true;
+        }
+        setText();
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
     }
 
     public SwappItem getSwappItem(){
         return this.swappItem;
+    }
+
+    public boolean isdelete(){
+        return deleteFlag;
     }
 
 }

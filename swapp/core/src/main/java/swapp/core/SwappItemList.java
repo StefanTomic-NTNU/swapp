@@ -35,84 +35,95 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   /**
-  * Adds collection of SwapItems to SwappItemList.
-  */
+   * Adds collection of SwapItems to SwappItemList.
+   */
   public void addItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       if (!this.items.contains(item)) {
         this.addItem(item);
-        //TODO blir det riktig å kaste en exception her, eller bør man bare ignorere gjenstanden?
-      } else {throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");}
+        // TODO blir det riktig å kaste en exception her, eller bør man bare ignorere
+        // gjenstanden?
+      } else {
+        throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");
+      }
     }
   }
 
+  public SwappItemList setSwappList(SwappItemList other){
+    this.items = other.getItems();
+    return other;
+  }
+
   public void removeItem(SwappItem... item) {
-    if (items.containsAll(List.of(item))){
+    if (items.containsAll(List.of(item))) {
       this.items.removeAll(List.of(item));
       fireSwappItemListChanged();
     }
   }
 
   /**
-  * Removes multiple SwappItems from SwappItemList.
-  */
+   * Removes multiple SwappItems from SwappItemList.
+   */
   public void removeItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       this.deleteSwappItem(item.getName());
     }
   }
 
-  public SwappItemList putSwappItem(SwappItem newItem){
-    if (hasSwappItem(newItem.getName())){
+  public SwappItemList putSwappItem(SwappItem newItem) {
+    if (hasSwappItem(newItem.getName())) {
       SwappItem oldItem = getSwappItem(newItem.getName());
-      items.remove(oldItem);
-      items.add(newItem);
+      this.items.remove(oldItem);
+      this.items.add(newItem);
+      fireSwappItemListChanged();
     }
     return this;
   }
 
   public SwappItem deleteSwappItem(String name) {
     SwappItem deleteSwappItem = getSwappItem(name);
-    if (hasSwappItem(name)){
+    if (hasSwappItem(name)) {
       items.remove(getSwappItem(name));
       fireSwappItemListChanged();
     }
     return deleteSwappItem;
   }
 
-  //TODO return predicate
-  public boolean sameSwappItemInfo(SwappItem other){
-    return items.stream().anyMatch(p->p.isSameInfo(other));
+  // TODO return predicate
+  public boolean sameSwappItemInfo(SwappItem other) {
+    return items.stream().anyMatch(p -> p.isSameInfo(other));
   }
 
-  public SwappItemList putSwappList(SwappItemList other){
-    if (!getItems().equals(other.getItems())){
-      setSwappItemlist(other);
-    }return this; 
+  public SwappItemList putSwappList(SwappItemList other) {
+    this.items = new ArrayList<>();
+    this.addItem(other.getItems());
+    return this;
   }
 
-  public SwappItem getSwappItem(SwappItem swappItem){
-    if (items.contains(swappItem)) return swappItem;  
-    else return null;
+  public SwappItem getSwappItem(SwappItem swappItem) {
+    if (items.contains(swappItem))
+      return swappItem;
+    else
+      return null;
   }
 
-  public boolean hasSwappItem(String name){
-    return getSwappItem(name)!=null;
+  public boolean hasSwappItem(String name) {
+    return getSwappItem(name) != null;
   }
 
-  public SwappItem getSwappItem(String name){
-    return items.stream().filter(x->x.getName().equals(name)).findFirst().get();
+  public SwappItem getSwappItem(String name) {
+    return items.stream().filter(x -> x.getName().equals(name)).findFirst().get();
   }
 
   public List<SwappItem> getItems() {
     return this.items;
   }
 
-  public SwappItemList getSwappList(){
+  public SwappItemList getSwappList() {
     return this;
   }
 
-  public boolean isvalidName(String name){
+  public boolean isvalidName(String name) {
     return !name.isBlank();
   }
 
@@ -131,8 +142,9 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public List<SwappItem> getItemsByStatus(String status) {
-    if (status.equals("All")) return getItems();
-    return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
+    if (status.equals("All"))
+      return getItems();
+    return this.items.stream().filter(s -> s.getStatus().equals(status)).collect(Collectors.toList());
   }
 
   @Override
