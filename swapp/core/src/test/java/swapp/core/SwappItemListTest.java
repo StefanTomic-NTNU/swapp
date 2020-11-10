@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,11 +53,7 @@ public class SwappItemListTest {
     assertEquals(itemslist.get(1).getName(), "name2");
   }
 
-  @Test
-  public void testGetSwappItems() {
-    swappItemList.addSwappItem(item1);
-    assertEquals(swappItemList.getSwappItems().get(0).getName(), "name1");
-  }
+  
 
   @Test
   public void testSetSwappItemList() {
@@ -92,6 +89,42 @@ public class SwappItemListTest {
     itemlist.add(item2);
     swappItemList.removeSwappItem(itemlist);
     assertEquals(swappItemList.getSwappItems().size(), 0);
+  }
+
+  @Test
+  public void testRemoveSwappItemByName() {
+    swappItemList.addSwappItem(item1);
+    swappItemList.removeSwappItem(item1.getName());
+    assertThrows(NoSuchElementException.class, () -> {
+        swappItemList.getSwappItem(item1.getName());
+    });
+    assertFalse(swappItemList.hasSwappItem(item1.getName()));
+  }
+
+  @Test
+  public void testGetSwappItems() {
+    swappItemList.addSwappItem(item1);
+    assertEquals(swappItemList.getSwappItems().get(0).getName(), "name1");
+  }
+
+  @Test
+  public void testGetAndHasSwappItem() {
+    swappItemList.addSwappItem(item1);
+    assertEquals(item1, swappItemList.getSwappItem(item1));
+    assertTrue(swappItemList.hasSwappItem(item1.getName()));
+    assertFalse(swappItemList.hasSwappItem(item2.getName()));
+  }
+
+  @Test
+  public void testGetSwappItemsByStatus() {
+    item1 = new SwappItem("name1", "New", "", "");
+    item2 = new SwappItem("name2", "Used", "", "");
+    swappItemList.addSwappItem(item1, item2);
+    List<SwappItem> itemlist = new ArrayList<>();
+    itemlist.add(item1);
+    itemlist.add(item2);
+    assertTrue(item1.allAttributesEquals(swappItemList.getSwappItemsByStatus("New").get(0)));
+    assertEquals(itemlist, swappItemList.getSwappItemsByStatus("All"));
   }
 
   private int receivedNotificationCount = 0;

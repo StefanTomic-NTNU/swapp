@@ -17,9 +17,16 @@ public class SwappItemTest {
   }
 
   @Test
-  public void testBlankName() {
+  public void testIllegalName() {
     assertThrows(IllegalArgumentException.class, () -> {
-        SwappItem item2 = new SwappItem(" ");
+        item = new SwappItem(" ");
+    });
+  }
+
+  @Test
+  public void testIllegalStatus() {
+    assertThrows(IllegalArgumentException.class, () -> {
+        item = new SwappItem("name", "illegalStatus", "description", "contactInfo");
     });
   }
 
@@ -43,7 +50,19 @@ public class SwappItemTest {
     assertEquals(item.getContactInfo(), "contactInfo");
   }
 
-  
+  @Test
+  public void testSetDescriptionAndContactInfo() {
+    item.setDescription("testDescription");
+    assertEquals("testDescription", item.getDescription());
+    item.setDescription(null);
+    assertEquals("", item.getDescription());
+    item.setDescription("testContactInfo");
+    assertEquals("testContactInfo", item.getDescription());
+    item.setContactInfo(null);
+    assertEquals("", item.getContactInfo());
+  }
+
+
   @Test
   public void testToString(){
     SwappItem item = new SwappItem("name");
@@ -63,7 +82,7 @@ public class SwappItemTest {
   @Test
   public void testAllAttributesEquals(){
     SwappItem item2 = new SwappItem("name", "New", "description", "contactInfo");
-    SwappItem item3 = new SwappItem("name", "New", "description2", "contactInfo");
+    SwappItem item3 = new SwappItem("name", "New", "differentDescription", "contactInfo");
     assertTrue(item.allAttributesEquals(item2));
     assertFalse(item.allAttributesEquals(item3));
   }

@@ -60,18 +60,18 @@ public class SwappItem {
   }
 
   public void setDescription(String description) {
-    if (!description.equals(null)) {
+    if (!(description == null)) {
       this.description = description;
     } else {
-      description = "";
+      this.description = "";
     }
   }
 
   public void setContactInfo(String contactInfo) {
-    if (!contactInfo.equals(null)) {
+    if (!(contactInfo == null)) {
       this.contactInfo = contactInfo;
     } else {
-      contactInfo = "";
+      this.contactInfo = "";
     }
   }
 

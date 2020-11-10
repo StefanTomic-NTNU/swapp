@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -90,14 +91,16 @@ public class SwappItemList implements Iterable<SwappItem> {
   }
 
   public boolean hasSwappItem(String name){
-    return getSwappItem(name)!=null;
+    try {
+      return getSwappItem(name)!=null;
+    } catch (NoSuchElementException e) {return false;}
   }
 
   public List<SwappItem> getSwappItemsByStatus(String status) {
     if (status.equals("All")) return getSwappItems();
     return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
   }
-
+  
 
   public void addSwappItemListListener(SwappItemListListener listener) {
     swappItemListListeners.add(listener);

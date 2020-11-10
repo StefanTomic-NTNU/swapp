@@ -82,9 +82,9 @@ public class AppController {
 
   private final static String SwappItemListWithTwoItems = 
     "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
+    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"},"
     + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]"; 
+    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"}]"; 
 
   /** Initializes appcontroller. */
   public AppController() {
