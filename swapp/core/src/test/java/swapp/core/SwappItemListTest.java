@@ -1,9 +1,10 @@
 package swapp.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -44,7 +45,7 @@ public class SwappItemListTest {
   }
 
   @Test
-  public void testCreateListPopulatedItemList() {
+  public void testCreateCollectionPopulatedItemList() {
     SwappItemList swappItemList2 = new SwappItemList(item1, item2);
     List<SwappItem> itemslist = swappItemList2.getSwappItems();
     assertEquals(itemslist.get(0).getName(), "name1");
@@ -72,18 +73,9 @@ public class SwappItemListTest {
     });
   }
 
-  /*Unødvendig test?
-  @Test
-  public void testAddOneItem() {
-    swappItemList.addSwappItem(item1);
-    List<SwappItem> itemlist = new ArrayList<>();
-    itemlist.add(item1);
-    assertEquals(swappItemList.getSwappItems(), itemlist);
-  }
-  */
 
   @Test
-  public void testAddMultipleSwappItems() {
+  public void testAddSwappItems() {
     swappItemList.addSwappItem(item1, item2);
     List<SwappItem> itemlist = new ArrayList<>();
     itemlist.add(item1);
@@ -93,7 +85,7 @@ public class SwappItemListTest {
 
 
   @Test
-  public void testRemoveMultipleSwappItems() {
+  public void testRemoveSwappItems() {
     swappItemList.addSwappItem(item1, item2);
     List<SwappItem> itemlist = new ArrayList<>();
     itemlist.add(item1);
@@ -151,7 +143,7 @@ public class SwappItemListTest {
   public void testIterator() {
     swappItemList.addSwappItem(item1, item2);
     for (SwappItem item : swappItemList) {
-      assertTrue(item.equals(item1) || item.equals(item2));
+      assertTrue(item.allAttributesEquals(item1) || item.allAttributesEquals(item2));
     }
   }
   

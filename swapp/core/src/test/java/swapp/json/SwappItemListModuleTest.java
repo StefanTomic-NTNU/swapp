@@ -46,9 +46,9 @@ public class SwappItemListModuleTest {
 
   private final static String ItemsListWithTwoItems = 
     "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"},"
+    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"},"
     + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":null,\"itemContactInfo\":\"anonymous@email.com\"}]"; 
+    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"}]"; 
   
   @Test
   public void testSerializers() {
@@ -63,8 +63,8 @@ public class SwappItemListModuleTest {
   public void testDeserializers() {
     try {
       SwappItemList deserializedItems = mapper.readValue(ItemsListWithTwoItems, SwappItemList.class);
-      assertEquals(deserializedItems.getSwappItems().get(0), items.getSwappItems().get(0));
-      assertEquals(deserializedItems.getSwappItems().get(1), items.getSwappItems().get(1));
+      assertTrue(deserializedItems.getSwappItems().get(0).allAttributesEquals(items.getSwappItems().get(0)));
+      assertTrue(deserializedItems.getSwappItems().get(1).allAttributesEquals(items.getSwappItems().get(1)));
     } catch (JsonProcessingException e) {
       fail();
     }
@@ -89,30 +89,13 @@ public class SwappItemListModuleTest {
   }
   */
   
-
-  /*Testen funker men gir ingen mer test-coverage
-  @Test
-  public void testDeserializeSwappItemAsObjectNode() {
-    try {
-      ObjectNode item1Text = mapper.valueToTree(item1);
-      SwappItemDeserializer des = new SwappItemDeserializer();
-      SwappItem desItem = des.deserialize(item1Text);
-      assertEquals(item1, desItem);
-    } catch (JsonProcessingException e) {
-      fail();
-    }
-  }
-  */
-  
-  
-
   @Test
   public void testSerializersDeserializers() {
     try {
       String json = mapper.writeValueAsString(items);
       SwappItemList items2 = mapper.readValue(json, SwappItemList.class);
-      assertEquals(items.getSwappItems().get(0).getName(), items2.getSwappItems().get(0).getName());
-      assertEquals(items.getSwappItems().get(1).getName(), items2.getSwappItems().get(1).getName());
+      assertTrue(items.getSwappItems().get(0).allAttributesEquals(items2.getSwappItems().get(0)));
+      assertTrue(items.getSwappItems().get(1).allAttributesEquals(items2.getSwappItems().get(1)));
     } catch (JsonProcessingException e) {
       fail();
     }

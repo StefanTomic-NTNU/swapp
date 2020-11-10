@@ -23,75 +23,81 @@ public class SwappItemList implements Iterable<SwappItem> {
     this.addSwappItem(items);
   }
 
-  public void setSwappItemList(SwappItemList swappList) {
-    this.items = new ArrayList<>();
-    addSwappItem(swappList.getSwappItems());
-  }
 
   public void addSwappItem(SwappItem... item) {
-
+    for (SwappItem newItem : List.of(item)) {
+      for (SwappItem oldItem : this.items) {
+        if (newItem.nameEquals(oldItem)) {
+          throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");
+        }
+      }
+    }
     this.items.addAll(List.of(item));
     fireSwappItemListChanged();
   }
 
-  /**
-  * Adds collection of SwapItems to SwappItemList.
-  */
   public void addSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
-      if (!this.items.contains(item)) {
-        this.addSwappItem(item);
-      } else {throw new IllegalArgumentException("Duplicate SwappItem in SwappItemList");}
+      addSwappItem(item);
     }
   }
 
+
+  public void setSwappItemList(SwappItemList items) {
+    this.items.clear();
+    addSwappItem(items.getSwappItems());
+  }
+
+  public SwappItemList putSwappItemList(SwappItemList other){
+    setSwappItemList(other);
+    return this; 
+  }
+
+
   public void removeSwappItem(SwappItem... item) {
-    this.items.removeAll(List.of(item));
+    removeSwappItem(List.of(item));
+  }
+
+  public void removeSwappItem(Collection<SwappItem> items) {
+    this.items.removeAll(items);
     fireSwappItemListChanged();
   }
 
-  /**
-  * Removes multiple SwappItems from SwappItemList.
-  */
-  public void removeSwappItem(Collection<SwappItem> items) {
-    for (SwappItem item : items) {
-      this.removeSwappItem(item);
-    }
-  }
-
   public void removeSwappItem(String name) {
-    int j=0;
+    int j=-1;
     for (int i=0; i<this.items.size(); i++) {
       if (items.get(i).getName().equals(name)) {
         j=i;
       }
-    }
+    } 
+    if (j != -1) {
     this.items.remove(j);
     fireSwappItemListChanged();
+    }
   }
 
-  public SwappItemList putSwappItemList(SwappItemList other){
-    if (!getSwappItems().equals(other.getSwappItems())){
-      setSwappItemList(other);
-    }return this; 
+
+  public List<SwappItem> getSwappItems() {
+    return this.items;
   }
 
-  public SwappItem getSwappItem(SwappItem swappItem){
-    if (items.contains(swappItem)) return swappItem;  
-    else return null;
+  public SwappItem getSwappItem(SwappItem item) {
+    return getSwappItem(item.getName());
+  }
+
+  public SwappItem getSwappItem(String name) {
+    return items.stream().filter(x->x.nameEquals(name)).findFirst().get();
   }
 
   public boolean hasSwappItem(String name){
     return getSwappItem(name)!=null;
   }
 
-  public SwappItem getSwappItem(String name){
-    return items.stream().filter(x->x.getName().equals(name)).findFirst().get();
+  public List<SwappItem> getSwappItemsByStatus(String status) {
+    if (status.equals("All")) return getSwappItems();
+    return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
   }
 
-  public List<SwappItem> getSwappItems() {
-    return this.items;
-  }
 
   public void addSwappItemListListener(SwappItemListListener listener) {
     swappItemListListeners.add(listener);
@@ -105,11 +111,6 @@ public class SwappItemList implements Iterable<SwappItem> {
     for (SwappItemListListener listener : swappItemListListeners) {
       listener.swappListChanged(this);
     }
-  }
-
-  public List<SwappItem> getSwappItemsByStatus(String status) {
-    if (status.equals("All")) return getSwappItems();
-    return this.items.stream().filter(s->s.getStatus().equals(status)).collect(Collectors.toList());
   }
 
   @Override

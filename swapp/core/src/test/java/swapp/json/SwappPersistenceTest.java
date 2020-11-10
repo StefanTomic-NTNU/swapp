@@ -43,23 +43,9 @@ public class SwappPersistenceTest {
             Iterator<SwappItem> it = list2.iterator();
             assertTrue(it.hasNext());
             nextItem = it.next();
-            assertEquals(nextItem, item1);
+            assertTrue(nextItem.allAttributesEquals(item1));
             nextItem = it.next();
-            assertEquals(nextItem, item2);
-            /* Hvis vi skal endre på equals() igjen kan dette være nyttig:
-            nextItem = it.next();
-            assertEquals(nextItem.getName(), item1.getName());
-            assertEquals(nextItem.getStatus(), item1.getStatus());
-            assertEquals(nextItem.getDescription(), item1.getDescription());
-            assertEquals(nextItem.getContactInfo(), item1.getContactInfo());
-            assertTrue(it.hasNext());
-            nextItem = it.next();
-            assertEquals(nextItem.getName(), item2.getName());
-            assertEquals(nextItem.getStatus(), item2.getStatus());
-            assertEquals(nextItem.getDescription(), item2.getDescription());
-            assertEquals(nextItem.getContactInfo(), item2.getContactInfo());
-            assertFalse(it.hasNext());
-            */
+            assertTrue(nextItem.allAttributesEquals(item2));
           } catch (IOException e) {
             fail();
           }

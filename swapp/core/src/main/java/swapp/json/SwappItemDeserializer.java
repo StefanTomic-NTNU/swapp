@@ -21,10 +21,6 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
   public SwappItem deserialize(
       final JsonParser jsonParser, final DeserializationContext deserContext)
       throws IOException, JsonProcessingException {
-    
-
-    //TODO se over endringer. Ser ikke hensikten med deserialization av ArrayNodes.
-    //Har derfor ikke skrevet noen test for ArrayNodes
 
     final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
     return deserialize(jsonNode);

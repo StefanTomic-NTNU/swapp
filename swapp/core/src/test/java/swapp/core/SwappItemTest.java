@@ -1,7 +1,7 @@
 package swapp.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class SwappItemTest {
 
-  private SwappItem item1;
+  private SwappItem item;
 
   @BeforeEach
   public void beforeEach() {
-    item1 = new SwappItem("name", "New", "description", "contactInfo");
+    item = new SwappItem("name", "New", "description", "contactInfo");
   }
 
   @Test
@@ -25,40 +25,47 @@ public class SwappItemTest {
 
   @Test
   public void testGetName() {
-    assertEquals(item1.getName(), "name");
+    assertEquals(item.getName(), "name");
   }
 
   @Test
   public void testGetStatus() {
-    assertEquals(item1.getStatus(), "New");
+    assertEquals(item.getStatus(), "New");
   }
 
   @Test
   public void testGetDescription() {
-    assertEquals(item1.getDescription(), "description");
+    assertEquals(item.getDescription(), "description");
   }
 
   @Test
   public void testGetContactInfo() {
-    assertEquals(item1.getContactInfo(), "contactInfo");
+    assertEquals(item.getContactInfo(), "contactInfo");
   }
 
   
-    @Test
-    public void testToString(){
-        SwappItem item = new SwappItem("name");
-        assertEquals(item.getName() + "  " + "  " + 
-        item.getStatus() + "  " + item.getDescription() + 
-        "  " + item.getContactInfo(), item.toString());
-    }
+  @Test
+  public void testToString(){
+    SwappItem item = new SwappItem("name");
+    assertEquals(item.getName() + "    " + 
+    item.getStatus() + "  " + item.getDescription() + 
+    "  " + item.getContactInfo(), item.toString());
+  }
 
-    @Test
-    public void testEquals(){
-        SwappItem item1 = new SwappItem("name", "New", "description1", "contactInfo1");
-        SwappItem item2 = new SwappItem("name", "New", "description2", "contactInfo2");
-        SwappItem item3 = new SwappItem("name3", "New", "description2", "contactInfo1");
-        assertEquals(item1, item2);
-        assertNotEquals(item1, item3);
-    }
+  @Test
+  public void testNameEquals(){
+    SwappItem item2 = new SwappItem("name");
+    SwappItem item3 = new SwappItem("differentName");
+    assertTrue(item.nameEquals(item2));
+    assertFalse(item.nameEquals(item3));
+  }
+
+  @Test
+  public void testAllAttributesEquals(){
+    SwappItem item2 = new SwappItem("name", "New", "description", "contactInfo");
+    SwappItem item3 = new SwappItem("name", "New", "description2", "contactInfo");
+    assertTrue(item.allAttributesEquals(item2));
+    assertFalse(item.allAttributesEquals(item3));
+  }
     
 }

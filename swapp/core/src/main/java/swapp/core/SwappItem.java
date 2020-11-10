@@ -43,8 +43,12 @@ public class SwappItem {
   }
 
   public void setName(String name) {
-    if (!name.isBlank()) this.name = name;
-    else throw new IllegalArgumentException("Name cannot be blank");
+    if (!name.isBlank()) {
+      this.name = name;
+    }
+    else {
+      throw new IllegalArgumentException("Name cannot be blank");
+    }
   }
 
   public void setStatus(String status) {
@@ -56,14 +60,22 @@ public class SwappItem {
   }
 
   public void setDescription(String description) {
-    if (!description.isBlank()) {this.description = description;}
+    if (!description.equals(null)) {
+      this.description = description;
+    } else {
+      description = "";
+    }
   }
 
   public void setContactInfo(String contactInfo) {
-    if (!contactInfo.isBlank()) {this.contactInfo = contactInfo;}
+    if (!contactInfo.equals(null)) {
+      this.contactInfo = contactInfo;
+    } else {
+      contactInfo = "";
+    }
   }
 
-   public boolean allAttributesEquals(String name, String status, String description, String contactInfo) {
+  public boolean allAttributesEquals(String name, String status, String description, String contactInfo) {
     return (name.equals(this.name) && 
       status.equals(this.status) &&
       description.equals(this.description) &&
@@ -74,11 +86,20 @@ public class SwappItem {
     return allAttributesEquals(other.getName(), other.getStatus(), other.getDescription(), other.getContactInfo());
   }
 
-  @Override
-  public String toString() {
-    return name + "  " + "  " + status + "  " + description + "  " + contactInfo;
+  public boolean nameEquals(String name) {
+    return getName().equals(name);
   }
 
+  public boolean nameEquals(SwappItem other) {
+    return nameEquals(other.getName());
+  }
+
+  @Override
+  public String toString() {
+    return name + "    " + status + "  " + description + "  " + contactInfo;
+  }
+
+  /*
   //TODO se på Equals metode
   //Virker som at spotbugs ønsker at equals sammenligner hashkoden til objektene. Dette ser også ut til å være god kodeskikk
   //Tror at måten det er satt opp nå vil to objekter med samme navn få samme hash uansett hva de andre param. er.
@@ -102,6 +123,6 @@ public class SwappItem {
     }
     return true;
   }
-  
+  */
 
 }
