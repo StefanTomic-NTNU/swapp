@@ -37,8 +37,8 @@ public class RemoteAppController {
   @FXML
   private Button addButton;
 
-  /**@FXML
-  private Button removeButton;*/
+  @FXML
+  private Button removeButton;
 
   @FXML
   private MenuItem openButton;
@@ -133,7 +133,7 @@ public class RemoteAppController {
       }
     }
   }
-  /** 
+  
   @FXML
   void removeSwappItemButtonClicked() {
     if (listView.getSelectionModel().getSelectedItem() != null) {
@@ -141,7 +141,7 @@ public class RemoteAppController {
       remoteSwappAccess.removeSwappItem(item.getName());
       updateSwappListView();
     }
-  }*/
+  }
 
   @FXML
   public void viewSwappItem() throws IOException {

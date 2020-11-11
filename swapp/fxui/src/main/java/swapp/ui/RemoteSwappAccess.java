@@ -137,7 +137,7 @@ public class RemoteSwappAccess {
    * @param todoList the TodoList that has changed
    * 
    */
-  public void notifySwappListChanged(SwappItem other) {
+  public void notifySwappListChanged(SwappItemList other) {
     putSwappList(other);
   }
 }
