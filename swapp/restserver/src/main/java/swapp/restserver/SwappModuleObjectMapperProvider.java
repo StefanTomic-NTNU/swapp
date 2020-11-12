@@ -6,18 +6,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
-import swapp.json.SwappItemModule;
+import swapp.json.SwappModule;
 
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class SwappModuleObjectMapperProvider implements ContextResolver<ObjectMapper> {
-  private final ObjectMapper objectMapper;
+public class SwappModuleObjectMapperProvider implements ContextResolver<ObjectMapper> { 
 
-  public SwappModuleObjectMapperProvider() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new SwappItemModule(false));
-  }
+  private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new SwappModule(false));
 
   @Override
   public ObjectMapper getContext(final Class<?> type) {

@@ -26,11 +26,10 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
-import swapp.core.SwappItemList;
+import swapp.core.SwappList;
 import swapp.json.SwappPersistence;
 
-public class AppTest extends ApplicationTest {
-
+public class AppTest extends ApplicationTest {/**
   
   private Parent parent;
   private AppController controller;

@@ -1,7 +1,6 @@
 package swapp.restserver;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
@@ -9,58 +8,65 @@ import java.nio.charset.StandardCharsets;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import swapp.core.SwappList;
+import swapp.core.SwappModel;
 import swapp.core.SwappItem;
-import swapp.core.SwappItemList;
 import swapp.json.SwappPersistence;
-import swapp.restapi.SwappListService;
+import swapp.restapi.SwappModelService;
 
 public class SwappConfig extends ResourceConfig {
-  private SwappItemList swappList;
+
+  private SwappModel swappModel;
 
   /**
-   * * Initialize this SwappConfig. * * @param swappList swappList instance to serve
+   * Initialize this TodoConfig.
+   *
+   * @param todoModel todoModel instance to serve
    */
-  public SwappConfig(SwappItemList swappList) {
-    setSwappList(swappList);
-    register(SwappListService.class);
+  public SwappConfig(SwappModel swappModel) {
+    setSwappModel(swappModel);
+    register(SwappModelService.class);
     register(SwappModuleObjectMapperProvider.class);
     register(JacksonFeature.class);
     register(new AbstractBinder() {
       @Override
       protected void configure() {
-        bind(SwappConfig.this.swappList);
+        bind(SwappConfig.this.swappModel);
       }
     });
   }
 
-  /** * Initialize this TodoConfig with a default TodoModel. */ 
+  /**
+   * Initialize this TodoConfig with a default TodoModel.
+   */
   public SwappConfig() {
-    this(createDefaultSwappList());
+    this(createDefaultSwappModel());
   }
 
-  public SwappItemList getSwappList() {
-    return swappList;
+  public SwappModel getSwappModel() {
+    return swappModel;
   }
 
-  public void setSwappList(SwappItemList swappList) {
-    this.swappList = swappList;
+  public void setSwappModel(SwappModel swappModel) {
+    this.swappModel = swappModel;
   }
 
-  private static SwappItemList createDefaultSwappList() {
+  private static SwappModel createDefaultSwappModel() {
     SwappPersistence swappPersistence = new SwappPersistence();
-    URL url = SwappConfig.class.getResource("default-swapplist.json");
+    URL url = SwappConfig.class.getResource("default-todomodel.json");
     if (url != null) {
       try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-        return swappPersistence.readSwappList(reader);
+        return swappPersistence.readSwappModel(reader);
       } catch (IOException e) {
-        System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
+        System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually ("
+            + e + ")");
       }
     }
-    SwappItemList swappList = new SwappItemList();
-    
-    swappList.addSwappItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
-    swappList.addSwappItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
-    
-    return swappList;
+    SwappModel swappModel = new SwappModel();
+    SwappList list1 = new SwappList(new SwappItem("name1", "swapp1", "New", "info1"), new SwappItem("name2", "swapp1", "New", "info1"));
+    SwappList list2 = new SwappList(new SwappItem("name3", "swapp2", "New", "info1"), new SwappItem("name4", "swapp2", "New", "info1"));
+    swappModel.addSwappList(list1);
+    swappModel.addSwappList(list2);    
+    return swappModel;
   }
 }

@@ -2,19 +2,29 @@
 
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.ViewSwappItemController">
    <children>
       <TextField fx:id="titleTextField" editable="false" prefHeight="45.0" prefWidth="600.0" promptText="Title" />
       <Accordion prefHeight="51.0" prefWidth="600.0" />
-      <TextArea fx:id="infoTextField" editable="false" prefHeight="139.0" prefWidth="600.0" promptText="Info" />
+      <TextArea fx:id="infoTextField" prefHeight="139.0" prefWidth="600.0" promptText="Info" />
       <Accordion prefHeight="37.0" prefWidth="600.0" />
       <TextField fx:id="statusTextField" editable="false" prefHeight="41.0" prefWidth="600.0" promptText="Status" />
       <Accordion prefHeight="25.0" prefWidth="600.0" />
       <TextField fx:id="emailTextField" editable="false" prefHeight="44.0" prefWidth="600.0" promptText="Email" />
-      <Button fx:id="backButton" cancelButton="true" mnemonicParsing="false" onAction="#backButtonPressed" text="Back" />
+      <HBox prefHeight="47.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="backButton" cancelButton="true" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="75.0" prefWidth="308.0" text="Back" />
+            <Separator prefHeight="39.0" prefWidth="219.0" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteItem" prefHeight="42.0" prefWidth="280.0" text="Delete" />
+            <Separator prefHeight="39.0" prefWidth="265.0" />
+            <Button fx:id="publishButton" mnemonicParsing="false" onAction="#publishSwappItem" prefHeight="44.0" prefWidth="250.0" text="Publish" />
+         </children>
+      </HBox>
    </children>
 </VBox>

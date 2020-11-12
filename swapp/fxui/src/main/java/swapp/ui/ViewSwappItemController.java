@@ -26,27 +26,81 @@ public class ViewSwappItemController {
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button publishButton;
+
+    @FXML
+    private Button deleteButton;
+
+    private boolean deleteFlag;
+
     private SwappItem swappItem;
 
-    public void initSwappitem(SwappItem swappItem) {
+    public void initSwappitem(SwappItem swappItem, String username) {
+        cleanText();
         if (swappItem != null) {
             this.swappItem = swappItem;
             setText();
+            if (!swappItem.getUsername().equals(username)){
+                deleteButton.setDisable(true);
+                publishButton.setDisable(true);
+                infoTextField.setEditable(false);
+            }
         }
     }
 
     public void setText() {
         titleTextField.setText(swappItem.getName());
-        infoTextField.setText(swappItem.getName());
-        statusTextField.setText(swappItem.getName());
-        emailTextField.setText(swappItem.getName());
+        infoTextField.setText(swappItem.getDescription());
+        statusTextField.setText(swappItem.getStatus());
+        emailTextField.setText(swappItem.getUsername());
+    }
+
+    public void cleanText(){
+        titleTextField.setText("");
+        infoTextField.setText("");
+        statusTextField.setText("");
+        emailTextField.setText("");
+    }
+
+    @FXML
+    public void publishSwappItem() {
+        String title = titleTextField.getText();
+        String newInfo = infoTextField.getText();
+        String newstatus = statusTextField.getText();
+        String newEmail = emailTextField.getText();
+        SwappItem newItem = new SwappItem(title, newEmail, newstatus, newInfo);
+        this.swappItem = newItem;
+        setText();
+        cleanText();
+        Stage stage = (Stage) publishButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     public void backButtonPressed() {
+        cleanText();
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
+    }
 
+    @FXML
+    public void deleteItem() {
+        if (swappItem != null) {
+            deleteFlag = true;
+        }
+        setText();
+        cleanText();
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
+    }
+
+    public SwappItem getSwappItem() {
+        return this.swappItem;
+    }
+
+    public boolean isdelete() {
+        return deleteFlag;
     }
 
 }

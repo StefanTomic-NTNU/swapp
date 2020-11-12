@@ -38,18 +38,18 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
     if (jsonNode instanceof ObjectNode) {
       final ObjectNode objectNode = (ObjectNode) jsonNode;
       final String itemName = objectNode.get(SwappItemSerializer.ITEMNAME).asText();
+      final String itemUsername = objectNode.get(SwappItemSerializer.ITEMUSERNAME).asText();
       final String itemStatus = objectNode.get(SwappItemSerializer.ITEMSTATUS).asText();
       final String itemDescription = objectNode.get(SwappItemSerializer.ITEMDESCRIPTION).asText();
-      final String itemContactInfo = objectNode.get(SwappItemSerializer.ITEMCONTACTINFO).asText();
-      return new SwappItem(itemName, itemStatus, itemDescription, itemContactInfo);
+      return new SwappItem(itemName, itemUsername, itemStatus, itemDescription);
     } else if (jsonNode instanceof ArrayNode) {
       final ArrayNode itemArray = (ArrayNode) jsonNode;
       if (itemArray.size() == ARRAY_JSON_NODE_SIZE) {
         final String itemName = itemArray.get(0).asText();
-        final String itemStatus = itemArray.get(1).asText();
-        final String itemDescription = itemArray.get(2).asText();
-        final String itemContactInfo = itemArray.get(3).asText();
-        return new SwappItem(itemName, itemStatus, itemDescription, itemContactInfo);
+        final String itemUsername = itemArray.get(1).asText();
+        final String itemStatus = itemArray.get(2).asText();
+        final String itemDescription = itemArray.get(3).asText();
+        return new SwappItem(itemName, itemUsername, itemStatus, itemDescription);
       }
     }
     return null;

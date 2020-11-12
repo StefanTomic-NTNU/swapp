@@ -31,7 +31,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.RadioButton;
 import swapp.core.SwappItem;
-import swapp.core.SwappItemList;
+import swapp.core.SwappModel;
+import swapp.core.SwappList;
 import swapp.json.SwappPersistence;
 
 public class AppController {
@@ -59,12 +60,9 @@ public class AppController {
 
   @FXML
   private TextField nameField;
-  
-  @FXML
-  private TextArea descriptionFieldArea;
 
   @FXML
-  private TextField contactInfoField;
+  private TextArea descriptionFieldArea;
 
   @FXML
   private RadioButton newRadio;
@@ -74,70 +72,77 @@ public class AppController {
 
   @FXML
   private RadioButton damagedRadio;
-  
-  private SwappPersistence swappPersistence = new SwappPersistence();
-  private SwappItemList swappList;
-  private ToggleGroup toggleGroup;
-  private File file = Paths.get(System.getProperty("user.home"), "items.json").toFile();
 
-  private final static String SwappItemListWithTwoItems = 
-    "[{\"itemName\":\"name1\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"},"
-    + "{\"itemName\":\"name2\",\"itemStatus\":\"New\""
-    + ",\"itemDescription\":\"\",\"itemContactInfo\":\"anonymous@email.com\"}]"; 
+  private ToggleGroup toggleGroup;
+
+  private String username;
+
+  private SwappModel model;
+
+  private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
+
+  private SwappPersistence swappPersistence = new SwappPersistence();
+  
+  private File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
 
   /** Initializes appcontroller. */
   public AppController() {
     listView = new ListView<SwappItem>();
     filterChoiceBox = new ChoiceBox<>();
-    swappList = new SwappItemList();
-
-    loadItems();
+    model = new SwappModel();
   }
 
-  public void setFile(File file) {
-    this.file = file;
-    loadItems();
+  void loadSwapp() throws IOException {
+    try(Reader reader = new FileReader(file, StandardCharsets.UTF_8)){
+      model = swappPersistence.readSwappModel(reader);
+    } catch (IOException e) {
+      Reader reader = new StringReader(swappListWithTwoItems);
+      model = swappPersistence.readSwappModel(reader);
+      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
+    }
   }
 
-  public void filterSwappItemByStatusChoiceBox() {
-    updateSwappItems();
-  }
-
-  void loadItems() {
-    Reader reader = null;
-    try {
-      try {
-        reader = new FileReader(file, StandardCharsets.UTF_8);
-      } catch (IOException ioex1) {
-        System.err.println("Fant ingen fil lokalt. Laster inn eksempelfil..");
-        URL url = getClass().getResource("items.json");
-        if (url != null) {
-          reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-        } else {
-          System.err.println("Fant ingen eksempelfil. Parser string direkte..");
-          reader = new StringReader(SwappItemListWithTwoItems);
-        }
+  private void autoSave(){
+    Writer writer = null;
+    try{
+      writer = new FileWriter(file, StandardCharsets.UTF_8);
+      swappPersistence.writeSwappModel(model, writer);
+    }catch(IOException e){
+      e.printStackTrace();
+    }
+    finally{
+      try{
+        if (writer!=null) writer.close();
       }
-      /*
-       * For å printe ut fil til konsoll: BufferedReader reader2 = new
-       * BufferedReader(reader); String linje; while ((linje = reader2.readLine()) !=
-       * null) { System.out.println(linje); }
-       */
-      SwappItemList list = swappPersistence.readSwappList(reader);
-      swappList.setSwappItemList(list);
-    } catch (IOException ioex2) {
-      System.err.println("Legger til gjenstander direkte..");
-      swappList.addSwappItem(new SwappItem("name1", "New", "description1", "contactInfo1"));
-      swappList.addSwappItem(new SwappItem("name2", "New", "description2", "contactInfo2"));
-    } finally {
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException ioex3) {
-        System.err.println("Problem med reader..");
+      catch(IOException e){
+        e.printStackTrace();
       }
+    }
+  }
+
+  /**
+   * Initialize with lambda expression for listeners of SwappItemList.
+   * 
+   * @throws IOException
+   */
+  @FXML
+  void initialize() throws IOException {
+    inizializeToggleGroup();
+    initializeChoiceBox();
+    loadSwapp();
+    initializeListView();
+  }
+
+  public void init(String username) {
+    if (!model.hasSwappList(username)) {
+      model.addSwappList(username);
+    }
+    this.username = username;
+    for (SwappList swappList : model) {
+      swappList.addSwappListListener(p -> {
+        updateSwappItems();
+        autoSave();
+      });
     }
   }
 
@@ -158,67 +163,55 @@ public class AppController {
     damagedRadio.setToggleGroup(toggleGroup);
   }
 
-  /** Initialize with lambda expression for listeners of SwappItemList. */
-  @FXML
-  void initialize() {
+  public void initializeListView() {
     listView.setCellFactory(list -> new SwappItemListViewCell());
-    //statusChoiceBox.getItems().addAll("New", "Used", "Damaged");
-    inizializeToggleGroup();
-    initializeChoiceBox();
     updateSwappItems();
-    swappList.addSwappItemListListener(swappList -> {
-      updateSwappItems();
-      autoSave();
-    });
+  }
+
+  public boolean hasSwappItem(String name) {
+    return model.getSwappList(username).hasSwappItem(name);
+  }
+
+  public void addSwappItem(SwappItem swappItem) {
+    model.addSwappItem(swappItem);
+  }
+
+  public void removeSwappItem(SwappItem swappItem) {
+    model.removeSwappItem(swappItem);
+  }
+
+  public void removeSwappItem(String swappItem) {
+    model.removeSwappItem(this.username, swappItem);
   }
 
   @FXML
   void addSwappItemButtonClicked() {
     if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ 
-      ((RadioButton)toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText(), contactInfoField.getText());
-      if (!swappList.getSwappItems().contains(item)) {
-        swappList.addSwappItem(item);
+      SwappItem item = new SwappItem(nameField.getText(), this.username,
+          ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
+      if (!hasSwappItem(item.getName())) {
+        addSwappItem(item);
         nameField.setText("");
         descriptionFieldArea.setText("");
       }
     }
-    
-    //statusChoiceBox.getSelectionModel().clearSelection();
   }
 
   @FXML
   void removeSwappItemButtonClicked() {
     SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
     if (!(item == null)) {
-      swappList.removeSwappItem(item);
+      removeSwappItem(item);
     }
   }
 
   public void updateSwappItems() {
-    listView.getItems().setAll(swappList.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    listView.getItems().setAll(model.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    System.out.println("list changed");
   }
 
-  public SwappItemList getSwappItemList() {
-    return swappList;
-  }
-
-  private void autoSave() {
-    Writer writer = null;
-    try {
-      writer = new FileWriter(file, StandardCharsets.UTF_8);
-      swappPersistence.writeSwappList(swappList, writer);
-    } catch (IOException ioex) {
-      System.err.println("Feil med fillagring.");
-    } finally {
-      try {
-        if (writer != null) {
-          writer.close();
-        }
-      } catch (IOException e) {
-        System.err.println("Feil med fillagring..");
-      }
-    }
+  public SwappList getSwappList(){
+    return model.getSwappList(username);
   }
 
   @FXML
@@ -226,18 +219,22 @@ public class AppController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
     Parent root = (Parent) loader.load();
     ViewSwappItemController itemController = loader.getController();
-    itemController.initSwappitem((SwappItem) listView.getSelectionModel().getSelectedItem());
+    SwappItem oldItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    itemController.initSwappitem(oldItem, username);
     Stage stage = new Stage();
     stage.setScene(new Scene(root, 800, 400));
     stage.setTitle("Item");
-    stage.show();
+    stage.showAndWait();
+    boolean deleteFlag = itemController.isdelete();
+    SwappItem returnetItem = itemController.getSwappItem();
+    if (deleteFlag) removeSwappItem(returnetItem);
+    else if(getSwappList().isItemChanged(returnetItem)){
+      System.out.println(getSwappList().getSwappItems().toString());  
+      getSwappList().changeSwappItem(oldItem, returnetItem);
+      System.out.println(getSwappList().getSwappItems().toString());
+      model.putSwappList(getSwappList());
+      System.out.println(getSwappList().getSwappItems().toString());
+    }
   }
 
-  /*
-   * Metoder for dokumentmetafor:
-   * 
-   * @FXML void handleSaveAction() {saveItems();}
-   * 
-   * @FXML void handleOpenAction() {loadItems();}
-   */
 }

@@ -6,10 +6,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -23,7 +22,6 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="344.0">
                <children>
-                  <TextField id="contactInfoField" fx:id="contactInfoField" layoutX="236.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Contact info" />
                   <TextField id="nameField" fx:id="nameField" layoutX="18.0" layoutY="14.0" prefHeight="27.0" prefWidth="202.0" promptText="Item name" />
                   <TextArea id="descriptionFieldArea" fx:id="descriptionFieldArea" layoutX="112.0" layoutY="51.0" prefHeight="65.0" prefWidth="326.0" promptText="Item description" wrapText="true" />
                   <RadioButton fx:id="usedRadio" layoutX="18.0" layoutY="80.0" mnemonicParsing="false" text="Used" />

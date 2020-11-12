@@ -1,9 +1,22 @@
 package swapp.ui;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +33,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.RadioButton;
 import swapp.core.SwappItem;
-import swapp.core.SwappItemList;
+import swapp.core.SwappModel;
+import swapp.core.SwappList;
 import swapp.json.SwappPersistence;
 
 public class RemoteAppController {
@@ -30,7 +44,7 @@ public class RemoteAppController {
 
   @FXML
   private ChoiceBox<String> filterChoiceBox;
-  
+
   @FXML
   private TextField textField;
 
@@ -48,12 +62,9 @@ public class RemoteAppController {
 
   @FXML
   private TextField nameField;
-  
-  @FXML
-  private TextArea descriptionFieldArea;
 
   @FXML
-  private TextField contactInfoField;
+  private TextArea descriptionFieldArea;
 
   @FXML
   private RadioButton newRadio;
@@ -64,95 +75,135 @@ public class RemoteAppController {
   @FXML
   private RadioButton damagedRadio;
 
-    private SwappItemList swappList;
-    private ToggleGroup toggleGroup;
+  private ToggleGroup toggleGroup;
 
-    @FXML
-    String endpointUri = "http://localhost:8999/swapp/";
+  @FXML
+  String endpointUri = "http://localhost:8999/swapp/";
 
-    private RemoteSwappAccess remoteSwappAccess;
+  private RemoteSwappAccess remoteSwappAccess;
 
-    public RemoteAppController() {
-        swappList = new SwappItemList();
-        filterChoiceBox = new ChoiceBox<>();
-        try {
-            remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  private String username;
+
+  /** Initializes appcontroller. */
+  public RemoteAppController() {
+    listView = new ListView<SwappItem>();
+    filterChoiceBox = new ChoiceBox<>();
+    try {
+      remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    @FXML
-    public void initialize() {
-        initializeChoiceBox();
-        listView.setCellFactory(list -> new SwappItemListViewCell());
-        inizializeToggleGroup();
-        updateSwappListView();
-        swappList.addSwappItemListListener(swappList -> {
-            // updateSwappListView();
-        });
-    }
+  }
 
-    public void initializeChoiceBox() {
-        filterChoiceBox.getItems().add("All");
-        filterChoiceBox.getItems().add("New");
-        filterChoiceBox.getItems().add("Used");
-        filterChoiceBox.getItems().add("Damaged");
-        filterChoiceBox.setValue("All");
-        filterChoiceBox.getSelectionModel().selectedItemProperty()
-                .addListener((v, oldValue, newValue) -> updateSwappListView());
-    }
+  /**
+   * Initialize with lambda expression for listeners of SwappItemList.
+   * 
+   * @throws IOException
+   */
+  @FXML
+  void initialize() throws IOException {
+    inizializeToggleGroup();
+    initializeChoiceBox();
+    initializeListView();
+  }
 
-    public void inizializeToggleGroup() {
-      toggleGroup = new ToggleGroup();
-      newRadio.setToggleGroup(toggleGroup);
-      usedRadio.setToggleGroup(toggleGroup);
-      damagedRadio.setToggleGroup(toggleGroup);
+  public void init(String username) throws URISyntaxException {
+    if (remoteSwappAccess == null) remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri)); 
+    if (!remoteSwappAccess.hasSwappList(username)) {
+      remoteSwappAccess.addSwappList(username);
     }
+    this.username = username;
+    remoteSwappAccess.getSwappList(username).addSwappListListener(p -> {
+      updateSwappItems();
+    });
+  
+  }
 
-    public void updateSwappListView() {
-        SwappItemList tmp = remoteSwappAccess.getSwappList();
-        listView.getItems().setAll(tmp.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
-    }
+  public void initializeChoiceBox() {
+    filterChoiceBox.getItems().add("All");
+    filterChoiceBox.getItems().add("New");
+    filterChoiceBox.getItems().add("Used");
+    filterChoiceBox.getItems().add("Damaged");
+    filterChoiceBox.setValue("All");
+    filterChoiceBox.getSelectionModel().selectedItemProperty()
+        .addListener((v, oldValue, newValue) -> updateSwappItems());
+  }
 
-    @FXML
-    void addSwappItemButtonClicked() {
-      if (!nameField.getText().isBlank()) {
-        String name =nameField.getText();
-        String status =((RadioButton)toggleGroup.getSelectedToggle()).getText();
-        String description = descriptionFieldArea.getText();
-        String contactInfo =contactInfoField.getText();
-        SwappItem item = new SwappItem(name, /*statusChoiceBox.getSelectionModel().getSelectedItem().toString()*/ status, description, contactInfo);
-        if (!remoteSwappAccess.getSwappList().getSwappItems().contains(item)) {
-          remoteSwappAccess.addSwappItem(item);
-          updateSwappListView();
-          nameField.setText("");
-          descriptionFieldArea.setText("");
-        }
+  public void inizializeToggleGroup() {
+    toggleGroup = new ToggleGroup();
+    newRadio.setToggleGroup(toggleGroup);
+    usedRadio.setToggleGroup(toggleGroup);
+    damagedRadio.setToggleGroup(toggleGroup);
+  }
+
+  public void initializeListView() {
+    listView.setCellFactory(list -> new SwappItemListViewCell());
+    updateSwappItems();
+  }
+
+  public boolean hasSwappItem(SwappItem item) {
+    return remoteSwappAccess.hasSwappItem(item);
+  }
+
+  public void addSwappItem(SwappItem swappItem) {
+    remoteSwappAccess.addSwappItem(swappItem);
+  }
+
+  public void removeSwappItem(SwappItem swappItem) {
+    remoteSwappAccess.removeSwappItem(swappItem);
+  }
+
+  @FXML
+  void addSwappItemButtonClicked() {
+    if (!nameField.getText().isBlank()) {
+      SwappItem item = new SwappItem(nameField.getText(), this.username,
+          ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
+      if (!hasSwappItem(item)) {
+        addSwappItem(item);
+        nameField.setText("");
+        descriptionFieldArea.setText("");
       }
     }
+  }
 
-    @FXML
-    void removeSwappItemButtonClicked() {
-        if (listView.getSelectionModel().getSelectedItem() != null) {
-            SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
-            remoteSwappAccess.removeSwappItem(item.getName());
-            updateSwappListView();
-        }
+  @FXML
+  void removeSwappItemButtonClicked() {
+    SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    if (!(item == null)) {
+      removeSwappItem(item);
     }
+  }
 
-    @FXML
-    public void viewSwappItem() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
-        Parent root = (Parent) loader.load();
-        ViewSwappItemController itemController = loader.getController();
-        SwappItem swappItem = remoteSwappAccess.getSwappItem(listView.getSelectionModel().getSelectedItem().getName());
-        System.out.println(swappItem + "viewSwappItem()");
-        itemController.initSwappitem(swappItem);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root, 800, 400));
-        stage.setTitle("Item");
-        stage.show();
+  public void updateSwappItems() {
+    listView.getItems().setAll(remoteSwappAccess.getSwappItemByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    System.out.println("list changed");
+  }
 
+  public SwappList getSwappList() {
+    return remoteSwappAccess.getSwappList(username);
+  }
+
+  @FXML
+  public void viewSwappItem() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
+    Parent root = (Parent) loader.load();
+    ViewSwappItemController itemController = loader.getController();
+    SwappItem oldItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    itemController.initSwappitem(oldItem, username);
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 800, 400));
+    stage.setTitle("Item");
+    stage.showAndWait();
+    boolean deleteFlag = itemController.isdelete();
+    SwappItem returnetItem = itemController.getSwappItem();
+    if (deleteFlag)
+      removeSwappItem(returnetItem);
+    else if (remoteSwappAccess.isItemChanged(returnetItem)) {
+      System.out.println(getSwappList().getSwappItems().toString());
+      remoteSwappAccess.changeSwappItem(oldItem, returnetItem);
+      System.out.println(getSwappList().getSwappItems().toString());
     }
+  }
+
 }

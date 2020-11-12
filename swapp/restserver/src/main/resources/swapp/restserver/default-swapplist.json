@@ -1,16 +1,32 @@
-[
-    {
-        "itemName":"swapp1", 
-        "itemStatus":"New", 
-        "itemDescription":"bla bla", 
-        "itemContactInfo":"contactInfo"
-    },
-    
-    {
-        "itemName":"swapp2", 
-        "itemStatus":"Used", 
-        "itemDescription":"bla bla", 
-        "itemContactInfo":"contactInfo"
-    }
-]
-
+{
+    "lists": [
+        {
+            "username": "swapp1",
+            "items": [
+                {
+                    "itemName": "item1",
+                    "itemUsername": "swapp1",
+                    "itemStatus": "New",
+                    "itemDescription": "info1"
+                },
+                {
+                    "itemName": "item2",
+                    "itemUsername": "swapp1",
+                    "itemStatus": "New",
+                    "itemDescription": "info2"
+                }
+            ]
+        },
+        {
+            "username": "swapp",
+            "items": [
+                {
+                    "itemName": "item3",
+                    "itemUsername": "swapp2",
+                    "itemStatus": "New",
+                    "itemDescription": "item1"
+                }
+            ]
+        }
+    ]
+}

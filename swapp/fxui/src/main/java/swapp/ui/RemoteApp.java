@@ -10,7 +10,7 @@ public class RemoteApp extends Application {
 
   @Override
   public void start(final Stage primaryStage) throws Exception {
-    final Parent parent = FXMLLoader.load(getClass().getResource("RemoteApp.fxml"));
+    final Parent parent = FXMLLoader.load(getClass().getResource("SplashScreenRemote.fxml"));
     primaryStage.setScene(new Scene(parent));
     primaryStage.show();
   }

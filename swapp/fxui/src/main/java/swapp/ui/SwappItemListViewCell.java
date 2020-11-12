@@ -8,7 +8,7 @@ public class SwappItemListViewCell extends ListCell<SwappItem> {
     protected void updateItem(SwappItem item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null) {
-            setText(item.getName() + "\t" + item.getStatus() + "\t" + item.getDescription() + "\t" +item.getContactInfo() );
+            setText(item.getName() + "\t" + item.getStatus() + "\t" + item.getDescription() + "\t" +item.getUsername() );
         } else {
             setText("");
         }

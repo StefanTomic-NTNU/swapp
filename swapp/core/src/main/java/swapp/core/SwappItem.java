@@ -6,24 +6,24 @@ public class SwappItem {
   private String name;
   private String status;
   private String description;
-  private String contactInfo;
+  private String username;
   public final static String defaultStatus = "New";
-  public final static String defaultDescription = "";
-  public final static String defaultContactInfo = "anonymous@email.com";
+  public final static String defaultDescription = "No info";
+  //TODO ENUM
   
 
-  public SwappItem(String name, String status, String description, String contactInfo) {
+  public SwappItem(String name, String username, String status, String description) {
     this.setName(name);
+    this.setUsername(username);
     this.setStatus(status);
     this.setDescription(description); 
-    this.setContactInfo(contactInfo);
   }
 
-  public SwappItem(String name) {
+  public SwappItem(String name, String username) {
     this.setName(name);
     this.setStatus(defaultStatus);
     this.setDescription(defaultDescription); 
-    this.setContactInfo(defaultContactInfo);
+    this.setUsername(username);
   }
 
   public String getName() {
@@ -38,8 +38,8 @@ public class SwappItem {
     return description;
   }
 
-  public String getContactInfo() {
-    return contactInfo;
+  public String getUsername() {
+    return username;
   }
 
   public void setName(String name) {
@@ -63,27 +63,25 @@ public class SwappItem {
     if (!(description == null)) {
       this.description = description;
     } else {
-      this.description = "";
+      this.description = "No info";
     }
   }
 
-  public void setContactInfo(String contactInfo) {
-    if (!(contactInfo == null)) {
-      this.contactInfo = contactInfo;
-    } else {
-      this.contactInfo = "";
+  public void setUsername(String username) {
+    if (!(username == null) && !username.isEmpty()) {
+      this.username = username;
     }
   }
 
-  public boolean allAttributesEquals(String name, String status, String description, String contactInfo) {
+  public boolean allAttributesEquals(String name, String status, String description, String username) {
     return (name.equals(this.name) && 
       status.equals(this.status) &&
       description.equals(this.description) &&
-      contactInfo.equals(this.contactInfo));
+      username.equals(this.username));
   }
 
   public boolean allAttributesEquals(SwappItem other) {
-    return allAttributesEquals(other.getName(), other.getStatus(), other.getDescription(), other.getContactInfo());
+    return allAttributesEquals(other.getName(), other.getStatus(), other.getDescription(), other.getUsername());
   }
 
   public boolean nameEquals(String name) {
@@ -96,7 +94,7 @@ public class SwappItem {
 
   @Override
   public String toString() {
-    return name + "    " + status + "  " + description + "  " + contactInfo;
+    return name + "    " + status + "  " + description + "  " + username;
   }
 
   /*

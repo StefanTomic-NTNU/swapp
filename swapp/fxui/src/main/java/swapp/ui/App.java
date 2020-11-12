@@ -10,7 +10,7 @@ public class App extends Application {
 
   @Override
   public void start(final Stage primaryStage) throws Exception {
-    final Parent parent = FXMLLoader.load(getClass().getResource("App.fxml"));
+    final Parent parent = FXMLLoader.load(getClass().getResource("SplashScreen.fxml"));
     primaryStage.setScene(new Scene(parent));
     primaryStage.show();
   }

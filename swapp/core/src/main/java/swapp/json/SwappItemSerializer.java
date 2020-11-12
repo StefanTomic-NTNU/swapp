@@ -10,9 +10,9 @@ import swapp.core.SwappItem;
 class SwappItemSerializer extends JsonSerializer<SwappItem> {
 
   public static final String ITEMNAME = "itemName";
+  public static final String ITEMUSERNAME = "itemUsername";
   public static final String ITEMSTATUS = "itemStatus";
   public static final String ITEMDESCRIPTION = "itemDescription";
-  public static final String ITEMCONTACTINFO = "itemContactInfo";
 
   @Override
   public void serialize(
@@ -21,14 +21,13 @@ class SwappItemSerializer extends JsonSerializer<SwappItem> {
     jsonGen.writeStartObject();
     jsonGen.writeFieldName(ITEMNAME);
     jsonGen.writeString(item.getName());
+    jsonGen.writeFieldName(ITEMUSERNAME);
+    jsonGen.writeString(item.getUsername());
     jsonGen.writeFieldName(ITEMSTATUS);
     jsonGen.writeString(item.getStatus());
     jsonGen.writeFieldName(ITEMDESCRIPTION);
     jsonGen.writeString(item.getDescription());
-    jsonGen.writeFieldName(ITEMCONTACTINFO);
-    jsonGen.writeString(item.getContactInfo());
     jsonGen.writeEndObject();
   }
-
 
 }
