@@ -15,18 +15,13 @@ class SwappItemSerializer extends JsonSerializer<SwappItem> {
   public static final String ITEMDESCRIPTION = "itemDescription";
 
   @Override
-  public void serialize(
-      final SwappItem item, final JsonGenerator jsonGen, final SerializerProvider provider)
+  public void serialize(SwappItem item, JsonGenerator jsonGen, final SerializerProvider serializerProvider)
       throws IOException {
     jsonGen.writeStartObject();
-    jsonGen.writeFieldName(ITEMNAME);
-    jsonGen.writeString(item.getName());
-    jsonGen.writeFieldName(ITEMUSERNAME);
-    jsonGen.writeString(item.getUsername());
-    jsonGen.writeFieldName(ITEMSTATUS);
-    jsonGen.writeString(item.getStatus());
-    jsonGen.writeFieldName(ITEMDESCRIPTION);
-    jsonGen.writeString(item.getDescription());
+    jsonGen.writeStringField(ITEMNAME, item.getName());
+    jsonGen.writeStringField(ITEMUSERNAME, item.getUsername());
+    jsonGen.writeStringField(ITEMSTATUS, item.getStatus());
+    jsonGen.writeStringField(ITEMDESCRIPTION, item.getDescription());
     jsonGen.writeEndObject();
   }
 

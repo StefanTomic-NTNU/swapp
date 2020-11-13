@@ -1,30 +1,30 @@
 {
     "lists": [
         {
-            "username": "swapp1",
+            "username": "username1",
             "items": [
                 {
                     "itemName": "item1",
-                    "itemUsername": "swapp1",
+                    "itemUsername": "username1",
                     "itemStatus": "New",
                     "itemDescription": "info1"
                 },
                 {
                     "itemName": "item2",
-                    "itemUsername": "swapp1",
+                    "itemUsername": "username1",
                     "itemStatus": "New",
                     "itemDescription": "info2"
                 }
             ]
         },
         {
-            "username": "swapp",
+            "username": "username2",
             "items": [
                 {
                     "itemName": "item3",
-                    "itemUsername": "swapp2",
+                    "itemUsername": "username2",
                     "itemStatus": "New",
-                    "itemDescription": "item1"
+                    "itemDescription": "info3"
                 }
             ]
         }

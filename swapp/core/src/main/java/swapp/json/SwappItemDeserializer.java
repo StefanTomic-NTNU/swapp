@@ -15,59 +15,27 @@ import swapp.core.SwappItem;
 
 class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
 
-  private static final int ARRAY_JSON_NODE_SIZE = 4;
-
   @Override
-  public SwappItem deserialize(
-      final JsonParser jsonParser, final DeserializationContext deserContext)
+  public SwappItem deserialize(JsonParser parser, DeserializationContext ctxt)
       throws IOException, JsonProcessingException {
-
-    final JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
-    return deserialize(jsonNode);
-
-    //TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
-    //return deserialize((JsonNode)treeNode);
+    TreeNode treeNode = parser.getCodec().readTree(parser);
+    return deserialize((JsonNode) treeNode);  
   }
 
-
-  /**
-  * Deserializes jsonNode.
-  */
-  
-  public SwappItem deserialize(final JsonNode jsonNode) throws JsonProcessingException {
-    if (jsonNode instanceof ObjectNode) {
-      final ObjectNode objectNode = (ObjectNode) jsonNode;
-      final String itemName = objectNode.get(SwappItemSerializer.ITEMNAME).asText();
-      final String itemUsername = objectNode.get(SwappItemSerializer.ITEMUSERNAME).asText();
-      final String itemStatus = objectNode.get(SwappItemSerializer.ITEMSTATUS).asText();
-      final String itemDescription = objectNode.get(SwappItemSerializer.ITEMDESCRIPTION).asText();
-      return new SwappItem(itemName, itemUsername, itemStatus, itemDescription);
-    } else if (jsonNode instanceof ArrayNode) {
-      final ArrayNode itemArray = (ArrayNode) jsonNode;
-      if (itemArray.size() == ARRAY_JSON_NODE_SIZE) {
-        final String itemName = itemArray.get(0).asText();
-        final String itemUsername = itemArray.get(1).asText();
-        final String itemStatus = itemArray.get(2).asText();
-        final String itemDescription = itemArray.get(3).asText();
-        return new SwappItem(itemName, itemUsername, itemStatus, itemDescription);
-      }
-    }
-    return null;
-  }
-
-  
-//Dette er mer likt måten Hallvard gjør det på
-/*
-  public SwappItem deserialize(JsonNode jsonNode) {
+  SwappItem deserialize(JsonNode jsonNode) {
     if (jsonNode instanceof ObjectNode) {
       String itemName ="";
+      String username ="";
       String itemStatus ="";
       String itemDescription ="";
-      String itemContactInfo ="";
       ObjectNode objectNode = (ObjectNode) jsonNode;
       JsonNode nameNode = objectNode.get("itemName");
       if (nameNode instanceof TextNode) {
         itemName = nameNode.asText();
+      }
+      JsonNode usernameNode = objectNode.get("itemUsername");
+      if (usernameNode instanceof TextNode) {
+        username = usernameNode.asText();
       }
       JsonNode statusNode = objectNode.get("itemStatus");
       if (statusNode instanceof TextNode) {
@@ -77,15 +45,8 @@ class SwappItemDeserializer extends JsonDeserializer<SwappItem> {
       if (descriptionNode instanceof TextNode) {
         itemDescription = descriptionNode.asText();
       }
-      JsonNode contactInfoNode = objectNode.get("itemContactInfo");
-      if (contactInfoNode instanceof TextNode) {
-        itemContactInfo = contactInfoNode.asText();
-      }
-      return new SwappItem(itemName, itemStatus, itemDescription, itemContactInfo);
+      return new SwappItem(itemName, username, itemStatus, itemDescription);
     }
     return null;
-  } 
-*/
-
-
+  }
 }

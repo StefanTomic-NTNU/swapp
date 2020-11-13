@@ -31,7 +31,7 @@ class SwappListDeserializer extends JsonDeserializer<SwappList> {
     return deserialize((JsonNode) treeNode);
   }
 
-  SwappList deserialize(JsonNode treeNode) throws JsonProcessingException {
+  SwappList deserialize(JsonNode treeNode){
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
       JsonNode nameNode = objectNode.get("username");

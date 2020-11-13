@@ -10,7 +10,6 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
-import swapp.core.SwappItem;
 import swapp.json.SwappPersistence;
 import swapp.restapi.SwappModelService;
 
@@ -53,7 +52,7 @@ public class SwappConfig extends ResourceConfig {
 
   private static SwappModel createDefaultSwappModel() {
     SwappPersistence swappPersistence = new SwappPersistence();
-    URL url = SwappConfig.class.getResource("default-todomodel.json");
+    URL url = SwappConfig.class.getResource("default-swappmodel.json");
     if (url != null) {
       try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
         return swappPersistence.readSwappModel(reader);
@@ -63,10 +62,8 @@ public class SwappConfig extends ResourceConfig {
       }
     }
     SwappModel swappModel = new SwappModel();
-    SwappList list1 = new SwappList(new SwappItem("name1", "swapp1", "New", "info1"), new SwappItem("name2", "swapp1", "New", "info1"));
-    SwappList list2 = new SwappList(new SwappItem("name3", "swapp2", "New", "info1"), new SwappItem("name4", "swapp2", "New", "info1"));
-    swappModel.addSwappList(list1);
-    swappModel.addSwappList(list2);    
+    swappModel.addSwappList(new SwappList("username1"));
+    swappModel.addSwappList(new SwappList("username2"));
     return swappModel;
   }
 }

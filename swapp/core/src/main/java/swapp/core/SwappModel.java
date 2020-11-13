@@ -1,8 +1,10 @@
 package swapp.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collector;
@@ -10,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class SwappModel implements Iterable<SwappList> {
 
-    private HashMap<String, SwappList> swappLists = new HashMap<String, SwappList>();
+    private LinkedHashMap<String, SwappList> swappLists = new LinkedHashMap<String, SwappList>();
 
     public boolean hasSwappList(String username) {
         return swappLists.containsKey(username);
@@ -59,6 +61,10 @@ public class SwappModel implements Iterable<SwappList> {
     @Override
     public Iterator<SwappList> iterator() {
         return swappLists.values().iterator();
+    }
+
+    public Collection<SwappList> getSwappLists(){
+        return swappLists.values();
     }
 
     public HashMap<String, SwappList> getHashMap() {

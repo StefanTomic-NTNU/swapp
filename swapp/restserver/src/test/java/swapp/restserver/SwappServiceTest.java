@@ -98,30 +98,32 @@ public class SwappServiceTest extends JerseyTest {
     assertEquals(200, getResponse.getStatus());
     try {
       SwappModel swappModel = objectMapper.readValue(getResponse.readEntity(String.class), SwappModel.class);
+      System.out.println(swappModel.getSwappItems());
       Iterator<SwappList> it = swappModel.iterator();
       assertTrue(it.hasNext());
       SwappList swappList1 = it.next();
       assertTrue(it.hasNext());
       SwappList swappList2 = it.next();
       assertFalse(it.hasNext());
-      assertEquals("swapp1", swappList1.getUsername());
-      assertEquals("swapp2", swappList2.getUsername());
+      assertEquals("username1", swappList1.getUsername());
+      assertEquals("username2", swappList2.getUsername());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
-  }
+  } 
 
   
   @Test 
   public void testGet_swapp_swapp1() {
     Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH)
-        .path("swapp1")
+        .path("username1")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .get();
     assertEquals(200, getResponse.getStatus());
     try {
       SwappList swappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappList.class);
-      assertEquals("swapp1", swappList.getUsername());
+      System.out.println(swappList.getSwappItems());
+      assertEquals("username1", swappList.getUsername());
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }

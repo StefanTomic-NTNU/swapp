@@ -35,7 +35,7 @@ class SwappModelSerializer extends JsonSerializer<SwappModel> {
                 jsonGen.writeObject(list);
             } else {
                 jsonGen.writeStartObject();
-                jsonGen.writeStringField("name", list.getUsername());
+                jsonGen.writeStringField("username", list.getUsername());
                 // no items!
                 jsonGen.writeEndObject();
             }
