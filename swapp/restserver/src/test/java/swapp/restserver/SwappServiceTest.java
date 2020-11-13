@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -54,7 +55,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-
 public class SwappServiceTest extends JerseyTest {
   protected boolean shouldLog() {
     return false;
@@ -93,8 +93,7 @@ public class SwappServiceTest extends JerseyTest {
   @Test
   public void testGet_swapp() {
     Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH)
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
-        .get();
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
     assertEquals(200, getResponse.getStatus());
     try {
       SwappModel swappModel = objectMapper.readValue(getResponse.readEntity(String.class), SwappModel.class);
@@ -110,15 +109,12 @@ public class SwappServiceTest extends JerseyTest {
     } catch (JsonProcessingException e) {
       fail(e.getMessage());
     }
-  } 
+  }
 
-  
-  @Test 
+  @Test
   public void testGet_swapp_swapp1() {
-    Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH)
-        .path("username1")
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
-        .get();
+    Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
     assertEquals(200, getResponse.getStatus());
     try {
       SwappList swappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappList.class);
@@ -128,91 +124,93 @@ public class SwappServiceTest extends JerseyTest {
       fail(e.getMessage());
     }
   }
-/**
-  @Test
-  public void testGetSwappItem() throws JsonProcessingException {
-    Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("swapp1")
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-    assertEquals(200, getResponse.getStatus());
-    try {
-      SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
-      assertEquals("item1", swappItem.getName());
-    } catch (JsonProcessingException e) {
-      fail(e.getMessage());
-    } 
-  }*/
 
-/**
   @Test
-  public void testGetPutAndDelete() throws JsonProcessingException {
-    SwappList other = new SwappList(new SwappItem("swapp1put", "New", "bla bla", "contactInfo"), new SwappItem("swapp2put", "Used", "bla bla", "contactInfo"));
-    Response putResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+  public void testPut_swapp1() throws JsonProcessingException {
+    SwappList newList = new SwappList(new SwappItem("newName", "username1", "New", "newInfo"),
+        new SwappItem("newName2", "username1", "New", "newInfo2"));
+    Response putResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
-        .put(Entity.entity(objectMapper.writeValueAsString(other), MediaType.APPLICATION_JSON));
+        .put(Entity.entity(objectMapper.writeValueAsString(newList), MediaType.APPLICATION_JSON));
     assertEquals(200, putResponse.getStatus());
-    try {
-      SwappList newSwappList = objectMapper.readValue(putResponse.readEntity(String.class), SwappList.class);
-      Iterator<SwappItem> it = newSwappList.iterator();
-      assertTrue(it.hasNext());
-      SwappItem swappItem1 = it.next();
-      assertTrue(it.hasNext());
-      SwappItem swappItem2 = it.next();
-      assertFalse(it.hasNext());
-      assertEquals(swappItem1.getName(), "swapp1put");
-      assertEquals(swappItem1.getStatus(), "New");
-      assertEquals(swappItem1.getDescription(), "bla bla");
-      assertEquals(swappItem1.getContactInfo(), "contactInfo");
-      assertEquals(swappItem2.getName(), "swapp2put");
-      assertEquals(swappItem2.getStatus(), "Used");
-      assertEquals(swappItem2.getDescription(), "bla bla");
-      assertEquals(swappItem2.getContactInfo(), "contactInfo");
-      Response deleteResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
-        .path("swapp1put")
-        .request("application/json; charset=UTF-8")
-        .delete();
-      Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-      SwappList getSwappList = objectMapper.readValue(getResponse.readEntity(String.class), SwappList.class);
-      assertTrue(getSwappList.getSwappItems().size() == 1);
-      //String deletedItem = objectMapper.readValue(deleteResponse.readEntity(String.class), String.class);
-      //assertEquals("swapp1put", deletedItem);
-      assertTrue(getSwappList.getSwappItems().get(0).getName().equals("swapp2put"));
 
-    } catch (JsonProcessingException e) {
-      fail(e.getMessage());
-    }
   }
+  /**
+   * @Test public void testGetSwappItem() throws JsonProcessingException {
+   *       Response getResponse =
+   *       target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("swapp1")
+   *       .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER
+   *       + "=UTF-8").get(); assertEquals(200, getResponse.getStatus()); try {
+   *       SwappItem swappItem =
+   *       objectMapper.readValue(getResponse.readEntity(String.class),
+   *       SwappItem.class); assertEquals("item1", swappItem.getName()); } catch
+   *       (JsonProcessingException e) { fail(e.getMessage()); } }
+   */
 
-@Test
-  public void testPost() throws JsonProcessingException {
-    SwappItem swappItem = new SwappItem("testPost", "New", "postDescription", "postContactInfo");
-    Response postResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
-        .post(Entity.entity(objectMapper.writeValueAsString(swappItem), MediaType.APPLICATION_JSON));
-    assertEquals(200, postResponse.getStatus());
-    try {
-      SwappItem swappItem2 = objectMapper.readValue(postResponse.readEntity(String.class), SwappItem.class);
-      assertTrue(swappItem2.allAttributesEquals(swappItem));
-    } catch (JsonProcessingException e) {
-      fail(e.getMessage());
-    }
-  }
-
-
-  @Test
-  public void testGetSwappItem() throws JsonProcessingException {
-    Response getResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
-        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-    assertEquals(200, getResponse.getStatus());
-    try {
-      SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
-      assertEquals("swapp1", swappItem.getName());
-      assertNotEquals(swappItem.getName(), "swapp2");
-    } catch (JsonProcessingException e) {
-      fail(e.getMessage());
-    }
-    
-  }*/
-
+  /**
+   * @Test public void testGetPutAndDelete() throws JsonProcessingException {
+   *       SwappList other = new SwappList(new SwappItem("swapp1put", "New", "bla
+   *       bla", "contactInfo"), new SwappItem("swapp2put", "Used", "bla bla",
+   *       "contactInfo")); Response putResponse =
+   *       target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+   *       .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER
+   *       + "=UTF-8") .put(Entity.entity(objectMapper.writeValueAsString(other),
+   *       MediaType.APPLICATION_JSON)); assertEquals(200,
+   *       putResponse.getStatus()); try { SwappList newSwappList =
+   *       objectMapper.readValue(putResponse.readEntity(String.class),
+   *       SwappList.class); Iterator<SwappItem> it = newSwappList.iterator();
+   *       assertTrue(it.hasNext()); SwappItem swappItem1 = it.next();
+   *       assertTrue(it.hasNext()); SwappItem swappItem2 = it.next();
+   *       assertFalse(it.hasNext()); assertEquals(swappItem1.getName(),
+   *       "swapp1put"); assertEquals(swappItem1.getStatus(), "New");
+   *       assertEquals(swappItem1.getDescription(), "bla bla");
+   *       assertEquals(swappItem1.getContactInfo(), "contactInfo");
+   *       assertEquals(swappItem2.getName(), "swapp2put");
+   *       assertEquals(swappItem2.getStatus(), "Used");
+   *       assertEquals(swappItem2.getDescription(), "bla bla");
+   *       assertEquals(swappItem2.getContactInfo(), "contactInfo"); Response
+   *       deleteResponse = target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+   *       .path("swapp1put") .request("application/json; charset=UTF-8")
+   *       .delete(); Response getResponse =
+   *       target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+   *       .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER
+   *       + "=UTF-8").get(); SwappList getSwappList =
+   *       objectMapper.readValue(getResponse.readEntity(String.class),
+   *       SwappList.class); assertTrue(getSwappList.getSwappItems().size() == 1);
+   *       //String deletedItem =
+   *       objectMapper.readValue(deleteResponse.readEntity(String.class),
+   *       String.class); //assertEquals("swapp1put", deletedItem);
+   *       assertTrue(getSwappList.getSwappItems().get(0).getName().equals("swapp2put"));
+   * 
+   *       } catch (JsonProcessingException e) { fail(e.getMessage()); } }
+   * 
+   * @Test public void testPost() throws JsonProcessingException { SwappItem
+   *       swappItem = new SwappItem("testPost", "New", "postDescription",
+   *       "postContactInfo"); Response postResponse =
+   *       target(SwappListService.SWAPP_LIST_SERVICE_PATH)
+   *       .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER
+   *       + "=UTF-8")
+   *       .post(Entity.entity(objectMapper.writeValueAsString(swappItem),
+   *       MediaType.APPLICATION_JSON)); assertEquals(200,
+   *       postResponse.getStatus()); try { SwappItem swappItem2 =
+   *       objectMapper.readValue(postResponse.readEntity(String.class),
+   *       SwappItem.class);
+   *       assertTrue(swappItem2.allAttributesEquals(swappItem)); } catch
+   *       (JsonProcessingException e) { fail(e.getMessage()); } }
+   * 
+   * 
+   * @Test public void testGetSwappItem() throws JsonProcessingException {
+   *       Response getResponse =
+   *       target(SwappListService.SWAPP_LIST_SERVICE_PATH).path("swapp1")
+   *       .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER
+   *       + "=UTF-8").get(); assertEquals(200, getResponse.getStatus()); try {
+   *       SwappItem swappItem =
+   *       objectMapper.readValue(getResponse.readEntity(String.class),
+   *       SwappItem.class); assertEquals("swapp1", swappItem.getName());
+   *       assertNotEquals(swappItem.getName(), "swapp2"); } catch
+   *       (JsonProcessingException e) { fail(e.getMessage()); }
+   * 
+   *       }
+   */
 
 }
