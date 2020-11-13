@@ -1,7 +1,9 @@
 package swapp.restapi;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,10 +35,9 @@ public class SwappModelService {
   }
 
   /**
-   * Returns the TodoList with the provided name
-   * (as a resource to support chaining path elements).
-   * This supports all requests referring to TodoLists by name.
-   * Note that the TodoList needn't exist, since it can be a PUT.
+   * Returns the TodoList with the provided name (as a resource to support
+   * chaining path elements). This supports all requests referring to TodoLists by
+   * name. Note that the TodoList needn't exist, since it can be a PUT.
    *
    * @param name the name of the todo list
    */
@@ -46,4 +47,14 @@ public class SwappModelService {
     LOG.debug("Sub-resource for TodoList " + name + ": " + swappList);
     return new SwappListResource(swappModel, name, swappList);
   }
+
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public boolean putSwappList(SwappList swappListArg) {
+    LOG.debug("putTodoList({})", swappListArg);
+    return this.swappModel.putSwappList(swappListArg)==null;
+  }
+
+
 }

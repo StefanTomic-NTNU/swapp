@@ -171,6 +171,10 @@ public class SwappServiceTest extends JerseyTest {
     assertEquals(swappItem3.getName(), "newName2");
     assertFalse(it1.hasNext());
   }
+
+  //TODO iterator method return boolean isSame
+
+
   /**
    * @Test public void testGetSwappItem() throws JsonProcessingException {
    *       Response getResponse =

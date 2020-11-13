@@ -59,6 +59,7 @@ public class SwappListResource {
    * @param todoListArg the todoList to add
    * @return true if it was added, false if it replaced
    */
+  //Delete all items
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -73,39 +74,29 @@ public class SwappListResource {
    * @param todoListArg the todoList to add
    * @return true if it was added, false if it replaced
    */
+  /**
   @PUT
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList() {
     return putSwappList(new SwappList(name));
-  }/**
+  }*/
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public SwappItem addSwappItem(SwappItem item) {
     LOG.debug("addSwappItem({})", item.getName());
-    swappList.addSwappItem(item);
-    return swappList.getSwappItem(item);
+    this.swappModel.addSwappItem(item);
+    return this.swappModel.getSwappItem(item);
+  }
+  
+  @Path("/{name}")
+  public SwappItemResource getSwappItem(@PathParam("name") String name) {
+    SwappItem swappItem = getSwappList().getSwappItem(name);
+    LOG.debug("Sub-resource for SwappItem " + name + ": " + swappItem);
+    return new SwappItemResource(this.swappModel, this.swappList, name, swappItem);
   }
 
-  @DELETE
-  @Path("/{name}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public SwappItem deleteSwappItem(@PathParam("name") String name) {
-    LOG.debug("deleteSwappItem({})", name);
-    SwappItem deletedItem = swappList.getSwappItem(name);
-    swappList.removeSwappItem(name);
-    return deletedItem;
-  }
-
-
-  @GET
-  @Path("/{name}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public SwappItem getSwappItem(@PathParam("name") String name){
-    LOG.debug("getSwappItem({})", name);
-    return this.swappList.getSwappItem(name);
-  }  */
-
+  
 
 }

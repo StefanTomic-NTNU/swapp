@@ -54,8 +54,13 @@ public class SwappModel implements Iterable<SwappList> {
         return hasSwappList(username) == false;
     }
 
-    public void changeSwappItem(String username, SwappItem old, SwappItem newItem) {
+    public SwappItem getSwappItem(SwappItem swappItem){
+        return getSwappList(swappItem.getUsername()).getSwappItem(swappItem.getUsername());
+    }
+
+    public SwappItem changeSwappItem(String username, SwappItem old, SwappItem newItem) {
         getSwappList(username).changeSwappItem(old, newItem);
+        return getSwappList(username).getSwappItem(newItem);
     }
 
     @Override
