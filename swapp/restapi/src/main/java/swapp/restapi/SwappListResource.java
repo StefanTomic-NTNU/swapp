@@ -72,13 +72,11 @@ public class SwappListResource {
    *
    * @param todoListArg the todoList to add
    * @return true if it was added, false if it replaced
-   *//**
+   */
   @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public SwappList putSwappList(String swappListArg) {
-    LOG.debug("putTodoList({})", swappListArg);
-    return this.swappModel.addSwappList(swappListArg);
+  public boolean putSwappList() {
+    return putSwappList(new SwappList(name));
   }/**
 
   @POST

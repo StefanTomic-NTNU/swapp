@@ -29,7 +29,7 @@ public class SwappModelService {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public SwappModel getSwappModel() {
-    return swappModel;
+    return this.swappModel;
   }
 
   /**
