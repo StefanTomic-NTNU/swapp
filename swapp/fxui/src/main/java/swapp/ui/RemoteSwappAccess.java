@@ -10,6 +10,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -197,6 +198,10 @@ public class RemoteSwappAccess {
     }
   }
 
+  public void changeSwappItem(SwappItem newItem){
+    putSwappItem(newItem);
+  }
+
   /**
    * 
    * Notifies that the TodoList has changed, e.g. TodoItems have been mutated,
@@ -219,7 +224,7 @@ public class RemoteSwappAccess {
   }
 
   public boolean isItemChanged(SwappItem newItem) {
-    return getSwappList(newItem.getName()).isItemChanged(newItem);
+    return getSwappModel().isItemChanged(newItem);
   }
 
   public boolean hasSwappItem(SwappItem item) {
@@ -228,6 +233,10 @@ public class RemoteSwappAccess {
 
   public boolean hasSwappList(String name) {
     return getSwappModel().hasSwappList(name);
+  }
+
+  public Collection<SwappList> getAllSwappLists(){
+    return getSwappModel().getSwappLists();
   }
 
 }

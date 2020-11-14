@@ -67,6 +67,10 @@ public class SwappModel implements Iterable<SwappList> {
         return new SwappList(name);
     }
 
+    public boolean isItemChanged(SwappItem newItem){
+        return getSwappList(newItem.getUsername()).isItemChanged(newItem);
+    }
+
     @Override
     public Iterator<SwappList> iterator() {
         return swappLists.values().iterator();

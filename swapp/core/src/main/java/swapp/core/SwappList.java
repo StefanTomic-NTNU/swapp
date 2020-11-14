@@ -42,17 +42,13 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   public void removeSwappItem(SwappItem item) {
-    if (hasSwappItem(item)) {
-      swappItems.remove(item);
-      fireSwappListChanged();
-    }
+    swappItems.remove(item);
+    fireSwappListChanged();
   }
 
   public void removeSwappItem(String item) {
-    if (hasSwappItem(item)) {
-      swappItems.remove(getSwappItem(item));
-      fireSwappListChanged();
-    }
+    swappItems.remove(getSwappItem(item));
+    fireSwappListChanged();
   }
 
   public void removeSwappItem(Collection<SwappItem> items) {
