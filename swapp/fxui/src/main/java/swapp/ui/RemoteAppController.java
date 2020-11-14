@@ -91,9 +91,9 @@ public class RemoteAppController {
   public RemoteAppController() {
     listView = new ListView<SwappItem>();
     filterChoiceBox = new ChoiceBox<>();
-    try{
+    try {
       swappAccess = new RemoteSwappAccess(new URI(endpointUri));
-    }catch (URISyntaxException e){
+    } catch (URISyntaxException e) {
       e.printStackTrace();
     }
   }
@@ -128,8 +128,7 @@ public class RemoteAppController {
     filterChoiceBox.getItems().add("Used");
     filterChoiceBox.getItems().add("Damaged");
     filterChoiceBox.setValue("All");
-    filterChoiceBox.getSelectionModel().selectedItemProperty()
-        .addListener((v, oldValue, newValue) -> updateSwapp());
+    filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwapp());
   }
 
   public void inizializeToggleGroup() {
@@ -144,28 +143,34 @@ public class RemoteAppController {
     updateSwapp();
   }
 
-  public void addSwappItem(SwappItem swappItem) {
+  public void addSwappItem(SwappItem swappItem) throws Exception {
     swappAccess.addSwappItem(swappItem);
+    updateSwapp();
   }
 
-  public void removeSwappItem(SwappItem swappItem) {
+  public void removeSwappItem(SwappItem swappItem) throws Exception {
     swappAccess.removeSwappItem(swappItem);
+    updateSwapp();
+  }
+
+  public void changeSwappItem(SwappItem newItem) throws Exception {
+    swappAccess.changeSwappItem(newItem);
+    updateSwapp();
   }
 
   @FXML
-  void addSwappItemButtonClicked() {
+  void addSwappItemButtonClicked() throws Exception {
     if (!nameField.getText().isBlank()) {
       SwappItem item = new SwappItem(nameField.getText(), this.username,
           ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
       addSwappItem(item);
       nameField.setText("");
       descriptionFieldArea.setText("");
-
     }
   }
 
   @FXML
-  void removeSwappItemButtonClicked() {
+  void removeSwappItemButtonClicked() throws Exception {
     SwappItem item = (SwappItem) listView.getSelectionModel().getSelectedItem();
     if (!(item == null)) {
       removeSwappItem(item);
@@ -178,7 +183,7 @@ public class RemoteAppController {
   }
 
   @FXML
-  public void viewSwappItem() throws IOException {
+  public void viewSwappItem() throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
     Parent root = (Parent) loader.load();
     ViewSwappItemController itemController = loader.getController();
@@ -195,7 +200,7 @@ public class RemoteAppController {
       removeSwappItem(returnetItem);
     else if (swappAccess.isItemChanged(returnetItem)) {
       System.out.println(swappAccess.getSwappItem(returnetItem));
-      swappAccess.changeSwappItem(returnetItem);
+      changeSwappItem(returnetItem);
       System.out.println(swappAccess.getSwappItem(returnetItem));
     }
   }

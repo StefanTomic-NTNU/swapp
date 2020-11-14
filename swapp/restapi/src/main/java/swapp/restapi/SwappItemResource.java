@@ -65,16 +65,18 @@ public class SwappItemResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SwappItem putSwappItem(SwappItem newItem) {
-        LOG.debug("putSwappList({})", newItem);
-        return this.swappModel.changeSwappItem(this.swappItem.getUsername(), this.swappItem, newItem);
+        LOG.debug("putSwappItem({})", newItem);
+        this.swappModel.changeSwappItem(this.swappItem.getUsername(), this.swappItem, newItem);
+        return newItem;
     }
 
     @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SwappItem deleteSwappItem() {
         LOG.debug("deleteSwappItem({})", name);
         this.swappModel.removeSwappItem(this.swappItem);
-        return this.getSwappItem();
+        return this.swappItem;
     }
 
 }

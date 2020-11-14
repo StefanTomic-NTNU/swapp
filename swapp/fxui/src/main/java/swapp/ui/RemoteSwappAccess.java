@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import swapp.core.SwappItem;
@@ -26,12 +28,9 @@ public class RemoteSwappAccess {
 
   private ObjectMapper objectMapper;
 
-  private SwappModel swappModel;
-
   public RemoteSwappAccess(URI endpointBaseUri) {
     this.endpointBaseUri = endpointBaseUri;
     objectMapper = new ObjectMapper().registerModule(new SwappModule());
-    this.swappModel = getSwappModel();
   }
 
   private String uriParam(String s) {
@@ -51,19 +50,16 @@ public class RemoteSwappAccess {
   }
 
   private SwappModel getSwappModel() {
-    if (swappModel == null) {
-      HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json").GET().build();
-      try {
-        final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
-            HttpResponse.BodyHandlers.ofString());
-        final String responseString = response.body();
-        this.swappModel = objectMapper.readValue(responseString, SwappModel.class);
-        System.out.println("TodoModel: " + this.swappModel);
-      } catch (IOException | InterruptedException e) {
-        throw new RuntimeException(e);
-      }
+    HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json").GET().build();
+    try {
+      final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+          HttpResponse.BodyHandlers.ofString());
+      final String responseString = response.body();
+      System.out.println("getSwappModel(" + ") response: " + responseString);
+      return objectMapper.readValue(responseString, SwappModel.class);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
     }
-    return swappModel;
   }
 
   public SwappItem getSwappItem(SwappItem item1) {
@@ -74,32 +70,23 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       System.out.println("getSwappList(" + ") response: " + responseString);
-      SwappItem swappItem = objectMapper.readValue(responseString, SwappItem.class);
-      return swappItem;
-      // this.swappModel.putSwappList(swappItem);
+      return objectMapper.readValue(responseString, SwappItem.class);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
 
   public SwappList getSwappList(String name) {
-    SwappList oldSwappList = this.swappModel.getSwappList(name);
-    // if existing list has no todo items, try to (re)load
-    if (oldSwappList == null) {
-      HttpRequest request = HttpRequest.newBuilder(swappListUri(name)).header("Accept", "application/json").GET()
-          .build();
-      try {
-        final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
-            HttpResponse.BodyHandlers.ofString());
-        String responseString = response.body();
-        System.out.println("getSwappList(" + name + ") response: " + responseString);
-        SwappList swappList = objectMapper.readValue(responseString, SwappList.class);
-        this.swappModel.putSwappList(swappList);
-      } catch (IOException | InterruptedException e) {
-        throw new RuntimeException(e);
-      }
+    HttpRequest request = HttpRequest.newBuilder(swappListUri(name)).header("Accept", "application/json").GET().build();
+    try {
+      final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+          HttpResponse.BodyHandlers.ofString());
+      String responseString = response.body();
+      System.out.println("getSwappList(" + name + ") response: " + responseString);
+      return objectMapper.readValue(responseString, SwappList.class);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
     }
-    return oldSwappList;
   }
 
   private void putSwappListAtListLevel(SwappList swappList) {
@@ -112,8 +99,8 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       Boolean added = objectMapper.readValue(responseString, Boolean.class);
-      if (added != null)
-        swappModel.putSwappList(swappList);
+      if (added)
+        System.out.println(added);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
@@ -128,8 +115,8 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       Boolean added = objectMapper.readValue(responseString, Boolean.class);
-      if (added != null)
-        swappModel.putSwappList(swappList);
+      if (added)
+        System.out.println(added);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
@@ -148,7 +135,7 @@ public class RemoteSwappAccess {
     putSwappListAtListLevel(newList);
   }
 
-  public void removeSwappItem(SwappItem swappItem) {
+  public void removeSwappItem(SwappItem swappItem) throws Exception {
     try {
       HttpRequest request = HttpRequest.newBuilder(swappItemUri(swappItem.getUsername() + "/" + swappItem.getName()))
           .header("Accept", "application/json").DELETE().build();
@@ -156,15 +143,14 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItem removed = objectMapper.readValue(responseString, SwappItem.class);
-      if (removed != null) {
-        swappModel.removeSwappItem(swappItem);
-      }
+      if (removed == null)
+        throw new Exception();
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void addSwappItem(SwappItem item) {
+  public void addSwappItem(SwappItem item) throws Exception {
     try {
       String json = objectMapper.writeValueAsString(item);
       HttpRequest request = HttpRequest.newBuilder(swappListUri(item.getUsername()))
@@ -174,31 +160,30 @@ public class RemoteSwappAccess {
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
       SwappItem swappItemRes = objectMapper.readValue(responseString, SwappItem.class);
-      if (swappItemRes != null)
-        swappModel.addSwappItem(swappItemRes);
+      if (swappItemRes == null)
+        throw new Exception();
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void putSwappItem(SwappItem newItem) {
+  public void putSwappItem(SwappItem newItem) throws Exception {
     try {
       String json = objectMapper.writeValueAsString(newItem);
       HttpRequest request = HttpRequest.newBuilder(swappItemUri(newItem.getUsername() + "/" + newItem.getName()))
-          .header("Accept", "application/json").PUT(BodyPublishers.ofString(json)).build();
+          .header("Accept", "application/json").header("Content-Type", "application/json")
+          .PUT(BodyPublishers.ofString(json)).build();
       final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
           HttpResponse.BodyHandlers.ofString());
-      String responseString = response.body();
-      SwappItem removed = objectMapper.readValue(responseString, SwappItem.class);
-      if (removed != null) {
-        swappModel.removeSwappItem(newItem);
-      }
-    } catch (IOException | InterruptedException e) {
+      // String responseString = response.body();
+      // SwappItem removed = objectMapper.readValue(responseString, SwappItem.class);
+      // if (removed==null) throw new Exception();
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void changeSwappItem(SwappItem newItem){
+  public void changeSwappItem(SwappItem newItem) throws Exception {
     putSwappItem(newItem);
   }
 
@@ -210,7 +195,7 @@ public class RemoteSwappAccess {
    * @param todoList the TodoList that has changed
    * 
    */
-  
+
   public List<SwappItem> getSwappItemByStatus(String status) {
     return getSwappModel().getSwappItemsByStatus(status);
   }
@@ -235,7 +220,7 @@ public class RemoteSwappAccess {
     return getSwappModel().hasSwappList(name);
   }
 
-  public Collection<SwappList> getAllSwappLists(){
+  public Collection<SwappList> getAllSwappLists() {
     return getSwappModel().getSwappLists();
   }
 
