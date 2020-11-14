@@ -136,6 +136,26 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   @Test
+  public void testGetPutSwappItem() throws JsonMappingException, JsonProcessingException {
+    Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1/item1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+    assertEquals(200, getResponse.getStatus());
+    SwappItem swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
+    assertTrue(swappItem.allAttributesEquals("item1", "New", "info1", "username1"));
+    SwappItem changedItem = new SwappItem("item1", "username1", "Used", "newInfo");
+    Response putResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1/item1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+        .put(Entity.entity(objectMapper.writeValueAsString(changedItem), MediaType.APPLICATION_JSON));
+    assertEquals(200, putResponse.getStatus());
+    getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1/item1")
+        .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+    assertEquals(200, getResponse.getStatus());
+    swappItem = objectMapper.readValue(getResponse.readEntity(String.class), SwappItem.class);
+    assertTrue(swappItem.allAttributesEquals("item1", "Used", "newInfo", "username1"));
+    assertFalse(swappItem.allAttributesEquals("item1", "New", "info1", "username1"));
+  }
+
+  @Test
   public void testDeleteSwappItem() throws JsonMappingException, JsonProcessingException {
     Response deleteResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1/item1")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").delete();
@@ -160,7 +180,7 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   @Test
-  public void testPutNewList() throws JsonProcessingException {
+  public void test_PutNewList() throws JsonProcessingException {
     SwappList newList = new SwappList(new SwappItem("newName", "username3", "New", "newInfo"),
         new SwappItem("newName2", "username3", "New", "newInfo2"));
     Response putResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH)
@@ -200,7 +220,7 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   @Test
-  public void testGet_Put_at_List_Level_Get_swapp() throws JsonProcessingException {
+  public void test_Get_Put_at_List_Level_Get_swapp() throws JsonProcessingException {
     Response getResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username2")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
     assertEquals(200, getResponse.getStatus());
