@@ -26,6 +26,7 @@ public class SwappListResource {
   private final SwappModel swappModel;
   private final String name;
   private final SwappList swappList;
+  private final SaveHelper saveHelper;
 
   /**
    * Initializes this TodoListResource with appropriate context information. Each
@@ -35,10 +36,11 @@ public class SwappListResource {
    * @param name      the todo list name, needed for most requests
    * @param todoList  the TodoList, or null, needed for PUT
    */
-  public SwappListResource(SwappModel swappModel, String name, SwappList swappList) {
+  public SwappListResource(SwappModel swappModel, String name, SwappList swappList, SaveHelper saveHelper) {
     this.swappModel = swappModel;
     this.name = name;
     this.swappList = swappList;
+    this.saveHelper = saveHelper;
   }
 
   /**
@@ -59,6 +61,7 @@ public class SwappListResource {
   public SwappItem addSwappItem(SwappItem item) {
     LOG.debug("addSwappItem({})", item.getName());
     this.swappModel.addSwappItem(item);
+    saveHelper.write(this.swappModel);
     return item;
   }
 
@@ -74,7 +77,9 @@ public class SwappListResource {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
     LOG.debug("putSwappList({})", swappListArg);
-    return this.swappModel.putSwappList(swappListArg) == null;
+    this.swappModel.putSwappList(swappListArg);
+    saveHelper.write(this.swappModel);
+    return this.swappModel == null;
   }
 
   /**
@@ -93,7 +98,7 @@ public class SwappListResource {
   public SwappItemResource getSwappItem(@PathParam("name") String name) {
     SwappItem swappItem = getSwappList().getSwappItem(name);
     LOG.debug("Sub-resource for SwappItem " + name + ": " + swappItem);
-    return new SwappItemResource(this.swappModel, this.swappList, name, swappItem);
+    return new SwappItemResource(this.swappModel, this.swappList, name, swappItem, this.saveHelper);
   }
 
 }

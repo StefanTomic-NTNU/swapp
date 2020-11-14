@@ -175,7 +175,8 @@ public class RemoteSwappAccess {
           .PUT(BodyPublishers.ofString(json)).build();
       final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
           HttpResponse.BodyHandlers.ofString());
-      // String responseString = response.body();
+      String responseString = response.body();
+      if (responseString == null) throw new RuntimeException();
       // SwappItem removed = objectMapper.readValue(responseString, SwappItem.class);
       // if (removed==null) throw new Exception();
     } catch (Exception e) {

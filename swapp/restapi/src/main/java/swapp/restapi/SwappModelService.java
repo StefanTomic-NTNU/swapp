@@ -23,6 +23,13 @@ public class SwappModelService {
   @Inject
   private SwappModel swappModel;
 
+   @Inject
+  private SaveHelper saveHelper;
+
+  public void updateServer(SwappModel swappModel){
+    saveHelper.write(swappModel);
+  }
+
   /**
    * The root resource, i.e. /todo
    *
@@ -46,7 +53,7 @@ public class SwappModelService {
   public SwappListResource getSwappList(@PathParam("name") String name) {
     SwappList swappList = getSwappModel().getSwappList(name);
     LOG.debug("Sub-resource for SwappList " + name + ": " + swappList);
-    return new SwappListResource(swappModel, name, swappList);
+    return new SwappListResource(swappModel, name, swappList, this.saveHelper);
   }
 
   @PUT
@@ -54,7 +61,9 @@ public class SwappModelService {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
     LOG.debug("putSwappList({})", swappListArg);
-    return this.swappModel.putSwappList(swappListArg) == null;
+    this.swappModel.putSwappList(swappListArg);
+    saveHelper.write(this.swappModel);
+    return this.swappModel == null;
   }
 
 }
