@@ -27,6 +27,7 @@ public class SwappItemResource {
     private final String name;
     private final SwappList swappList;
     private final SwappItem swappItem;
+    private final SaveHelper saveHelper;
 
     /**
      * Initializes this TodoListResource with appropriate context information. Each
@@ -36,11 +37,12 @@ public class SwappItemResource {
      * @param name      the todo list name, needed for most requests
      * @param todoList  the TodoList, or null, needed for PUT
      */
-    public SwappItemResource(SwappModel swappModel, SwappList swappList, String name, SwappItem swappItem) {
+    public SwappItemResource(SwappModel swappModel, SwappList swappList, String name, SwappItem swappItem, SaveHelper saveHelper) {
         this.swappModel = swappModel;
         this.swappList = swappList;
         this.name = name;
         this.swappItem = swappItem;
+        this.saveHelper = saveHelper;
     }
 
     /**
@@ -66,7 +68,9 @@ public class SwappItemResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SwappItem putSwappItem(SwappItem newItem) {
         LOG.debug("putSwappList({})", newItem);
-        return this.swappModel.changeSwappItem(this.swappItem.getUsername(), this.swappItem, newItem);
+        this.swappModel.changeSwappItem(this.swappItem.getUsername(), this.swappItem, newItem);
+        saveHelper.write(this.swappModel);
+        return this.swappItem;
     }
 
     @DELETE
@@ -74,6 +78,7 @@ public class SwappItemResource {
     public SwappItem deleteSwappItem() {
         LOG.debug("deleteSwappItem({})", name);
         this.swappModel.removeSwappItem(this.swappItem);
+        saveHelper.write(this.swappModel);
         return this.getSwappItem();
     }
 

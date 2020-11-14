@@ -67,7 +67,7 @@ public class SwappServiceTest extends JerseyTest {
 
   @Override
   protected ResourceConfig configure() {
-    final SwappConfig config = new SwappConfig();
+    final SwappConfig config = new SwappConfig(defaultModel, false);
     if (shouldLog()) {
       enable(TestProperties.LOG_TRAFFIC);
       enable(TestProperties.DUMP_ENTITY);

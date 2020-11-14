@@ -14,18 +14,34 @@ import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.json.SwappPersistence;
 import swapp.restapi.SwappModelService;
+import swapp.restapi.SaveHelper;
+import java.io.FileReader;
+import java.io.File;
+import java.nio.file.Paths;
 
 public class SwappConfig extends ResourceConfig {
 
   private SwappModel swappModel;
+  private SaveHelper saveHelper = new SaveHelper();
+  private String fileString;
+  private static File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
+
+
+
 
   /**
    * Initialize this TodoConfig.
    *
    * @param todoModel todoModel instance to serve
    */
-  public SwappConfig(SwappModel swappModel) {
+  public SwappConfig(SwappModel swappModel, boolean test) {
     setSwappModel(swappModel);
+    if (test)
+      fileString = "TestSwappItems.json";
+    else
+      fileString = "RemoteSwappItems.json";
+    setSaveHelper(fileString);
+
     register(SwappModelService.class);
     register(SwappModuleObjectMapperProvider.class);
     register(JacksonFeature.class);
@@ -33,15 +49,20 @@ public class SwappConfig extends ResourceConfig {
       @Override
       protected void configure() {
         bind(SwappConfig.this.swappModel);
+        bind(SwappConfig.this.saveHelper);
       }
     });
+  }
+
+  private void setSaveHelper(String fileString) {
+    this.saveHelper.setFilePath(fileString);
   }
 
   /**
    * Initialize this TodoConfig with a default TodoModel.
    */
   public SwappConfig() {
-    this(createDefaultSwappModel());
+    this(createDefaultSwappModel(), false);
   }
 
   public SwappModel getSwappModel() {
@@ -53,18 +74,16 @@ public class SwappConfig extends ResourceConfig {
   }
 
   private static SwappModel createDefaultSwappModel() {
+
     SwappPersistence swappPersistence = new SwappPersistence();
-    URL url = SwappConfig.class.getResource("default-swappmodel.json");
-    if (url != null) {
-      try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-        return swappPersistence.readSwappModel(reader);
-      } catch (IOException e) {
-        System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually ("
-            + e + ")");
-      }
+    try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
+      return swappPersistence.readSwappModel(reader);
+    } catch (IOException e) {
+      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
     }
     SwappModel swappModel = new SwappModel();
-    swappModel.addSwappList(new SwappList(new SwappItem("item1", "username1", "New", "info1"), new SwappItem("item2", "username1", "New", "info2")));
+    swappModel.addSwappList(new SwappList(new SwappItem("item1", "username1", "New", "info1"),
+        new SwappItem("item2", "username1", "New", "info2")));
     swappModel.addSwappList(new SwappList(new SwappItem("item3", "username2", "New", "info3")));
     return swappModel;
   }
