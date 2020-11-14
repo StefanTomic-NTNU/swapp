@@ -82,7 +82,7 @@ public class AppController {
   private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
 
   private SwappPersistence swappPersistence = new SwappPersistence();
-  
+
   private File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
 
   /** Initializes appcontroller. */
@@ -93,7 +93,7 @@ public class AppController {
   }
 
   void loadSwapp() throws IOException {
-    try(Reader reader = new FileReader(file, StandardCharsets.UTF_8)){
+    try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
       model = swappPersistence.readSwappModel(reader);
     } catch (IOException e) {
       Reader reader = new StringReader(swappListWithTwoItems);
@@ -102,19 +102,18 @@ public class AppController {
     }
   }
 
-  private void autoSave(){
+  private void autoSave() {
     Writer writer = null;
-    try{
+    try {
       writer = new FileWriter(file, StandardCharsets.UTF_8);
       swappPersistence.writeSwappModel(model, writer);
-    }catch(IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
-    }
-    finally{
-      try{
-        if (writer!=null) writer.close();
-      }
-      catch(IOException e){
+    } finally {
+      try {
+        if (writer != null)
+          writer.close();
+      } catch (IOException e) {
         e.printStackTrace();
       }
     }
@@ -189,11 +188,10 @@ public class AppController {
     if (!nameField.getText().isBlank()) {
       SwappItem item = new SwappItem(nameField.getText(), this.username,
           ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
-      if (!hasSwappItem(item.getName())) {
-        addSwappItem(item);
-        nameField.setText("");
-        descriptionFieldArea.setText("");
-      }
+      addSwappItem(item);
+      nameField.setText("");
+      descriptionFieldArea.setText("");
+
     }
   }
 
@@ -210,7 +208,7 @@ public class AppController {
     System.out.println("list changed");
   }
 
-  public SwappList getSwappList(){
+  public SwappList getSwappList() {
     return model.getSwappList(username);
   }
 
@@ -227,9 +225,10 @@ public class AppController {
     stage.showAndWait();
     boolean deleteFlag = itemController.isdelete();
     SwappItem returnetItem = itemController.getSwappItem();
-    if (deleteFlag) removeSwappItem(returnetItem);
-    else if(getSwappList().isItemChanged(returnetItem)){
-      System.out.println(getSwappList().getSwappItems().toString());  
+    if (deleteFlag)
+      removeSwappItem(returnetItem);
+    else if (getSwappList().isItemChanged(returnetItem)) {
+      System.out.println(getSwappList().getSwappItems().toString());
       getSwappList().changeSwappItem(oldItem, returnetItem);
       System.out.println(getSwappList().getSwappItems().toString());
       model.putSwappList(getSwappList());

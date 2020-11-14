@@ -53,8 +53,7 @@ public class SwappModelService {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
     LOG.debug("putTodoList({})", swappListArg);
-    return this.swappModel.putSwappList(swappListArg)==null;
+    return this.swappModel.putSwappList(swappListArg) == null;
   }
-
 
 }

@@ -85,8 +85,7 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   public SwappItem getSwappItem(String name) {
-      Optional <SwappItem> res = swappItems.stream().filter(p -> p.nameEquals(name)).findAny();
-      if (res.isPresent()) return res.get();
+      if(swappItems.stream().anyMatch(p -> p.nameEquals(name))) return (SwappItem) swappItems.stream().filter(p -> p.nameEquals(name)).findFirst().get(); 
       else return null;
   }
 

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -100,6 +101,13 @@ public class SwappModuleTest {
     } catch (JsonProcessingException e) {
       fail();
     }
+  }
+
+  @Test
+  public void testSerializersDeserializersSwappItem() throws JsonMappingException, JsonProcessingException {
+    String itemString = "{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"}";
+    SwappItem item1 = mapper.readValue(itemString, SwappItem.class);
+    assertTrue(item1.allAttributesEquals("item1", "New", "info1", "username1"));
   }
 
   // TODO legg til flere tester?

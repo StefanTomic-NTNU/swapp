@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.core.SwappItem;
+
 /**
  * Used for all requests referring to TodoLists by name.
  */
@@ -27,19 +28,18 @@ public class SwappListResource {
   private final SwappList swappList;
 
   /**
-   * Initializes this TodoListResource with appropriate context information.
-   * Each method will check and use what it needs.
+   * Initializes this TodoListResource with appropriate context information. Each
+   * method will check and use what it needs.
    *
    * @param todoModel the TodoModel, needed for DELETE and rename
-   * @param name the todo list name, needed for most requests
-   * @param todoList the TodoList, or null, needed for PUT
+   * @param name      the todo list name, needed for most requests
+   * @param todoList  the TodoList, or null, needed for PUT
    */
   public SwappListResource(SwappModel swappModel, String name, SwappList swappList) {
     this.swappModel = swappModel;
     this.name = name;
     this.swappList = swappList;
   }
-
 
   /**
    * Gets the corresponding TodoList.
@@ -53,50 +53,47 @@ public class SwappListResource {
     return this.swappList;
   }
 
-  /**
-   * Replaces or adds a TodoList.
-   *
-   * @param todoListArg the todoList to add
-   * @return true if it was added, false if it replaced
-   */
-  //Delete all items
-  @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean putSwappList(SwappList swappListArg) {
-    LOG.debug("putTodoList({})", swappListArg);
-    return this.swappModel.putSwappList(swappListArg)==null;
-  }
-
-  /**
-   * Replaces or adds a TodoList.
-   *
-   * @param todoListArg the todoList to add
-   * @return true if it was added, false if it replaced
-   */
-  /**
-  @PUT
-  @Produces(MediaType.APPLICATION_JSON)
-  public boolean putSwappList() {
-    return putSwappList(new SwappList(name));
-  }*/
-
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public SwappItem addSwappItem(SwappItem item) {
     LOG.debug("addSwappItem({})", item.getName());
     this.swappModel.addSwappItem(item);
-    return this.swappModel.getSwappItem(item);
+    return item;
   }
-  
+
+  /**
+   * Replaces or adds a TodoList.
+   *
+   * @param todoListArg the todoList to add
+   * @return true if it was added, false if it replaced
+   */
+  // Delete all items
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public boolean putSwappList(SwappList swappListArg) {
+    LOG.debug("putTodoList({})", swappListArg);
+    return this.swappModel.putSwappList(swappListArg) == null;
+  }
+
+  /**
+   * Replaces or adds a TodoList.
+   *
+   * @param todoListArg the todoList to add
+   * @return true if it was added, false if it replaced
+   */
+  /**
+   * @PUT
+   * @Produces(MediaType.APPLICATION_JSON) public boolean putSwappList() { return
+   *                                       putSwappList(new SwappList(name)); }
+   */
+
   @Path("/{name}")
   public SwappItemResource getSwappItem(@PathParam("name") String name) {
     SwappItem swappItem = getSwappList().getSwappItem(name);
     LOG.debug("Sub-resource for SwappItem " + name + ": " + swappItem);
     return new SwappItemResource(this.swappModel, this.swappList, name, swappItem);
   }
-
-  
 
 }
