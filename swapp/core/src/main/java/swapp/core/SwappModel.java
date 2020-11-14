@@ -63,6 +63,10 @@ public class SwappModel implements Iterable<SwappList> {
         return getSwappList(username).getSwappItem(newItem);
     }
 
+    public SwappList createNewSwappList(String name){
+        return new SwappList(name);
+    }
+
     @Override
     public Iterator<SwappList> iterator() {
         return swappLists.values().iterator();

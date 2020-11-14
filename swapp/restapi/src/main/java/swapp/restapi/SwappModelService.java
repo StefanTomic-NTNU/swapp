@@ -31,6 +31,7 @@ public class SwappModelService {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public SwappModel getSwappModel() {
+    LOG.debug("getSwappModel({})");
     return this.swappModel;
   }
 
@@ -44,7 +45,7 @@ public class SwappModelService {
   @Path("/{name}")
   public SwappListResource getSwappList(@PathParam("name") String name) {
     SwappList swappList = getSwappModel().getSwappList(name);
-    LOG.debug("Sub-resource for TodoList " + name + ": " + swappList);
+    LOG.debug("Sub-resource for SwappList " + name + ": " + swappList);
     return new SwappListResource(swappModel, name, swappList);
   }
 
@@ -52,7 +53,7 @@ public class SwappModelService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
-    LOG.debug("putTodoList({})", swappListArg);
+    LOG.debug("putSwappList({})", swappListArg);
     return this.swappModel.putSwappList(swappListArg) == null;
   }
 

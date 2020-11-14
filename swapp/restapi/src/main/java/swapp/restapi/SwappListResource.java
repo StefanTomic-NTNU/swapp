@@ -49,7 +49,7 @@ public class SwappListResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public SwappList getSwappList() {
-    LOG.debug("getTodoList({})", name);
+    LOG.debug("getSwappList({})", name);
     return this.swappList;
   }
 
@@ -73,7 +73,7 @@ public class SwappListResource {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
-    LOG.debug("putTodoList({})", swappListArg);
+    LOG.debug("putSwappList({})", swappListArg);
     return this.swappModel.putSwappList(swappListArg) == null;
   }
 

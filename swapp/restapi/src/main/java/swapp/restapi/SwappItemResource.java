@@ -65,7 +65,7 @@ public class SwappItemResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public SwappItem putSwappItem(SwappItem newItem) {
-        LOG.debug("putTodoList({})", newItem);
+        LOG.debug("putSwappList({})", newItem);
         return this.swappModel.changeSwappItem(this.swappItem.getUsername(), this.swappItem, newItem);
     }
 

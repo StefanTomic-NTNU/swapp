@@ -109,15 +109,16 @@ public class RemoteAppController {
   }
 
   public void init(String username) throws URISyntaxException {
-    if (remoteSwappAccess == null) remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri)); 
+    if (remoteSwappAccess == null)
+      remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri));
     if (!remoteSwappAccess.hasSwappList(username)) {
-      remoteSwappAccess.addSwappList(username);
+      //remoteSwappAccess.addSwappNewList(username);
     }
     this.username = username;
     remoteSwappAccess.getSwappList(username).addSwappListListener(p -> {
       updateSwappItems();
     });
-  
+
   }
 
   public void initializeChoiceBox() {
@@ -176,7 +177,8 @@ public class RemoteAppController {
   }
 
   public void updateSwappItems() {
-    listView.getItems().setAll(remoteSwappAccess.getSwappItemByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    listView.getItems()
+        .setAll(remoteSwappAccess.getSwappItemByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
     System.out.println("list changed");
   }
 
@@ -201,7 +203,7 @@ public class RemoteAppController {
       removeSwappItem(returnetItem);
     else if (remoteSwappAccess.isItemChanged(returnetItem)) {
       System.out.println(getSwappList().getSwappItems().toString());
-      remoteSwappAccess.changeSwappItem(oldItem, returnetItem);
+      remoteSwappAccess.putSwappItem(returnetItem);
       System.out.println(getSwappList().getSwappItems().toString());
     }
   }
