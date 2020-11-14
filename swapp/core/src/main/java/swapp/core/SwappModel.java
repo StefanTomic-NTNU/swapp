@@ -18,7 +18,7 @@ public class SwappModel implements Iterable<SwappList> {
         return swappLists.containsKey(username);
     }
 
-    public SwappList addSwappList(String username) {
+    public SwappList addNewSwappList(String username) {
         return putSwappList(new SwappList(username));
     }
 

@@ -77,9 +77,9 @@ public class SwappListResource {
   @Produces(MediaType.APPLICATION_JSON)
   public boolean putSwappList(SwappList swappListArg) {
     LOG.debug("putSwappList({})", swappListArg);
-    this.swappModel.putSwappList(swappListArg);
+    boolean added = this.swappModel.putSwappList(swappListArg) == null;
     saveHelper.write(this.swappModel);
-    return this.swappModel == null;
+    return added;
   }
 
   /**

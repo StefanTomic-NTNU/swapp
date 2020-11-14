@@ -55,7 +55,7 @@ public class SplashScreenRemoteController {
     RemoteAppController appController = loader.getController();
     appController.init(usernameTextField.getText());
     Stage stage = new Stage();
-    stage.setScene(new Scene(root, 800, 400));
+    stage.setScene(new Scene(root, 900, 600));
     stage.setTitle("Item");
     stage.show();
     stage = (Stage) loginButton.getScene().getWindow();

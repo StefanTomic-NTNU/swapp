@@ -4,8 +4,10 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import swapp.core.SwappItem;
@@ -16,9 +18,6 @@ public class ViewSwappItemController {
 
     @FXML
     private TextArea infoTextField;
-
-    @FXML
-    private TextField statusTextField;
 
     @FXML
     private TextField emailTextField;
@@ -32,46 +31,80 @@ public class ViewSwappItemController {
     @FXML
     private Button deleteButton;
 
+    @FXML
+    private RadioButton newRadio;
+
+    @FXML
+    private RadioButton usedRadio;
+
+    @FXML
+    private RadioButton damagedRadio;
+
+    private ToggleGroup toggleGroup;
+
     private boolean deleteFlag;
 
     private SwappItem swappItem;
 
     public void initSwappitem(SwappItem swappItem, String username) {
         cleanText();
+        inizializeToggleGroup();
         if (swappItem != null) {
             this.swappItem = swappItem;
-            setText();
-            if (!swappItem.getUsername().equals(username)){
+            setTextAndToggle();
+            if (!swappItem.getUsername().equals(username)) {
                 deleteButton.setDisable(true);
                 publishButton.setDisable(true);
                 infoTextField.setEditable(false);
+                newRadio.setDisable(true);
+                usedRadio.setDisable(true);
+                damagedRadio.setDisable(true);
             }
         }
     }
 
-    public void setText() {
-        titleTextField.setText(swappItem.getName());
-        infoTextField.setText(swappItem.getDescription());
-        statusTextField.setText(swappItem.getStatus());
-        emailTextField.setText(swappItem.getUsername());
+    public void inizializeToggleGroup() {
+        toggleGroup = new ToggleGroup();
+        newRadio.setToggleGroup(toggleGroup);
+        usedRadio.setToggleGroup(toggleGroup);
+        damagedRadio.setToggleGroup(toggleGroup);
+        toggleGroup.selectToggle(newRadio);
     }
 
-    public void cleanText(){
+    public void setTextAndToggle() {
+        titleTextField.setText(swappItem.getName());
+        infoTextField.setText(swappItem.getDescription());
+        emailTextField.setText(swappItem.getUsername());
+        switch (swappItem.getStatus()) {
+            case "New":
+                toggleGroup.selectToggle(newRadio);
+                break;
+            case "Used":
+                toggleGroup.selectToggle(usedRadio);
+                break;
+            case "Damaged":
+                toggleGroup.selectToggle(damagedRadio);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void cleanText() {
         titleTextField.setText("");
         infoTextField.setText("");
-        statusTextField.setText("");
         emailTextField.setText("");
     }
 
     @FXML
     public void publishSwappItem() {
-        String title = titleTextField.getText();
+        //String title = titleTextField.getText();
         String newInfo = infoTextField.getText();
-        String newstatus = statusTextField.getText();
-        String newEmail = emailTextField.getText();
-        SwappItem newItem = new SwappItem(title, newEmail, newstatus, newInfo);
+        String newCondition = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+        //String newEmail = emailTextField.getText();
+        SwappItem newItem = new SwappItem(this.swappItem.getName(), this.swappItem.getUsername(), newCondition, newInfo);
         this.swappItem = newItem;
-        setText();
+        setTextAndToggle();
         cleanText();
         Stage stage = (Stage) publishButton.getScene().getWindow();
         stage.close();
@@ -89,7 +122,7 @@ public class ViewSwappItemController {
         if (swappItem != null) {
             deleteFlag = true;
         }
-        setText();
+        setTextAndToggle();
         cleanText();
         Stage stage = (Stage) deleteButton.getScene().getWindow();
         stage.close();

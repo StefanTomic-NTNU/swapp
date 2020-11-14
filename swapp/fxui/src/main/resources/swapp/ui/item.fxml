@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox fx:id="hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="205.13671875">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Separator prefWidth="200.0" />
+      <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="168.205078125">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Separator prefHeight="5.0" prefWidth="185.0" />
+      <Text fx:id="usernameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="177.2734375">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+   </children>
+</HBox>

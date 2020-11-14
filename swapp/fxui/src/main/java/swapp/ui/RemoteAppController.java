@@ -37,6 +37,7 @@ import swapp.core.SwappModel;
 import swapp.core.SwappList;
 import swapp.json.SwappPersistence;
 import swapp.ui.RemoteSwappAccess;
+import swapp.ui.SwappItemListViewCell;
 
 public class RemoteAppController {
 
@@ -56,12 +57,6 @@ public class RemoteAppController {
   private Button removeButton;
 
   @FXML
-  private MenuItem openButton;
-
-  @FXML
-  private MenuItem saveButton;
-
-  @FXML
   private TextField nameField;
 
   @FXML
@@ -69,12 +64,14 @@ public class RemoteAppController {
 
   @FXML
   private RadioButton newRadio;
-
   @FXML
   private RadioButton usedRadio;
-
   @FXML
   private RadioButton damagedRadio;
+  @FXML
+  private RadioButton allRadio;
+  @FXML
+  private RadioButton mineRadio;
 
   private ToggleGroup toggleGroup;
 
@@ -136,6 +133,9 @@ public class RemoteAppController {
     newRadio.setToggleGroup(toggleGroup);
     usedRadio.setToggleGroup(toggleGroup);
     damagedRadio.setToggleGroup(toggleGroup);
+    allRadio.setToggleGroup(toggleGroup);
+    mineRadio.setToggleGroup(toggleGroup);
+    toggleGroup.selectedToggleProperty().addListener((v, oldValue, newValue) -> updateSwapp());
   }
 
   public void initializeListView() {
@@ -160,12 +160,19 @@ public class RemoteAppController {
 
   @FXML
   void addSwappItemButtonClicked() throws Exception {
-    if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), this.username,
-          ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
-      addSwappItem(item);
-      nameField.setText("");
-      descriptionFieldArea.setText("");
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddSwappItem.fxml"));
+    Parent root = (Parent) loader.load();
+    AddSwappItemController itemController = loader.getController();
+    itemController.initSwappitem(username);
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 900, 500));
+    stage.setTitle("New Item");
+    stage.showAndWait();
+    SwappItem returnetItem = itemController.getSwappItem();
+    if (returnetItem != null){
+      //System.out.println(getSwappList().getSwappItems().toString());
+      addSwappItem(returnetItem);
+      //System.out.println(getSwappList().getSwappItems().toString());
     }
   }
 
@@ -177,8 +184,20 @@ public class RemoteAppController {
     }
   }
 
+  @FXML
+  void removeAllSwappItems(){
+    swappAccess.addNewSwappList(this.username);
+    updateSwapp();
+    init(this.username);
+  }
+
   public void updateSwapp() {
-    listView.getItems().setAll(swappAccess.getSwappItemByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
+    String choice = ((RadioButton)toggleGroup.getSelectedToggle()).getText();
+    if (choice.equals("Mine"))  {
+      listView.getItems().setAll(swappAccess.getSwappItemByUser(this.username));
+    } else {
+      listView.getItems().setAll(swappAccess.getSwappItemByStatus(choice));
+    }
     System.out.println("list changed");
   }
 
@@ -187,21 +206,21 @@ public class RemoteAppController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
     Parent root = (Parent) loader.load();
     ViewSwappItemController itemController = loader.getController();
-    SwappItem selectedItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
-    SwappItem selectedItemFromServer = swappAccess.getSwappItem(selectedItem);
-    itemController.initSwappitem(selectedItemFromServer, username);
+    SwappItem oldItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    itemController.initSwappitem(oldItem, username);
     Stage stage = new Stage();
-    stage.setScene(new Scene(root, 800, 400));
+    stage.setScene(new Scene(root, 900, 530));
     stage.setTitle("Item");
     stage.showAndWait();
     boolean deleteFlag = itemController.isdelete();
     SwappItem returnetItem = itemController.getSwappItem();
-    if (deleteFlag)
+    if (deleteFlag){
       removeSwappItem(returnetItem);
+    }
     else if (swappAccess.isItemChanged(returnetItem)) {
-      System.out.println(swappAccess.getSwappItem(returnetItem));
+      //System.out.println(swappAccess.getSwappItem(returnetItem));
       changeSwappItem(returnetItem);
-      System.out.println(swappAccess.getSwappItem(returnetItem));
+      //System.out.println(swappAccess.getSwappItem(returnetItem));
     }
   }
 

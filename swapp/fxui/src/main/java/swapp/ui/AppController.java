@@ -53,12 +53,6 @@ public class AppController {
   private Button removeButton;
 
   @FXML
-  private MenuItem openButton;
-
-  @FXML
-  private MenuItem saveButton;
-
-  @FXML
   private TextField nameField;
 
   @FXML
@@ -66,12 +60,14 @@ public class AppController {
 
   @FXML
   private RadioButton newRadio;
-
   @FXML
   private RadioButton usedRadio;
-
   @FXML
   private RadioButton damagedRadio;
+  @FXML
+  private RadioButton allRadio;
+  @FXML
+  private RadioButton mineRadio;
 
   private ToggleGroup toggleGroup;
 
@@ -134,7 +130,7 @@ public class AppController {
 
   public void init(String username) {
     if (!model.hasSwappList(username)) {
-      model.addSwappList(username);
+      model.addNewSwappList(username);
     }
     this.username = username;
     for (SwappList swappList : model) {
@@ -160,7 +156,11 @@ public class AppController {
     newRadio.setToggleGroup(toggleGroup);
     usedRadio.setToggleGroup(toggleGroup);
     damagedRadio.setToggleGroup(toggleGroup);
+    allRadio.setToggleGroup(toggleGroup);
+    mineRadio.setToggleGroup(toggleGroup);
+    toggleGroup.selectedToggleProperty().addListener((v, oldValue, newValue) -> updateSwappItems());
   }
+
 
   public void initializeListView() {
     listView.setCellFactory(list -> new SwappItemListViewCell());
@@ -184,14 +184,20 @@ public class AppController {
   }
 
   @FXML
-  void addSwappItemButtonClicked() {
-    if (!nameField.getText().isBlank()) {
-      SwappItem item = new SwappItem(nameField.getText(), this.username,
-          ((RadioButton) toggleGroup.getSelectedToggle()).getText(), descriptionFieldArea.getText());
-      addSwappItem(item);
-      nameField.setText("");
-      descriptionFieldArea.setText("");
-
+  void addSwappItemButtonClicked() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("AddSwappItem.fxml"));
+    Parent root = (Parent) loader.load();
+    AddSwappItemController itemController = loader.getController();
+    itemController.initSwappitem(username);
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 900, 500));
+    stage.setTitle("New Item");
+    stage.showAndWait();
+    SwappItem returnetItem = itemController.getSwappItem();
+    if (returnetItem != null){
+      System.out.println(getSwappList().getSwappItems().toString());
+      addSwappItem(returnetItem);
+      System.out.println(getSwappList().getSwappItems().toString());
     }
   }
 
@@ -203,9 +209,21 @@ public class AppController {
     }
   }
 
+  @FXML
+  void removeAllSwappItems(){
+    this.model.addNewSwappList(this.username);
+    updateSwappItems();
+    init(this.username);
+  }
+
   public void updateSwappItems() {
-    listView.getItems().setAll(model.getSwappItemsByStatus(filterChoiceBox.getSelectionModel().getSelectedItem()));
-    System.out.println("list changed");
+    String choice = ((RadioButton)toggleGroup.getSelectedToggle()).getText();
+    if (choice.equals("Mine"))  {
+      listView.getItems().setAll(model.getSwappItemsByUser(username));
+    } else {
+      listView.getItems().setAll(model.getSwappItemsByStatus(choice));
+    }
+
   }
 
   public SwappList getSwappList() {
@@ -220,7 +238,7 @@ public class AppController {
     SwappItem oldItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
     itemController.initSwappitem(oldItem, username);
     Stage stage = new Stage();
-    stage.setScene(new Scene(root, 800, 400));
+    stage.setScene(new Scene(root, 900, 530));
     stage.setTitle("Item");
     stage.showAndWait();
     boolean deleteFlag = itemController.isdelete();

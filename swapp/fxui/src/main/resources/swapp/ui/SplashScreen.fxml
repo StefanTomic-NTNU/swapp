@@ -6,14 +6,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.SplashScreenController">
    <children>
+      <Separator orientation="VERTICAL" prefHeight="132.0" prefWidth="600.0" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter email" textAlignment="CENTER" wrappingWidth="562.13671875">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Separator prefHeight="100.0" prefWidth="93.0" />
-            <TextField fx:id="usernameTextField" alignment="CENTER" prefHeight="99.0" prefWidth="432.0" promptText="username">
+            <TextField fx:id="usernameTextField" alignment="CENTER" prefHeight="147.0" prefWidth="432.0" promptText="email">
                <font>
                   <Font size="36.0" />
                </font>
@@ -25,7 +31,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Separator prefHeight="106.0" prefWidth="181.0" />
-            <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="88.0" prefWidth="213.0" onAction="#login" text="Log in">
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" prefHeight="88.0" prefWidth="213.0" text="Log in">
                <font>
                   <Font size="24.0" />
                </font>
