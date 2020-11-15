@@ -3,5 +3,11 @@
     "java.format.settings.url": "swapp/config/checkstyle/eclipse-java-google-style.xml",
     "[java]": {
         "editor.tabSize": 2
+    },
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
     }
 }
