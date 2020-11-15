@@ -214,21 +214,26 @@ public class SwappAppController {
     Parent root = (Parent) loader.load();
     ViewSwappItemController itemController = loader.getController();
     SwappItem selectedItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
-    SwappItem oldItem = swappAccess.getSwappItem(selectedItem);
-    itemController.initSwappitem(oldItem, username);
-    Stage stage = new Stage();
-    stage.setScene(new Scene(root, 900, 530));
-    stage.setTitle("Item");
-    stage.showAndWait();
-    boolean deleteFlag = itemController.isdelete();
-    SwappItem returnetItem = itemController.getSwappItem();
-    if (deleteFlag){
-      removeSwappItem(returnetItem);
-    }
-    else if (swappAccess.isItemChanged(returnetItem)) {
-      //System.out.println(swappAccess.getSwappItem(returnetItem));
-      changeSwappItem(returnetItem);
-      //System.out.println(swappAccess.getSwappItem(returnetItem));
+    if(selectedItem!=null){
+      System.out.println(selectedItem);
+      SwappItem oldItem = swappAccess.getSwappItem(selectedItem);
+      System.out.println(swappAccess.getAllSwappItems());
+      System.out.println(oldItem);
+      itemController.initSwappitem(oldItem, username);
+      Stage stage = new Stage();
+      stage.setScene(new Scene(root, 900, 530));
+      stage.setTitle("Item");
+      stage.showAndWait();
+      boolean deleteFlag = itemController.isdelete();
+      SwappItem returnetItem = itemController.getSwappItem();
+      if (deleteFlag){
+        removeSwappItem(returnetItem);
+      }
+      else if (swappAccess.isItemChanged(returnetItem)) {
+        //System.out.println(swappAccess.getSwappItem(returnetItem));
+        changeSwappItem(returnetItem);
+        //System.out.println(swappAccess.getSwappItem(returnetItem));
+      }
     }
   }
 

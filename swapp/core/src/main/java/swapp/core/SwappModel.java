@@ -24,7 +24,7 @@ public class SwappModel implements Iterable<SwappList> {
 
     public boolean hasSwappItem(String username, String itemName) {
         return getSwappList(username).hasSwappItem(itemName);
-      }
+    }
 
     public SwappList addSwappList(SwappList swappList) {
         return putSwappList(swappList);
@@ -58,8 +58,8 @@ public class SwappModel implements Iterable<SwappList> {
         return hasSwappList(username) == false;
     }
 
-    public SwappItem getSwappItem(SwappItem swappItem){
-        return getSwappList(swappItem.getUsername()).getSwappItem(swappItem.getUsername());
+    public SwappItem getSwappItem(SwappItem swappItem) {
+        return getSwappList(swappItem.getUsername()).getSwappItem(swappItem.getName());
     }
 
     public SwappItem changeSwappItem(String username, SwappItem old, SwappItem newItem) {
@@ -67,11 +67,11 @@ public class SwappModel implements Iterable<SwappList> {
         return getSwappList(username).getSwappItem(newItem);
     }
 
-    public SwappList createNewSwappList(String name){
+    public SwappList createNewSwappList(String name) {
         return new SwappList(name);
     }
 
-    public boolean isItemChanged(SwappItem newItem){
+    public boolean isItemChanged(SwappItem newItem) {
         return getSwappList(newItem.getUsername()).isItemChanged(newItem);
     }
 
@@ -80,7 +80,7 @@ public class SwappModel implements Iterable<SwappList> {
         return swappLists.values().iterator();
     }
 
-    public Collection<SwappList> getSwappLists(){
+    public Collection<SwappList> getSwappLists() {
         return swappLists.values();
     }
 

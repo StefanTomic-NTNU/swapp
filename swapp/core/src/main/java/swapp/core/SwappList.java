@@ -81,8 +81,11 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   public SwappItem getSwappItem(String name) {
-      if(swappItems.stream().anyMatch(p -> p.nameEquals(name))) return (SwappItem) swappItems.stream().filter(p -> p.nameEquals(name)).findFirst().get(); 
-      else return null;
+    if (swappItems.stream().anyMatch(p -> p.nameEquals(name))) {
+      return swappItems.stream().filter(p -> p.nameEquals(name)).findFirst().get();
+    } else{
+      return null;
+    }
   }
 
   public boolean isItemChanged(SwappItem newItem) {
@@ -102,7 +105,7 @@ public class SwappList implements Iterable<SwappItem> {
     return newItem;
   }
 
-  //TODO filter by user(own)
+  // TODO filter by user(own)
   public List<SwappItem> getSwappItemsByStatus(String status) {
     if (status.equals("All"))
       return getSwappItems();

@@ -69,4 +69,33 @@ public class SwappModelTest {
 
     }
 
+    @Test
+    public void testGetSwappItem(){
+        swappModel.addSwappList(list1);
+        swappModel.addSwappList(list2);
+        SwappItem item1 = new SwappItem("name", "swapp1", "New", "info");
+        SwappItem item2 = new SwappItem("name2", "swapp1", "New", "info");
+        SwappItem item3 = new SwappItem("name3", "swapp2", "New", "info");
+        swappModel.addSwappItem(item1);
+        swappModel.addSwappItem(item2);
+        assertTrue(swappModel.getSwappItems().size()==2);
+        System.out.println(swappModel.getSwappItems());
+        System.out.println(item1);
+        SwappItem item4 = new SwappItem("name", "swapp1", "New", "info");
+        SwappItem item5 = swappModel.getSwappItem(item4);
+        assertTrue(item5.allAttributesEquals(item1));
+    }
+
+    @Test
+    public void testHasSwappList(){
+        swappModel.addSwappList(list1);
+        String username = list1.getUsername();
+        assertTrue(swappModel.hasSwappList(username));
+    }
+
+    @Test
+    public void hasSwappItem(){
+        
+    }
+
 }

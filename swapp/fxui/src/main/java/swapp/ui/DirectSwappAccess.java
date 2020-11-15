@@ -17,7 +17,7 @@ import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.json.SwappPersistence;
 
-public class DirectSwappDataAccess implements SwappDataAccess {
+public class DirectSwappAccess implements SwappDataAccess {
 
     private SwappModel model;
 
@@ -33,7 +33,7 @@ public class DirectSwappDataAccess implements SwappDataAccess {
         this.model = model;
     }
 
-    public DirectSwappDataAccess(String fileName) throws IOException {
+    public DirectSwappAccess(String fileName) throws IOException {
         this.fileName = fileName;
         file = Paths.get(System.getProperty("user.home"), this.fileName).toFile();
         readData();

@@ -58,7 +58,7 @@ public class SwappSplashScreenController {
       swappAccess = new RemoteSwappAccess(new URI(endpointUri));
     }else if (filename != null){
       System.out.println(filename);
-      swappAccess = new DirectSwappDataAccess(filename);
+      swappAccess = new DirectSwappAccess(filename);
     } 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("SwappApp.fxml"));
     Parent root = (Parent) loader.load();
