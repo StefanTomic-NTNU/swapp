@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class SwappList implements Iterable<SwappItem> {
@@ -15,6 +12,11 @@ public class SwappList implements Iterable<SwappItem> {
   private Collection<SwappListListener> swappListListeners = new ArrayList<>();
   private String username;
 
+  /**
+   * Constructs SwappList with given username.
+   * @param  username String which the username is set to 
+   * @throws IllegalArgumentException if username is null or an empty string.
+  */
   public SwappList(String username) {
     if (username == null || username.isEmpty()){
       throw new IllegalArgumentException("Illegal name for list");
@@ -22,22 +24,47 @@ public class SwappList implements Iterable<SwappItem> {
     this.username = username;
   }
 
+  /**
+   * Adds Collection of SwappItems to SwappList. SwappItems are validated in the process.
+   * @param  items   SwappItems which are added to the SwappList.
+  */
   public SwappList(Collection<SwappItem> items) {
     this.username = items.stream().findFirst().get().getUsername();
     this.addSwappItem(items);
   }
 
+  /**
+   * Adds SwappItems to SwappList. SwappItems are validated in the process.
+   * @param  items   SwappItems which are added to the SwappList.
+  */
   public SwappList(SwappItem... items) {
     this.username = List.of(items).stream().findFirst().get().getUsername();
     this.addSwappItem(List.of(items));
   }
 
+  /**
+   * Adds given SwappItem to SwappList. SwappItem is validated beforehand.
+   * @param  newItem SwappItems which is added to the SwappList.
+  */
   public void addSwappItem(SwappItem newItem) {
     validateAddSwappItem(newItem);
     swappItems.add(newItem);
     fireSwappListChanged();
   }
 
+  /**
+   * Validates SwappItem in relation to the SwappList.
+   * <p>
+   * The given swappItem is validated against the following criteria:
+   * <dl>
+   *   <dd> -given swappItem may not be null</dd>
+   *   <dd> -given swappItem may not already be contained in SwappList</dd>
+   *   <dd> -given swappItem must have same username as SwappList</dd>
+   * </dl>
+   * 
+   * @param  swappItem SwappItem which is validated.
+   * @throws IllegalArgumentException if SwappItem is invalid.
+  */
   public void validateAddSwappItem(SwappItem swappItem) {
     if (swappItem == null) {
       throw new IllegalArgumentException("validateAddSwappItem" + " SwappItem can't be null");
@@ -45,9 +72,18 @@ public class SwappList implements Iterable<SwappItem> {
     if (hasSwappItem(swappItem)) {
       throw new IllegalArgumentException("validateAddSwappItem" + " SwappItem already exist");
     }
-    if (!swappItem.getUsername().equals(this.username)) throw new IllegalArgumentException("validateAddSwappItem" + " item must have same username as the list");
+    if (!swappItem.getUsername().equals(this.username)) { 
+      throw new IllegalArgumentException("validateAddSwappItem" 
+      + " item must have same username as the list"); 
+    }
   }
 
+  /**
+   * Removed SwappItem.
+   * 
+   * @param  swappItem SwappItem to be removed.
+   * @throws IllegalArgumentException if SwappItem is null or doesn't exist in the SwappList.
+  */
   public void validateRemoveSwappItem(SwappItem swappItem) {
     if (swappItem == null) {
       throw new IllegalArgumentException("validateRemoveSwappItem " + "SwappItem can't be null");
@@ -57,6 +93,12 @@ public class SwappList implements Iterable<SwappItem> {
     }
   }
 
+  /**
+   * Removed SwappItem.
+   * 
+   * @param  swappItem Name of the SwappItem to be removed.
+   * @throws IllegalArgumentException if SwappItem is null or doesn't exist in the SwappList.
+  */
   public void validateRemoveSwappItem(String swappItem) {
     if (swappItem == null) {
       throw new IllegalArgumentException("validateRemoveSwappItem " + "SwappItem can't be null");
@@ -66,6 +108,7 @@ public class SwappList implements Iterable<SwappItem> {
     }
   }
 
+  //TODO Skriv javadocs herifra og ned
   public void addSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       validateAddSwappItem(item);
@@ -86,6 +129,7 @@ public class SwappList implements Iterable<SwappItem> {
     fireSwappListChanged();
   }
 
+  //TODO Check if throws ConcurrentModificationException
   public void removeSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
       validateRemoveSwappItem(item);
