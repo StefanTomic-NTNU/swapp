@@ -42,20 +42,27 @@ public class AddSwappItemController {
 
   private SwappItem swappItem;
 
-  // TODO denne klassen er defunkt. Må ordnes opp i.
-
+  /**
+   * Resests interactive ui elements to default. Adds username to emailTextField.
+   */
   public void initSwappitem(String username) {
     cleanText();
     inizializeToggleGroup();
     emailTextField.setText(username);
   }
 
+  /**
+   * Clears all Text- and AreaFields.
+   */
   public void cleanText() {
     titleTextField.setText("");
     infoTextField.setText("");
     emailTextField.setText("");
   }
 
+  /**
+   * Constructs SwappItem based on ui input. Closes stage.
+   */
   @FXML
   public void publishSwappItem() {
     String title = titleTextField.getText().replaceAll("\\s+", "");
@@ -64,13 +71,15 @@ public class AddSwappItemController {
     String newEmail = emailTextField.getText().replaceAll("\\s+", "");
     if (!title.isEmpty() && !newInfo.isEmpty() && !newCondition.isEmpty() && !newEmail.isEmpty()) {
       this.swappItem = new SwappItem(title, newEmail, newCondition, newInfo);
-      // setText();
       cleanText();
       Stage stage = (Stage) publishButton.getScene().getWindow();
       stage.close();
     }
   }
 
+  /**
+   * Closes stage without publishing any SwappItem.
+   */
   @FXML
   public void backButtonPressed() {
     cleanText();
@@ -82,6 +91,9 @@ public class AddSwappItemController {
     return this.swappItem;
   }
 
+  /**
+   * Places RadioButtons in toggleGroup and selects RadioButton "New" as default.
+   */
   public void inizializeToggleGroup() {
     toggleGroup = new ToggleGroup();
     newRadio.setToggleGroup(toggleGroup);

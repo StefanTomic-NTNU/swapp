@@ -43,6 +43,15 @@ public class ViewSwappItemController {
 
   private SwappItem swappItem;
 
+  /**
+   * Initializes stage based on weather or not SwappItem is user's.
+   * 
+   * <p>If SwappItem is user's: Resests interactive ui elements to default. 
+   * Adds username to emailTextField.
+   * 
+   * <p>If SwappItem is not user's: Sets Text- and AreaFields as well as RadioButtons
+   * to non-editable. Disables buttons for deleteButton and publishButton. 
+   */
   public void initSwappitem(SwappItem swappItem, String username) {
     cleanText();
     inizializeToggleGroup();
@@ -60,6 +69,9 @@ public class ViewSwappItemController {
     }
   }
 
+  /**
+   * Places RadioButtons in toggleGroup and selects RadioButton "New" as default.
+   */
   public void inizializeToggleGroup() {
     toggleGroup = new ToggleGroup();
     newRadio.setToggleGroup(toggleGroup);
@@ -68,6 +80,9 @@ public class ViewSwappItemController {
     toggleGroup.selectToggle(newRadio);
   }
 
+  /**
+   * Sets Text and RadioButton to match SwappItem's attributes.
+   */
   public void setTextAndToggle() {
     titleTextField.setText(swappItem.getName());
     infoTextField.setText(swappItem.getDescription());
@@ -87,22 +102,28 @@ public class ViewSwappItemController {
     }
   }
 
+  /**
+   * Clears all Text- and AreaFields.
+   */
   public void cleanText() {
     titleTextField.setText("");
     infoTextField.setText("");
     emailTextField.setText("");
   }
 
+  /**
+   * Constructs SwappItem based on ui input. Closes stage.
+   */
   @FXML
   public void publishSwappItem() {
     // String title = titleTextField.getText();
     String newInfo = infoTextField.getText().replaceAll("\\s+", "");
     String newCondition = ((RadioButton) toggleGroup.getSelectedToggle())
-      .getText().replaceAll("\\s+", "");
+        .getText().replaceAll("\\s+", "");
     // String newEmail = emailTextField.getText();
     if (!newInfo.isEmpty() && !newCondition.isEmpty()) {
       SwappItem newItem = new SwappItem(
-        this.swappItem.getName(), this.swappItem.getUsername(), newCondition, newInfo);
+          this.swappItem.getName(), this.swappItem.getUsername(), newCondition, newInfo);
       this.swappItem = newItem;
       setTextAndToggle();
       cleanText();
@@ -111,6 +132,9 @@ public class ViewSwappItemController {
     }
   }
 
+  /**
+   * Closes stage without publishing or deleting any SwappItem.
+   */
   @FXML
   public void backButtonPressed() {
     cleanText();
@@ -118,6 +142,9 @@ public class ViewSwappItemController {
     stage.close();
   }
 
+  /**
+   * Closes and sets deleteButton flag to true.
+   */
   @FXML
   public void deleteItem() {
     if (swappItem != null) {
