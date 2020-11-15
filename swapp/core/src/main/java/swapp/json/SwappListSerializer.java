@@ -15,7 +15,7 @@ class SwappListSerializer extends JsonSerializer<SwappList> {
       final SwappList swappList, final JsonGenerator jsonGen, final SerializerProvider provider)
       throws IOException {
     jsonGen.writeStartObject();
-    if (swappList.getUsername()!=null){
+    if (swappList.getUsername() != null) {
       jsonGen.writeStringField("username", swappList.getUsername());
     }
     jsonGen.writeArrayFieldStart("items");

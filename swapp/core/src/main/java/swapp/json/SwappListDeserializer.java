@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 
@@ -31,11 +28,11 @@ class SwappListDeserializer extends JsonDeserializer<SwappList> {
     return deserialize((JsonNode) treeNode);
   }
 
-  SwappList deserialize(JsonNode treeNode){
+  SwappList deserialize(JsonNode treeNode) {
     if (treeNode instanceof ObjectNode) {
       ObjectNode objectNode = (ObjectNode) treeNode;
       JsonNode nameNode = objectNode.get("username");
-      if (! (nameNode instanceof TextNode)) {
+      if (!(nameNode instanceof TextNode)) {
         return null;
       }
       String username = nameNode.asText();
@@ -53,5 +50,5 @@ class SwappListDeserializer extends JsonDeserializer<SwappList> {
       return swappList;
     }
     return null;
-  }   
+  }
 }
