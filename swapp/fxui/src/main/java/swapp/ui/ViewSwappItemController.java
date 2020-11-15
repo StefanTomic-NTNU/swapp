@@ -99,16 +99,18 @@ public class ViewSwappItemController {
     @FXML
     public void publishSwappItem() {
         // String title = titleTextField.getText();
-        String newInfo = infoTextField.getText();
-        String newCondition = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+        String newInfo = infoTextField.getText().replaceAll("\\s+","");
+        String newCondition = ((RadioButton) toggleGroup.getSelectedToggle()).getText().replaceAll("\\s+","");
         // String newEmail = emailTextField.getText();
-        SwappItem newItem = new SwappItem(this.swappItem.getName(), this.swappItem.getUsername(), newCondition,
-                newInfo);
-        this.swappItem = newItem;
-        setTextAndToggle();
-        cleanText();
-        Stage stage = (Stage) publishButton.getScene().getWindow();
-        stage.close();
+        if (!newInfo.isEmpty() && !newCondition.isEmpty()){
+            SwappItem newItem = new SwappItem(this.swappItem.getName(), this.swappItem.getUsername(), newCondition,
+                    newInfo);
+            this.swappItem = newItem;
+            setTextAndToggle();
+            cleanText();
+            Stage stage = (Stage) publishButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML

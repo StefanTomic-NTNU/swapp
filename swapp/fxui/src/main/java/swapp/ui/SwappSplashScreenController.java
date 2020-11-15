@@ -59,18 +59,20 @@ public class SwappSplashScreenController {
     }else if (filename != null){
       System.out.println(filename);
       swappAccess = new DirectSwappAccess(filename);
-    } 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("SwappApp.fxml"));
-    Parent root = (Parent) loader.load();
-    SwappAppController appController = loader.getController();
-    appController.setSwappDataAccess(swappAccess);
-    appController.init(usernameTextField.getText());
-    Stage stage = new Stage();
-    stage.setScene(new Scene(root, 900, 600));
-    stage.setTitle("Item");
-    stage.show();
-    stage = (Stage) loginButton.getScene().getWindow();
-    stage.close();
+    }
+    if (!usernameTextField.getText().replaceAll("\\s+","").isEmpty()){
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("SwappApp.fxml"));
+      Parent root = (Parent) loader.load();
+      SwappAppController appController = loader.getController();
+      appController.setSwappDataAccess(swappAccess);
+      appController.init(usernameTextField.getText().replaceAll("\\s+",""));
+      Stage stage = new Stage();
+      stage.setScene(new Scene(root, 900, 600));
+      stage.setTitle("Item");
+      stage.show();
+      stage = (Stage) loginButton.getScene().getWindow();
+      stage.close();
+    }
   }
 
 }

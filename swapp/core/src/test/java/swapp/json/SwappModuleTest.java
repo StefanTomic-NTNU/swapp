@@ -42,16 +42,19 @@ public class SwappModuleTest {
    */
 
   private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
-
+  private final static String defaultSwappModel = "{\"lists\":[{\"username\":\"username1\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},{\"username\":\"username2\",\"items\":[{\"itemName\":\"item3\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
   @Test
   public void testSerializers() {
     SwappModel model = new SwappModel();
-    SwappList swappList = new SwappList("swapp");
-    model.addSwappList(swappList);
-    SwappItem swappItem1 = swappList.createAndAddSwappItem("item1", "username1", "New", "info1");
-    SwappItem swappItem2 = swappList.createAndAddSwappItem("item2", "username2", "New", "info2");
+    SwappList swappList1 = new SwappList("username1");
+    SwappList swappList2 = new SwappList("username2");
+    model.addSwappList(swappList1);
+    model.addSwappList(swappList2);
+    SwappItem swappItem1 = swappList1.createAndAddSwappItem("item1", "username1", "New", "info1");
+    SwappItem swappItem2 = swappList1.createAndAddSwappItem("item2", "username1", "New", "info2");
+    SwappItem swappItem3 = swappList2.createAndAddSwappItem("item3", "username2", "New", "info3");
     try {
-      assertEquals(swappListWithTwoItems, mapper.writeValueAsString(model));
+      assertEquals(defaultSwappModel, mapper.writeValueAsString(model));
     } catch (JsonProcessingException e) {
       fail();
     }
@@ -60,18 +63,24 @@ public class SwappModuleTest {
   @Test
   public void testDeserializers() {
     try {
-      SwappModel model = mapper.readValue(swappListWithTwoItems, SwappModel.class);
-      assertTrue(model.iterator().hasNext());
-      SwappList swappList = model.iterator().next();
-      assertEquals("swapp", swappList.getUsername());
+      SwappModel model = mapper.readValue(defaultSwappModel, SwappModel.class);
+      Iterator<SwappList> it1 = model.iterator();
+      assertTrue(it1.hasNext());
+      SwappList swappList = it1.next();
+      assertEquals("username1", swappList.getUsername());
       Iterator<SwappItem> iterator = swappList.iterator();
       assertTrue(iterator.hasNext());
       SwappItem swappItem1 = iterator.next();
       assertTrue(swappItem1.allAttributesEquals("item1", "New", "info1", "username1"));
       assertTrue(iterator.hasNext());
       SwappItem swappItem2 = iterator.next();
-      assertTrue(swappItem2.allAttributesEquals("item2", "New", "info2", "username2"));
+      assertTrue(swappItem2.allAttributesEquals("item2", "New", "info2", "username1"));
       assertFalse(iterator.hasNext());
+      assertTrue(it1.hasNext());
+      SwappList list2 = it1.next();
+      Iterator <SwappItem> it2 = list2.iterator();
+      assertTrue(it2.next().allAttributesEquals("item3", "New", "info3", "username2"));
+      assertFalse(it2.hasNext());
     } catch (JsonProcessingException e) {
       fail();
     }
@@ -80,10 +89,10 @@ public class SwappModuleTest {
   @Test
   public void testSerializersDeserializers() {
     SwappModel model = new SwappModel();
-    SwappList swappList = new SwappList("swapp");
+    SwappList swappList = new SwappList("username1");
     model.addSwappList(swappList);
     SwappItem item1 = new SwappItem("name1", "username1", "New", "info1");
-    SwappItem item2 = new SwappItem("name2", "username2", "New", "info2");
+    SwappItem item2 = new SwappItem("name2", "username1", "New", "info2");
     swappList.addSwappItem(item1);
     swappList.addSwappItem(item2);
     try {
@@ -91,7 +100,7 @@ public class SwappModuleTest {
       SwappModel model2 = mapper.readValue(json, SwappModel.class);
       assertTrue(model2.iterator().hasNext());
       SwappList list2 = model.iterator().next();
-      assertEquals("swapp", swappList.getUsername());
+      assertEquals("username1", swappList.getUsername());
       Iterator<SwappItem> it = list2.iterator();
       assertTrue(it.hasNext());
       assertTrue(it.next().allAttributesEquals(item1));

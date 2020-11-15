@@ -44,7 +44,7 @@ public class SwappItem {
 
   public void setName(String name) {
     if (!name.isBlank()) {
-      this.name = name;
+      this.name = name.replaceAll("\\s", "");
     }
     else {
       throw new IllegalArgumentException("Name cannot be blank");
@@ -69,7 +69,7 @@ public class SwappItem {
 
   public void setUsername(String username) {
     if (!(username == null) && !username.isEmpty()) {
-      this.username = username;
+      this.username = username.replaceAll("\\s", "");;
     }
   }
 

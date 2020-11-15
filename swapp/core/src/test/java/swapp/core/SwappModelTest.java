@@ -1,6 +1,7 @@
 package swapp.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
@@ -58,10 +59,10 @@ public class SwappModelTest {
     @Test
     public void testAddSwapplist() {
         SwappModel swappModel = new SwappModel();
-        SwappList list1 = new SwappList(new SwappItem("name1", "swapp", "New", "info1"),
-                new SwappItem("name2", "swapp", "New", "info1"));
+        SwappList list1 = new SwappList(new SwappItem("name1", "swapp1", "New", "info1"),
+                new SwappItem("name2", "swapp1", "New", "info1"));
         SwappList list2 = new SwappList(new SwappItem("name3", "swapp2", "New", "info1"),
-                new SwappItem("name4", "swapp", "New", "info1"));
+                new SwappItem("name4", "swapp2", "New", "info1"));
         swappModel.addSwappList(list1);
         swappModel.addSwappList(list2);
         Iterator<SwappList> it = swappModel.iterator();
@@ -69,33 +70,21 @@ public class SwappModelTest {
 
     }
 
+    
     @Test
-    public void testGetSwappItem(){
-        swappModel.addSwappList(list1);
-        swappModel.addSwappList(list2);
-        SwappItem item1 = new SwappItem("name", "swapp1", "New", "info");
-        SwappItem item2 = new SwappItem("name2", "swapp1", "New", "info");
-        SwappItem item3 = new SwappItem("name3", "swapp2", "New", "info");
-        swappModel.addSwappItem(item1);
-        swappModel.addSwappItem(item2);
-        assertTrue(swappModel.getSwappItems().size()==2);
-        System.out.println(swappModel.getSwappItems());
-        System.out.println(item1);
-        SwappItem item4 = new SwappItem("name", "swapp1", "New", "info");
-        SwappItem item5 = swappModel.getSwappItem(item4);
-        assertTrue(item5.allAttributesEquals(item1));
-    }
-
-    @Test
-    public void testHasSwappList(){
+    public void testHasSwappList() {
         swappModel.addSwappList(list1);
         String username = list1.getUsername();
         assertTrue(swappModel.hasSwappList(username));
+        assertFalse(swappModel.hasSwappList(list2.getUsername()));
     }
 
     @Test
-    public void hasSwappItem(){
-        
+    public void isValidName() {
+        swappModel.addSwappList(list1);
+        assertTrue(swappModel.isValidName(list2.getUsername()));
+        assertFalse(swappModel.isValidName(list1.getUsername()));
     }
+
 
 }

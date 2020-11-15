@@ -24,10 +24,10 @@ public class SwappPersistenceTest {
   @Test
   public void testSerializersDeserializers() {
     SwappModel model = new SwappModel();
-    SwappList swappList = new SwappList("swapp");
+    SwappList swappList = new SwappList("username1");
     model.addSwappList(swappList);
     SwappItem item1 = swappList.createAndAddSwappItem("name1", "username1", "New", "info1");
-    SwappItem item2 = swappList.createAndAddSwappItem("name2", "username2", "New", "info2"); 
+    SwappItem item2 = swappList.createAndAddSwappItem("name2", "username1", "New", "info2"); 
     try{
       StringWriter writer = new StringWriter();
       swappPersistence.writeSwappModel(model, writer);
@@ -35,7 +35,7 @@ public class SwappPersistenceTest {
       SwappModel model2 = swappPersistence.readSwappModel(new StringReader(json));
       assertTrue(model2.iterator().hasNext());
       SwappList list2 = model.iterator().next();
-      assertEquals("swapp", list2.getUsername());
+      assertEquals("username1", list2.getUsername());
       Iterator<SwappItem> it = list2.iterator();
       assertTrue(it.hasNext());
       assertTrue(it.next().allAttributesEquals(item1));

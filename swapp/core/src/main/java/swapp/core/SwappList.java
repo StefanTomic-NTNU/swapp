@@ -16,6 +16,9 @@ public class SwappList implements Iterable<SwappItem> {
   private String username;
 
   public SwappList(String username) {
+    if (username == null || username.isEmpty()){
+      throw new IllegalArgumentException("Illegal name for list");
+    } 
     this.username = username;
   }
 
@@ -30,50 +33,73 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   public void addSwappItem(SwappItem newItem) {
+    validateAddSwappItem(newItem);
     swappItems.add(newItem);
     fireSwappListChanged();
   }
 
+  public void validateAddSwappItem(SwappItem swappItem) {
+    if (swappItem == null) {
+      throw new IllegalArgumentException("validateAddSwappItem" + " SwappItem can't be null");
+    }
+    if (hasSwappItem(swappItem)) {
+      throw new IllegalArgumentException("validateAddSwappItem" + " SwappItem already exist");
+    }
+    if (!swappItem.getUsername().equals(this.username)) throw new IllegalArgumentException("validateAddSwappItem" + " item must have same username as the list");
+  }
+
+  public void validateRemoveSwappItem(SwappItem swappItem) {
+    if (swappItem == null) {
+      throw new IllegalArgumentException("validateRemoveSwappItem " + "SwappItem can't be null");
+    }
+    if (!hasSwappItem(swappItem)) {
+      throw new IllegalArgumentException("validateRemoveSwappItem" + "SwappItem doesn't exist");
+    }
+  }
+
+  public void validateRemoveSwappItem(String swappItem) {
+    if (swappItem == null) {
+      throw new IllegalArgumentException("validateRemoveSwappItem " + "SwappItem can't be null");
+    }
+    if (!hasSwappItem(swappItem)) {
+      throw new IllegalArgumentException("validateRemoveSwappItem" + "SwappItem doesn't exist");
+    }
+  }
+
   public void addSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
+      validateAddSwappItem(item);
       this.swappItems.add(item);
     }
     fireSwappListChanged();
   }
 
   public void removeSwappItem(SwappItem item) {
+    validateRemoveSwappItem(item);
     swappItems.remove(item);
     fireSwappListChanged();
   }
 
   public void removeSwappItem(String item) {
+    validateRemoveSwappItem(item);
     swappItems.remove(getSwappItem(item));
     fireSwappListChanged();
   }
 
   public void removeSwappItem(Collection<SwappItem> items) {
     for (SwappItem item : items) {
-      if (hasSwappItem(item)) {
-        swappItems.remove(item);
-      }
+      validateRemoveSwappItem(item);
+      swappItems.remove(item);
     }
     fireSwappListChanged();
   }
 
   public boolean hasSwappItem(String name) {
-    try {
-      return getSwappItem(name) != null;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
+    return getSwappItem(name) != null;
   }
 
   public boolean hasSwappItem(SwappItem item) {
-    try {
-      return getSwappItem(item.getName()) != null;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
+    return getSwappItem(item.getName()) != null;
   }
 
   public SwappItem getSwappItem(SwappItem item) {
@@ -83,7 +109,7 @@ public class SwappList implements Iterable<SwappItem> {
   public SwappItem getSwappItem(String name) {
     if (swappItems.stream().anyMatch(p -> p.nameEquals(name))) {
       return swappItems.stream().filter(p -> p.nameEquals(name)).findFirst().get();
-    } else{
+    } else {
       return null;
     }
   }
@@ -105,7 +131,6 @@ public class SwappList implements Iterable<SwappItem> {
     return newItem;
   }
 
-  // TODO filter by user(own)
   public List<SwappItem> getSwappItemsByStatus(String status) {
     if (status.equals("All"))
       return getSwappItems();
@@ -113,6 +138,8 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   public void changeSwappItem(SwappItem oldItem, SwappItem newItem) {
+    if (!oldItem.nameEquals(newItem)) throw new IllegalArgumentException("name must be the same for change item, changeSwappItem");
+    if (!hasSwappItem(oldItem)) throw new IllegalArgumentException("Item doesn't exist changeSwappItem");
     oldItem.setStatus(newItem.getStatus());
     oldItem.setDescription(newItem.getDescription());
     fireSwappListChanged();
