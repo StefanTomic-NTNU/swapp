@@ -21,7 +21,7 @@ public class DirectSwappAccess implements SwappDataAccess {
 
 	private SwappModel model;
 
-	private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
+	private final static String defaultSwappModel = "{\"lists\":[{\"username\":\"username1\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},{\"username\":\"username2\",\"items\":[{\"itemName\":\"item3\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
 
 	private String fileName;
 
@@ -48,7 +48,7 @@ public class DirectSwappAccess implements SwappDataAccess {
 		try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
 			this.model = swappPersistence.readSwappModel(reader);
 		} catch (IOException e) {
-			Reader reader = new StringReader(swappListWithTwoItems);
+			Reader reader = new StringReader(defaultSwappModel);
 			model = swappPersistence.readSwappModel(reader);
 			System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
 		}
