@@ -38,8 +38,9 @@ import swapp.core.SwappList;
 import swapp.json.SwappPersistence;
 import swapp.ui.RemoteSwappAccess;
 import swapp.ui.SwappItemListViewCell;
+import swapp.ui.SwappDataAccess;
 
-public class RemoteAppController {
+public class SwappAppController {
 
   @FXML
   private ListView<SwappItem> listView;
@@ -77,22 +78,27 @@ public class RemoteAppController {
 
   private String username;
 
-  @FXML
-  String endpointUri = "http://localhost:8999/swapp/";
+  //@FXML
+  //String endpointUri = "http://localhost:8999/swapp/";
 
-  private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
+  //private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
 
-  private RemoteSwappAccess swappAccess;
+  private SwappDataAccess swappAccess;
 
   /** Initializes appcontroller. */
-  public RemoteAppController() {
+  public SwappAppController() {
     listView = new ListView<SwappItem>();
-    filterChoiceBox = new ChoiceBox<>();
-    try {
+    //filterChoiceBox = new ChoiceBox<>();
+    /**try {
       swappAccess = new RemoteSwappAccess(new URI(endpointUri));
     } catch (URISyntaxException e) {
       e.printStackTrace();
-    }
+    }*/
+  }
+
+  public void setSwappDataAccess(SwappDataAccess swappAccess) throws IOException {
+    this.swappAccess = swappAccess;
+    initializeFXML();
   }
 
   /**
@@ -101,9 +107,9 @@ public class RemoteAppController {
    * @throws IOException
    */
   @FXML
-  void initialize() throws IOException {
+  void initializeFXML() throws IOException {
     inizializeToggleGroup();
-    initializeChoiceBox();
+    //initializeChoiceBox();
     initializeListView();
   }
 
@@ -115,10 +121,11 @@ public class RemoteAppController {
     for (SwappList swappList : swappAccess.getAllSwappLists()) {
       swappList.addSwappListListener(p -> {
         updateSwapp();
+        swappAccess.writeData();
       });
     }
   }
-
+  /**
   public void initializeChoiceBox() {
     filterChoiceBox.getItems().add("All");
     filterChoiceBox.getItems().add("New");
@@ -126,7 +133,7 @@ public class RemoteAppController {
     filterChoiceBox.getItems().add("Damaged");
     filterChoiceBox.setValue("All");
     filterChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> updateSwapp());
-  }
+  }*/
 
   public void inizializeToggleGroup() {
     toggleGroup = new ToggleGroup();
@@ -206,7 +213,8 @@ public class RemoteAppController {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewSwappItem.fxml"));
     Parent root = (Parent) loader.load();
     ViewSwappItemController itemController = loader.getController();
-    SwappItem oldItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    SwappItem selectedItem = (SwappItem) listView.getSelectionModel().getSelectedItem();
+    SwappItem oldItem = swappAccess.getSwappItem(selectedItem);
     itemController.initSwappitem(oldItem, username);
     Stage stage = new Stage();
     stage.setScene(new Scene(root, 900, 530));

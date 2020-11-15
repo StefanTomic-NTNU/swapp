@@ -22,7 +22,7 @@ import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.json.SwappModule;
 
-public class RemoteSwappAccess {
+public class RemoteSwappAccess implements SwappDataAccess {
 
   private final URI endpointBaseUri;
 
@@ -49,6 +49,9 @@ public class RemoteSwappAccess {
     }
   }
 
+  @Override
+  public void writeData(){}
+
   private SwappModel getSwappModel() {
     HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json").GET().build();
     try {
@@ -62,6 +65,7 @@ public class RemoteSwappAccess {
     }
   }
 
+  @Override
   public SwappItem getSwappItem(SwappItem item1) {
     HttpRequest request = HttpRequest.newBuilder(swappItemUri(item1.getUsername() + "/" + item1.getName()))
         .header("Accept", "application/json").GET().build();
@@ -122,6 +126,12 @@ public class RemoteSwappAccess {
     }
   }
 
+  @Override
+  public void removeAllSwappItems(String username){
+    addNewSwappList(username);
+  }
+
+  @Override
   public void addNewSwappList(String name) {
     SwappList newList = new SwappList(name);
     putSwappListAtModelLevel(newList);
@@ -135,6 +145,7 @@ public class RemoteSwappAccess {
     putSwappListAtListLevel(newList);
   }
 
+  @Override
   public void removeSwappItem(SwappItem swappItem) throws Exception {
     try {
       HttpRequest request = HttpRequest.newBuilder(swappItemUri(swappItem.getUsername() + "/" + swappItem.getName()))
@@ -150,6 +161,8 @@ public class RemoteSwappAccess {
     }
   }
 
+  //TODO remove exception
+  @Override
   public void addSwappItem(SwappItem item) throws Exception {
     try {
       String json = objectMapper.writeValueAsString(item);
@@ -176,7 +189,8 @@ public class RemoteSwappAccess {
       final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
           HttpResponse.BodyHandlers.ofString());
       String responseString = response.body();
-      if (responseString == null) throw new RuntimeException();
+      if (responseString == null)
+        throw new RuntimeException();
       // SwappItem removed = objectMapper.readValue(responseString, SwappItem.class);
       // if (removed==null) throw new Exception();
     } catch (Exception e) {
@@ -184,6 +198,7 @@ public class RemoteSwappAccess {
     }
   }
 
+  @Override
   public void changeSwappItem(SwappItem newItem) throws Exception {
     putSwappItem(newItem);
   }
@@ -197,30 +212,37 @@ public class RemoteSwappAccess {
    * 
    */
 
+  @Override
   public List<SwappItem> getSwappItemByStatus(String status) {
     return getSwappModel().getSwappItemsByStatus(status);
   }
 
-  public List<SwappItem> getAllSwappItem() {
+  @Override
+  public List<SwappItem> getAllSwappItems() {
     return getSwappModel().getSwappItems();
   }
 
+  @Override
   public List<SwappItem> getSwappItemByUser(String user) {
     return getSwappList(user).getSwappItems();
   }
 
+  @Override
   public boolean isItemChanged(SwappItem newItem) {
     return getSwappModel().isItemChanged(newItem);
   }
 
-  public boolean hasSwappItem(SwappItem item) {
-    return getSwappList(item.getUsername()).hasSwappItem(item);
+  @Override
+  public boolean hasSwappItem(String username, String itemname) {
+    return getSwappList(username).hasSwappItem(itemname);
   }
 
+  @Override
   public boolean hasSwappList(String name) {
     return getSwappModel().hasSwappList(name);
   }
 
+  @Override
   public Collection<SwappList> getAllSwappLists() {
     return getSwappModel().getSwappLists();
   }

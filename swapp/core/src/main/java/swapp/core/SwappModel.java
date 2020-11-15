@@ -22,6 +22,10 @@ public class SwappModel implements Iterable<SwappList> {
         return putSwappList(new SwappList(username));
     }
 
+    public boolean hasSwappItem(String username, String itemName) {
+        return getSwappList(username).hasSwappItem(itemName);
+      }
+
     public SwappList addSwappList(SwappList swappList) {
         return putSwappList(swappList);
     }

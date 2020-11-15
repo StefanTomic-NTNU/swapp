@@ -1,9 +1,13 @@
 package swapp.ui;
 
+import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +18,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
+import java.lang.String;
 
-public class SplashScreenRemoteController {
+public class SwappSplashScreenController {
 
   @FXML
   private TextField usernameTextField;
@@ -24,9 +29,13 @@ public class SplashScreenRemoteController {
   private Button loginButton;
 
   @FXML
-  String endpointUri = "http://localhost:8999/swapp/";
+  String endpointUri;
 
-  private RemoteSwappAccess remoteSwappAccess;
+  @FXML
+  String filename;
+
+
+  private SwappDataAccess swappAccess;
 
   /**
    * @throws URISyntaxException
@@ -40,19 +49,21 @@ public class SplashScreenRemoteController {
    *       loginButton.getScene().getWindow(); stage.close(); }
    */
 
-  public SplashScreenRemoteController() throws URISyntaxException {
-    try {
-      remoteSwappAccess = new RemoteSwappAccess(new URI(endpointUri));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    System.out.println(remoteSwappAccess.getAllSwappItem());
+  public SwappSplashScreenController() throws URISyntaxException {
+  
   }
 
-  public void login() throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("RemoteApp.fxml"));
+  public void login() throws IOException, URISyntaxException {
+    if (endpointUri!=null){ 
+      swappAccess = new RemoteSwappAccess(new URI(endpointUri));
+    }else if (filename != null){
+      System.out.println(filename);
+      swappAccess = new DirectSwappDataAccess(filename);
+    } 
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("SwappApp.fxml"));
     Parent root = (Parent) loader.load();
-    RemoteAppController appController = loader.getController();
+    SwappAppController appController = loader.getController();
+    appController.setSwappDataAccess(swappAccess);
     appController.init(usernameTextField.getText());
     Stage stage = new Stage();
     stage.setScene(new Scene(root, 900, 600));

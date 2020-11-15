@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import java.lang.String ?>
+<?import javafx.scene.control.Button ?>
+<?import javafx.scene.control.Separator ?>
+<?import javafx.scene.control.TextField ?>
+<?import javafx.scene.layout.HBox ?>
+<?import javafx.scene.layout.VBox ?>
+<?import javafx.scene.text.Font ?>
+<?import javafx.scene.text.Text ?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.SplashScreenRemoteController">
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swapp.ui.SwappSplashScreenController">
    <children>
       <Separator orientation="VERTICAL" prefHeight="132.0" prefWidth="600.0" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter email" textAlignment="CENTER" wrappingWidth="562.13671875">
@@ -39,5 +41,8 @@
             <Separator prefHeight="92.0" prefWidth="206.0" />
          </children>
       </HBox>
+      <fx:define>
+         <String fx:id="endpointUri" fx:value="http://localhost:8999/swapp/" />
+      </fx:define>
    </children>
 </VBox>
