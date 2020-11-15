@@ -27,54 +27,92 @@ import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
+import swapp.core.SwappModel;
 import swapp.json.SwappPersistence;
 
-public class AppTest extends ApplicationTest {/**
+public class AppTest extends ApplicationTest {
   
-  private Parent parent;
-  private AppController controller;
+  private Parent appParent;
+  private SwappAppController appController;
   private SwappPersistence persistence = new SwappPersistence();
+  private SwappModel model;
 
   @Override
   public void start(final Stage stage) throws Exception {
-    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_App.fxml"));
-    this.parent = fxmlLoader.load();
-    this.controller = (AppController)fxmlLoader.getController();
-    controller.setFile(Paths.get(System.getProperty("user.home"), "test-swappItemList.json").toFile());
+    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test_SwappApp.fxml"));
+    this.appParent = fxmlLoader.load();
+    Assertions.assertTrue(false);
+    this.appController = (SwappAppController)fxmlLoader.getController();
+    DirectSwappAccess access = new DirectSwappAccess("test-swappmodel.json");
+    appController.setSwappDataAccess(access);
+    this.model = access.getModel();
+    
+    /*
     try(Reader reader = new InputStreamReader(getClass().getResourceAsStream("test-swappItemList.json"))) {
-      controller.getSwappItemList().setSwappItemList(persistence.readSwappList(reader));
+      appController.getSwappModel().setSwappItemList(persistence.readSwappList(reader));
     } catch (IOException ioException) {
       System.err.println("Feil med innlasting av testfil.");
-    }
-    stage.setScene(new Scene(parent));
+    }*/
+    stage.setScene(new Scene(appParent));
     stage.show();
   }
-/**
+
   Button addButton;
-  TextField nameField;
-  TextField contactInfoField;
-  TextArea descriptionFieldArea;
+  //TextField nameField;
+  //TextField contactInfoField;
+  //TextArea descriptionFieldArea;
   RadioButton newRadio;
   RadioButton usedRadio;
   RadioButton damagedRadio;
+  RadioButton allRadio;
+  RadioButton mineRadio;
   ListView<SwappItem> listView;
   
   @BeforeEach
   public void setUp() {
-    addButton = (Button) parent.lookup("#addButton");
-    nameField = (TextField) parent.lookup("#nameField");
-    contactInfoField = (TextField) parent.lookup("#contactInfoField");
-    descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
-    newRadio = (RadioButton) parent.lookup("#newRadio");
-    usedRadio = (RadioButton) parent.lookup("#usedRadio");
-    damagedRadio = (RadioButton) parent.lookup("#damagedRadio");
-    listView = (ListView) parent.lookup("#listView");
+    Assertions.assertTrue(false);
+    //addButton = (Button) parent.lookup("#addButton");
+    //nameField = (TextField) parent.lookup("#nameField");
+    //contactInfoField = (TextField) parent.lookup("#contactInfoField");
+    //descriptionFieldArea = (TextArea) parent.lookup("#descriptionFieldArea");
+    newRadio = (RadioButton) appParent.lookup("#newRadio");
+    usedRadio = (RadioButton) appParent.lookup("#usedRadio");
+    damagedRadio = (RadioButton) appParent.lookup("#damagedRadio");
+    allRadio = (RadioButton) appParent.lookup("#allRadio");
+    mineRadio = (RadioButton) appParent.lookup("#mineRadio");
+    listView = (ListView<SwappItem>) appParent.lookup("#listView");
   }
 
   private String testName;
   private String testDescription;
   private String testContactInfo;
 
+  @Test
+  private void testAdd() {
+    Assertions.assertTrue(false);
+    setUp();
+    SwappItem testItem = new SwappItem("testItem","testUsername3");
+    model.addSwappItem(testItem);
+    listView.getSelectionModel().selectLast();
+    Assertions.assertEquals(testItem, listView.getSelectionModel().getSelectedItem());
+  }
+
+  @Test
+  private void testFilter() {
+    Assertions.assertTrue(false);
+    clickOn(allRadio);
+    listView.getSelectionModel().selectAll();
+    SwappList selection = new SwappList(listView.getSelectionModel().getSelectedItems());
+    Assertions.assertEquals(5, selection.getSwappItems().size());
+    clickOn(usedRadio);
+    clickOn(newRadio);
+    clickOn(allRadio);
+    clickOn(usedRadio);
+    clickOn(newRadio);
+    clickOn(allRadio);
+    Assertions.assertEquals(100, selection.getSwappItems().size());
+  }
+/*
   @Test
   public void testAdd() {
     setUp();
@@ -93,7 +131,7 @@ public class AppTest extends ApplicationTest {/**
     testDescription + "  " + testContactInfo));
   }
 
-  /*
+  
   // TODO look through cell see ep.8 todolist
   @Test
   public void testRemove() {
@@ -114,6 +152,6 @@ public class AppTest extends ApplicationTest {/**
     //Assertions.assertNotEquals(list.getSwappItems().get(list.getSwappItems().size() - 1).getName(), item2.getName());
 
   }
-  */
+*/
 
 }

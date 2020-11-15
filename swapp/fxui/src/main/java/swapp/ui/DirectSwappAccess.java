@@ -33,6 +33,10 @@ public class DirectSwappAccess implements SwappDataAccess {
         this.model = model;
     }
 
+    public SwappModel getModel() {
+        return this.model;
+    }
+
     public DirectSwappAccess(String fileName) throws IOException {
         this.fileName = fileName;
         file = Paths.get(System.getProperty("user.home"), this.fileName).toFile();

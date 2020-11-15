@@ -1,0 +1,32 @@
+{
+    "lists": [
+        {
+            "username": "testUsername1",
+            "items": [
+                {
+                    "itemName": "item1",
+                    "itemUsername": "testUsername1",
+                    "itemStatus": "New",
+                    "itemDescription": "info1"
+                },
+                {
+                    "itemName": "item2",
+                    "itemUsername": "testUsername2",
+                    "itemStatus": "Used",
+                    "itemDescription": "info2"
+                }
+            ]
+        },
+        {
+            "username": "testUsername2",
+            "items": [
+                {
+                    "itemName": "item3",
+                    "itemUsername": "testUsername2",
+                    "itemStatus": "New",
+                    "itemDescription": "info3"
+                }
+            ]
+        }
+    ]
+}
