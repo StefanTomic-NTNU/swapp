@@ -77,7 +77,7 @@ API'et er satt opp med GET, PUT, POST og DELETE-metoder.
 | URI                            | Metode    | Beskrivelse                                           
 | ------------------------------ | --------- | ----------------------------------------------------- 
 | /swapp/                        | GET       | Returnerer hele hash-mapet med alle annonser          
-| /swapp/                        | PUT       | Tar inn en liste med annonser                         
+| /swapp/                        | PUT       | Tar inn en liste med annonser og oppretter en ny nøkkel med denne listen som verdi
 | /swapp/{email}/                | GET       | Returnerer en liste med alle annonser som tilhører {email}
 | /swapp/{email}/                | POST      | Tar inn en annonse som tilhører {email} og legger den til
 | /swapp/{email}/                | PUT       | Tar inn en liste med annonser som tilhører {email} og setter denne listen til å tilhøre {email}
