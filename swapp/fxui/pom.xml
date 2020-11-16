@@ -12,7 +12,7 @@
     <artifactId>fxui</artifactId>
 
     <dependencies>
-        
+
         <dependency>
             <groupId>it1901.swapp</groupId>
             <artifactId>core</artifactId>
@@ -27,6 +27,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+
         <!-- Test with TextFX -->
         <dependency>
             <groupId>org.testfx</groupId>
@@ -46,6 +52,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>14.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.27.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -57,7 +70,7 @@
                         <groupId>org.openjfx</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
                         <version>0.0.4</version>
-                        <configuration>                    
+                        <configuration>
                             <mainClass>swapp.ui.RemoteApp</mainClass>
                         </configuration>
                     </plugin>
@@ -76,9 +89,9 @@
             <!-- Running tests -->
 
             <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.19</version>
-              <dependencies>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19</version>
+                <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
@@ -86,7 +99,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-    
+
             <!-- Running JavaFX code -->
             <plugin>
                 <groupId>org.openjfx</groupId>
