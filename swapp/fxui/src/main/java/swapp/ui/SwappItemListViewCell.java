@@ -1,7 +1,6 @@
 package swapp.ui;
 
 import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
@@ -23,7 +22,7 @@ public class SwappItemListViewCell extends ListCell<SwappItem> {
   @FXML
   private HBox hbox;
 
-  private FXMLLoader mLLoader;
+  private FXMLLoader fxmlLoader;
 
   @Override
   protected void updateItem(SwappItem swappItem, boolean empty) {
@@ -35,12 +34,12 @@ public class SwappItemListViewCell extends ListCell<SwappItem> {
       setGraphic(null);
 
     } else {
-      if (mLLoader == null) {
-        mLLoader = new FXMLLoader(getClass().getResource("item.fxml"));
-        mLLoader.setController(this);
+      if (fxmlLoader == null) {
+        fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
+        fxmlLoader.setController(this);
 
         try {
-          mLLoader.load();
+          fxmlLoader.load();
         } catch (IOException e) {
           e.printStackTrace();
         }

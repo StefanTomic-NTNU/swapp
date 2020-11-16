@@ -146,36 +146,3 @@ public class AppTest extends ApplicationTest {
   }
 
 }
-
-/*
- * @Test public void testAdd() { setUp(); testName = "testName"; testDescription
- * = "Bla bla bla"; testContactInfo = "kontaktinfo@email.no";
- * clickOn(nameField).write(testName); clickOn(usedRadio);
- * clickOn(descriptionFieldArea).write(testDescription); if
- * (contactInfoField.getText().isBlank()) {
- * clickOn(contactInfoField).write(testContactInfo); } clickOn(addButton);
- * Assertions.assertTrue(listView.getItems().get(listView.getItems().size()-1)
- * .toString().equals(testName + "  " + "  " + "Used" + "  " + testDescription +
- * "  " + testContactInfo)); }
- * 
- * 
- * // TODO look through cell see ep.8 todolist
- * 
- * @Test public void testRemove() { final ListView<SwappItem> list =
- * lookup("#list").query(); final Button addButton = (Button)
- * parent.lookup("#addButton"); final TextField textField = (TextField)
- * parent.lookup("#textField"); SwappItem item = new
- * SwappItem("testRemoveName"); SwappItem item2 = new
- * SwappItem("testRemoveName2"); clickOn(textField).write(item.getName());
- * clickOn(addButton); clickOn(textField).write(item2.getName());
- * clickOn(addButton);
- * Assertions.assertEquals(list.getSwappItems().get(list.getSwappItems().size()
- * - 1).getName(), item2.getName()); int lengthBeforeRemoval =
- * list.getSwappItems().size(); list.getSelectionModel().selectLast();
- * clickOn("#removeButton"); Assertions.assertEquals(lengthBeforeRemoval-1,
- * list.getSwappItems().size());
- * //Assertions.assertNotEquals(list.getSwappItems().get(list.getSwappItems().
- * size() - 1).getName(), item2.getName());
- * 
- * }
- */

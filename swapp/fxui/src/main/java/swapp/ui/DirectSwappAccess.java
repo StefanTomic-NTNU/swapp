@@ -49,7 +49,7 @@ public class DirectSwappAccess implements SwappDataAccess {
    * 
    * <p>The file is located at the user.home system property.
    *
-   * @param filename Filename to read to/from.
+   * @param fileName Name of file to read to/from.
    * @throws IOException May be thrown if files cannot be read from.
    */
   public DirectSwappAccess(String fileName) throws IOException {
@@ -68,7 +68,7 @@ public class DirectSwappAccess implements SwappDataAccess {
    * defaultSwappModel String.
    *
    * @throws IOException May be thrown if there is an error 
-   *   reading from the defaultSwappModel String.
+   *                     reading from the defaultSwappModel String.
    */
   public void readData() throws IOException {
     try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {

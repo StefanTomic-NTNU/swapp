@@ -54,7 +54,7 @@ public class ViewSwappItemController {
    */
   public void initSwappitem(SwappItem swappItem, String username) {
     cleanText();
-    inizializeToggleGroup();
+    initializeToggleGroup();
     if (swappItem != null) {
       this.swappItem = swappItem;
       setTextAndToggle();
@@ -72,7 +72,7 @@ public class ViewSwappItemController {
   /**
    * Places RadioButtons in toggleGroup and selects RadioButton "New" as default.
    */
-  public void inizializeToggleGroup() {
+  public void initializeToggleGroup() {
     toggleGroup = new ToggleGroup();
     newRadio.setToggleGroup(toggleGroup);
     usedRadio.setToggleGroup(toggleGroup);
