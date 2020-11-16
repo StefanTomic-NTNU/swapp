@@ -20,19 +20,38 @@ public class DirectSwappAccess implements SwappDataAccess {
 
   private SwappModel model;
 
-  private final static String swappListWithTwoItems =
-      "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
-
   private String fileName;
 
   private SwappPersistence swappPersistence = new SwappPersistence();
 
   private File file;
 
+  private static final String defaultSwappModel = "{\"lists\":"
+      + "{\"username\":\"username1\",\"items\":["
+      + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
+      + "{\"itemName\":\"item2\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},"
+      + "{\"username\":\"username2\",\"items\":["
+      + "{\"itemName\":\"item3\",\"itemUsername\":\"username2\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
+
   public void setModel(SwappModel model) {
     this.model = model;
   }
 
+  public SwappModel getModel() {
+    return this.model;
+  }
+
+  /**
+   * Constructor that sets DirectSwappAccess' filepath.
+   * 
+   * <p>The file is located at the user.home system property.
+   *
+   * @param filename Filename to read to/from.
+   * @throws IOException May be thrown if files cannot be read from.
+   */
   public DirectSwappAccess(String fileName) throws IOException {
     this.fileName = fileName;
     file = Paths.get(System.getProperty("user.home"), this.fileName).toFile();
@@ -40,16 +59,29 @@ public class DirectSwappAccess implements SwappDataAccess {
 
   }
 
+  /**
+   * Reads data from file. If no file is found default SwappModel is loaded.
+   * 
+   * <p>Will first try to read from filepath.
+   * 
+   * <p>If IOException is catched: Will then try to read from the 
+   * defaultSwappModel String.
+   *
+   * @throws IOException May be thrown if there is an error 
+   *   reading from the defaultSwappModel String.
+   */
   public void readData() throws IOException {
     try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
       this.model = swappPersistence.readSwappModel(reader);
     } catch (IOException e) {
-      Reader reader = new StringReader(swappListWithTwoItems);
+      Reader reader = new StringReader(defaultSwappModel);
       model = swappPersistence.readSwappModel(reader);
-      System.out.println("Couldn't read default-todomodel.json, so rigging TodoModel manually (" + e + ")");
     }
   }
 
+  /**
+   * Writes data to file.
+   */
   @Override
   public void writeData() {
     Writer writer = null;
@@ -60,8 +92,9 @@ public class DirectSwappAccess implements SwappDataAccess {
       e.printStackTrace();
     } finally {
       try {
-        if (writer != null)
+        if (writer != null) {
           writer.close();
+        }
       } catch (IOException e) {
         e.printStackTrace();
       }

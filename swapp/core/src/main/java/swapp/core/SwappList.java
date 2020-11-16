@@ -31,8 +31,12 @@ public class SwappList implements Iterable<SwappItem> {
    * @param items SwappItems which are added to the SwappList.
    */
   public SwappList(Collection<SwappItem> items) {
-    this.username = items.stream().findFirst().get().getUsername();
-    this.addSwappItem(items);
+    if (!items.isEmpty()) { 
+      this.username = items.stream().findFirst().get().getUsername();
+      this.addSwappItem(items);
+    } else {
+      throw new IllegalArgumentException("Can not initialize with empty list");
+    }
   }
 
   /**
@@ -41,8 +45,12 @@ public class SwappList implements Iterable<SwappItem> {
    * @param items SwappItems which are added to the SwappList.
    */
   public SwappList(SwappItem... items) {
-    this.username = List.of(items).stream().findFirst().get().getUsername();
-    this.addSwappItem(List.of(items));
+    if (items.length > 0) { 
+      this.username = List.of(items).stream().findFirst().get().getUsername();
+      this.addSwappItem(List.of(items));
+    } else {
+      throw new IllegalArgumentException("Can not initialize with empty list");
+    }
   }
 
   /**

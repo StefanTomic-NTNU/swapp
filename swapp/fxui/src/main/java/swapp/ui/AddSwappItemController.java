@@ -67,7 +67,8 @@ public class AddSwappItemController {
   public void publishSwappItem() {
     String title = titleTextField.getText().replaceAll("\\s+", "");
     String newInfo = infoTextField.getText().replaceAll("\\s+", "");
-    String newCondition = ((RadioButton) toggleGroup.getSelectedToggle()).getText().replaceAll("\\s+", "");
+    String newCondition = ((RadioButton) toggleGroup.getSelectedToggle())
+        .getText().replaceAll("\\s+", "");
     String newEmail = emailTextField.getText().replaceAll("\\s+", "");
     if (!title.isEmpty() && !newInfo.isEmpty() && !newCondition.isEmpty() && !newEmail.isEmpty()) {
       this.swappItem = new SwappItem(title, newEmail, newCondition, newInfo);

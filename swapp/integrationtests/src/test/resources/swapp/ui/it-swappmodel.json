@@ -1,0 +1,32 @@
+{
+    "lists": [
+        {
+            "username": "username1",
+            "items": [
+                {
+                    "itemName": "item1",
+                    "itemUsername": "username1",
+                    "itemStatus": "New",
+                    "itemDescription": "info1"
+                },
+                {
+                    "itemName": "item2",
+                    "itemUsername": "username1",
+                    "itemStatus": "New",
+                    "itemDescription": "info2"
+                }
+            ]
+        },
+        {
+            "username": "username2",
+            "items": [
+                {
+                    "itemName": "item3",
+                    "itemUsername": "username2",
+                    "itemStatus": "New",
+                    "itemDescription": "info3"
+                }
+            ]
+        }
+    ]
+}

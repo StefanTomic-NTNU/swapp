@@ -1,6 +1,7 @@
 package swapp.ui;
 
 import java.io.IOException;
+import java.lang.String;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import java.lang.String;
 import javafx.stage.Stage;
 
 
@@ -34,6 +34,16 @@ public class SwappSplashScreenController {
 
   }
 
+  /**
+   * User is logged into the App.
+   *
+   * <p>Info from the usernameTextField is retrieved and set as the username.
+   * 
+   * <p>SwappApp stage is then loaded and shown. Finaly, SwappSplashScreen is closed.
+   *
+   * @throws IOException May be thrown by when constructing RemoteSwappAccess.
+   * @throws URISyntaxException May be thrown if endpoint uri is bad.
+   */
   public void login() throws IOException, URISyntaxException {
     if (endpointUri != null) {
       swappAccess = new RemoteSwappAccess(new URI(endpointUri));
