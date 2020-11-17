@@ -72,18 +72,7 @@ Brukergrensesnittet i appen tar utgangspunkt i flere fxml-filer lokalisert i **f
 
 
 ### Restserver og API
-API'et er satt opp med GET, PUT, POST og DELETE-metoder.
-
-| URI                            | Metode    | Beskrivelse                                           
-| ------------------------------ | --------- | ----------------------------------------------------- 
-| /swapp/                        | GET       | Returnerer hele hash-mapet med alle annonser          
-| /swapp/                        | PUT       | Tar inn en liste med annonser og oppretter en ny nøkkel med denne listen som verdi
-| /swapp/{email}/                | GET       | Returnerer en liste med alle annonser som tilhører {email}
-| /swapp/{email}/                | POST      | Tar inn en annonse som tilhører {email} og legger den til
-| /swapp/{email}/                | PUT       | Tar inn en liste med annonser som tilhører {email} og setter denne listen til å tilhøre {email}
-| /swapp/{email}/{annonsetitel}/ | GET       | Returnerer en annonse som tilhører {email} og har tittel {annonsetittel}
-| /swapp/{email}/{annonsetitel}/ | PUT       | Tar inn en annonse og oppdaterer en annonse som tilhører {email} og har tittel {annonsetittel}
-| /swapp/{email}/{annonsetitel}/ | DELETE    | Sletter en annonse som tilhører {email} og har tittel {annonsetittel}
+API'et er satt opp til å håndtere GET, PUT, POST og DELETE-forespørsler. Se en fullstendig oversikt over de mulige forespørslene i **restapi/readme.md**.
 
 Serveren er satt opp til å lagre til og lese fra en json-fil på hjemmeområdet. Hver gang API'et mottar en GET-, PUT- eller POST-request oppdateres filen med den nåverende dataen. Til lagring og lesing benyttes serializers og deserializers som ligger i **/core/src/main/javas/swapp/json**. Hele hash-map'et er lagret i filen og når filen leses inn ved serverstart opprettes hash-mapet slik at API'et har tilgang til den samme dataen som da serveren ble avsluttet sist.
 
