@@ -19,7 +19,7 @@ import swapp.restapi.SwappModelService;
 public class SwappConfig extends ResourceConfig {
 
   private SwappModel swappModel;
-  private SaveHelper saveHelper = new SaveHelper();
+  private SaveHelper saveHelper;
   private String fileString;
   private static File file = 
       Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
@@ -31,6 +31,7 @@ public class SwappConfig extends ResourceConfig {
    */
   public SwappConfig(SwappModel swappModel, boolean test) {
     setSwappModel(swappModel);
+    saveHelper = new SaveHelper();
     if (test) {
       fileString = "TestSwappItems.json";
     } else {

@@ -27,7 +27,7 @@ public class DirectSwappAccess implements SwappDataAccess {
   private File file;
 
   private static final String defaultSwappModel = "{\"lists\":"
-      + "{\"username\":\"username1\",\"items\":["
+      + "[{\"username\":\"username1\",\"items\":["
       + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
       + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
       + "{\"itemName\":\"item2\",\"itemUsername\":\"username1\","

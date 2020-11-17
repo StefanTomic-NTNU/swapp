@@ -101,7 +101,7 @@ public class SwappModel implements Iterable<SwappList> {
    * Checks if SwappModel contains any SwappItem with all the same attributes as given SwappItem.
    *
    * @param newItem SwappItem to compare with.
-   * @return true only if item an item with all the same attributes exists in SwappList. 
+   * @return true if and only if item an item with all the same attributes exists in SwappList. 
    */
   public boolean isItemChanged(SwappItem newItem) {
     return getSwappList(newItem.getUsername()).isItemChanged(newItem);

@@ -44,7 +44,8 @@ public class SwappModelService {
 
   /**
    * Returns the swappList with the provided name (as a resource to support chaining path elements).
-   * This supports all requests referring to swappLists by name. Note that the swappList needn't
+   * 
+   * <p>This supports all requests referring to swappLists by name. Note that the swappList needn't
    * exist, since it can be a PUT.
    *
    * @param name the name of the swappList
@@ -57,7 +58,7 @@ public class SwappModelService {
   }
 
   /**
-   * Creates new anwapplist
+   * Creates new Swapplist.
    *
    * @param swappListArg swapplist
    * @return true if added, otherwise false
