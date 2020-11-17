@@ -23,7 +23,7 @@ public class SwappModel implements Iterable<SwappList> {
     return putSwappList(new SwappList(username));
   }
 
-    public SwappList createNewSwappList(String name) {
+  public SwappList createNewSwappList(String name) {
     return new SwappList(name);
   }
 

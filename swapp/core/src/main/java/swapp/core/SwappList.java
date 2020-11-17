@@ -26,7 +26,9 @@ public class SwappList implements Iterable<SwappItem> {
   }
 
   /**
-   * Constructs SwappList by adding Collection of SwappItems. SwappItems are validated in the process.
+   * Constructs SwappList by adding Collection of SwappItems. 
+   * 
+   * <p>SwappItems are validated as they are added.
    *
    * @param items SwappItems which are added to the SwappList.
    */

@@ -1,18 +1,6 @@
 package swapp.restserver;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,30 +19,14 @@ import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.restapi.SwappModelService;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.Writer;
-//import java.lang.invoke.PolymorphicSignature;
-import java.io.FileWriter;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 
 public class SwappServiceTest extends JerseyTest {
   protected boolean shouldLog() {
@@ -296,6 +268,7 @@ public class SwappServiceTest extends JerseyTest {
     assertFalse(it2.hasNext());
   }
 
+  //TODO fjern tester?
   /**
    * public void checkSwappModel(SwappModel toCheckItem, SwappList correctItem) {
    * int lentoCheckItem = toCheckItem.getSwappItems().size(); int lencorrectkItem

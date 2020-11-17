@@ -1,24 +1,15 @@
 package swapp.json;
 
 import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.Iterator;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
-
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
@@ -33,16 +24,23 @@ public class SwappModuleTest {
     mapper.registerModule(new SwappModule());
   }
 
-  /*
-   * private final static String ItemsListWithTwoItems =
-   * "[{\"itemName\":\"name1\",\"itemUsername\":\"username1\"" +
-   * ",\"itemDescription\":\"\",\"itemStatus\":\"anonymous@email.com\"}," +
-   * "{\"itemName\":\"name2\",\"itemUsername\":\"New\"" +
-   * ",\"itemDescription\":\"\",\"itemStatus\":\"anonymous@email.com\"}]";
-   */
+  //TODO Blir ikke tatt i bruk. Fjern?
+  private final static String swappListWithTwoItems =
+      "{\"lists\":[{\"username\":\"swapp\",\"items\":["
+      + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
+      + "{\"itemName\":\"item2\",\"itemUsername\":\"username2\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
+  private final static String defaultSwappModel =
+      "{\"lists\":[{\"username\":\"username1\",\"items\":["
+      + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
+      + "{\"itemName\":\"item2\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},"
+      + "{\"username\":\"username2\",\"items\":["
+      + "{\"itemName\":\"item3\",\"itemUsername\":\"username2\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
 
-  private final static String swappListWithTwoItems = "{\"lists\":[{\"username\":\"swapp\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
-  private final static String defaultSwappModel = "{\"lists\":[{\"username\":\"username1\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},{\"username\":\"username2\",\"items\":[{\"itemName\":\"item3\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
   @Test
   public void testSerializers() {
     SwappModel model = new SwappModel();
@@ -50,9 +48,9 @@ public class SwappModuleTest {
     SwappList swappList2 = new SwappList("username2");
     model.addSwappList(swappList1);
     model.addSwappList(swappList2);
-    SwappItem swappItem1 = swappList1.createAndAddSwappItem("item1", "username1", "New", "info1");
-    SwappItem swappItem2 = swappList1.createAndAddSwappItem("item2", "username1", "New", "info2");
-    SwappItem swappItem3 = swappList2.createAndAddSwappItem("item3", "username2", "New", "info3");
+    swappList1.createAndAddSwappItem("item1", "username1", "New", "info1");
+    swappList1.createAndAddSwappItem("item2", "username1", "New", "info2");
+    swappList2.createAndAddSwappItem("item3", "username2", "New", "info3");
     try {
       assertEquals(defaultSwappModel, mapper.writeValueAsString(model));
     } catch (JsonProcessingException e) {
@@ -78,7 +76,7 @@ public class SwappModuleTest {
       assertFalse(iterator.hasNext());
       assertTrue(it1.hasNext());
       SwappList list2 = it1.next();
-      Iterator <SwappItem> it2 = list2.iterator();
+      Iterator<SwappItem> it2 = list2.iterator();
       assertTrue(it2.next().allAttributesEquals("item3", "New", "info3", "username2"));
       assertFalse(it2.hasNext());
     } catch (JsonProcessingException e) {
@@ -114,29 +112,10 @@ public class SwappModuleTest {
 
   @Test
   public void testSerializersDeserializersSwappItem() throws JsonMappingException, JsonProcessingException {
-    String itemString = "{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"}";
+    String itemString =
+        "{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"}";
     SwappItem item1 = mapper.readValue(itemString, SwappItem.class);
     assertTrue(item1.allAttributesEquals("item1", "New", "info1", "username1"));
   }
 
-  // TODO legg til flere tester?
-  /*
-   * Forstår ikke hensikten med en slik test
-   * 
-   * @Test public void testDeserializeSwappItemAsArrayNode() { try { SwappItem[]
-   * items = {item1}; ArrayNode arr = mapper.valueToTree(item1);
-   * SwappItemDeserializer des = new SwappItemDeserializer(); SwappItem item3 =
-   * des.deserialize(arr); System.err.println(item1); System.err.println(item3);
-   * assertEquals(item1, item3); } catch (JsonProcessingException e) { fail(); } }
-   */
-  /**
-   * @Test public void testSerializersDeserializers() { try { String json =
-   *       mapper.writeValueAsString(items); SwappList items2 =
-   *       mapper.readValue(json, SwappList.class);
-   *       assertTrue(items.getSwappItems().get(0).allAttributesEquals(items2.getSwappItems().get(0)));
-   *       assertTrue(items.getSwappItems().get(1).allAttributesEquals(items2.getSwappItems().get(1)));
-   *       } catch (JsonProcessingException e) { fail(); }
-   * 
-   *       }
-   */
 }
