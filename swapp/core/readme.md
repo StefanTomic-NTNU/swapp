@@ -1,6 +1,6 @@
 # Core
 
-Core inneholder kjernelogikken til applikasjonen og er delt i mappene core og json.
+Core inneholder kjernelogikken til applikasjonen og er delt i mappene core og json. Her ligger også testene for denne koden.
 
 ## Core
 
@@ -23,3 +23,9 @@ Json-mappen inneholder serializers og deserializers, samt hjelpeklasser for å b
 *SwappItemSerializer*, *SwappListSerializer* og *SwappModelSerializer* er tilsvarende Serializers for hver sin klasse fra core. Serializerne benyttes både av restserveren og den lokale versjonen av applikasjonen for å skrive til fil under kjøring, slik at den nyeste versjonen av dataen er lagret når serveren/applikasjonen avsluttes. Det lagres til samme fil som det leses fra når serveren/applikasjonen starter opp igjen.
 
 *SwappPersistence* og *SwappModule* er to klasser som gjør bruken av serializerne og deserializerne lettere. *SwappPersistence* benytter *SwappModule*-klassen og har en funksjon for å lese til fil og en annen funksjon for å skrive til fil. *SwappModule* er en klasse som inneholder alle serializerne og deserializerne.
+
+## Tester
+
+*SwappItem*, *SwappList* og *SwappModel* testes med oppretting, endring og sletting av objekter i hver av klassene. Valideringsmetodene i klassene testes også.
+
+I *SwappModuleTest* og *SwappPersistenceTest* testes klassene ved å serializere og deserializere  *SwappItem*-, *SwappList*- og *SwappModel*-objekter.
