@@ -23,17 +23,17 @@ public class SwappModelService {
   @Inject
   private SwappModel swappModel;
 
-   @Inject
+  @Inject
   private SaveHelper saveHelper;
 
-  public void updateServer(SwappModel swappModel){
+  public void updateServer(SwappModel swappModel) {
     saveHelper.write(swappModel);
   }
 
   /**
-   * The root resource, i.e. /todo
+   * The root resource, i.e. /swapp
    *
-   * @return the TodoModel
+   * @return the swappModel
    */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -43,11 +43,11 @@ public class SwappModelService {
   }
 
   /**
-   * Returns the TodoList with the provided name (as a resource to support
-   * chaining path elements). This supports all requests referring to TodoLists by
-   * name. Note that the TodoList needn't exist, since it can be a PUT.
+   * Returns the swappList with the provided name (as a resource to support chaining path elements).
+   * This supports all requests referring to swappLists by name. Note that the swappList needn't
+   * exist, since it can be a PUT.
    *
-   * @param name the name of the todo list
+   * @param name the name of the swappList
    */
   @Path("/{name}")
   public SwappListResource getSwappList(@PathParam("name") String name) {
@@ -56,6 +56,12 @@ public class SwappModelService {
     return new SwappListResource(swappModel, name, swappList, this.saveHelper);
   }
 
+  /**
+   * Creates new anwapplist
+   *
+   * @param swappListArg swapplist
+   * @return true if added, otherwise false
+   */
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
