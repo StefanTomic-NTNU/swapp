@@ -17,11 +17,6 @@ import swapp.core.SwappList;
 import swapp.core.SwappModel;
 import swapp.json.SwappModule;
 
-// TODO VIKTIG at JavaDoc her er korrekt:
-// Blir det riktig å skrive at HTTP forespørslene blir sendt til
-// A. Remote REST-API?
-// B. Local REST-API?
-// C. Remote/Local-SERVER?
 public class RemoteSwappAccess implements SwappDataAccess {
 
   private final URI endpointBaseUri;
@@ -54,7 +49,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Get request for SwappModel to remote REST-API.
+   * Sends HTTP Get request for SwappModel to REST-API.
    *
    * @return Retreived SwappModel.
    * @throws RuntimeException Instead of IOException or InterruptedException.
@@ -76,7 +71,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Get request for SwappItem to remote REST-API.
+   * Sends HTTP Get request for SwappItem to REST-API.
    *
    * @param item SwappItem to retrieve.
    * @return Retreived SwappItem.
@@ -100,7 +95,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Get request for SwappList to remote REST-API.
+   * Sends HTTP Get request for SwappList to REST-API.
    *
    * @param name username of SwappList to retrieve.
    * @return Retreived SwappList.
@@ -123,7 +118,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Put request for SwappList to remote REST-API at SwappList level.
+   * Sends HTTP Put request for SwappList to REST-API at SwappList level.
    * 
    * <p>SwappList is put into the LinkedHashMap of Server's SwappModel.
    *
@@ -151,7 +146,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Put request for SwappList to remote REST-API at SwappModel level.
+   * Sends HTTP Put request for SwappList to REST-API at SwappModel level.
    * 
    * <p>List is put into the LinkedHashMap of Server's SwappModel.
    *
@@ -198,7 +193,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Delete request for SwappItem to remote REST-API.
+   * Sends HTTP Delete request for SwappItem to REST-API.
    *
    * @param swappItem SwappItem that is to be removed.
    * @throws RuntimeException Instead of IOException or InterruptedException.
@@ -225,7 +220,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
 
   // TODO remove exception
   /**
-   * Sends HTTP Post request for SwappItem to remote REST-API.
+   * Sends HTTP Post request for SwappItem to REST-API.
    *
    * @param item SwappItem that is added.
    * @throws RuntimeException Instead of IOException or InterruptedException.
@@ -253,7 +248,7 @@ public class RemoteSwappAccess implements SwappDataAccess {
   }
 
   /**
-   * Sends HTTP Put request for SwappItem to remote REST-API.
+   * Sends HTTP Put request for SwappItem to REST-API.
    *
    * @param newItem SwappItem that is to be Put.
    * @throws RuntimeException Instead of IOException or InterruptedException.

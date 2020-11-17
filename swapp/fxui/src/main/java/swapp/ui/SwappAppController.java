@@ -169,7 +169,6 @@ public class SwappAppController {
     } else {
       listView.getItems().setAll(swappAccess.getSwappItemByStatus(choice));
     }
-    System.out.println("list changed");
   }
 
   /**
@@ -186,8 +185,6 @@ public class SwappAppController {
     if (selectedItem != null) {
       System.out.println(selectedItem);
       SwappItem oldItem = swappAccess.getSwappItem(selectedItem);
-      System.out.println(swappAccess.getAllSwappItems());
-      System.out.println(oldItem);
       itemController.initSwappitem(oldItem, username);
       Stage stage = new Stage();
       stage.setScene(new Scene(root, 900, 530));

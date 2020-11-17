@@ -123,7 +123,6 @@ public class SwappList implements Iterable<SwappItem> {
     fireSwappListChanged();
   }
 
-  // TODO Check if throws ConcurrentModificationException
   /**
    * Removes Collection of SwappItems from SwappList.
    * 

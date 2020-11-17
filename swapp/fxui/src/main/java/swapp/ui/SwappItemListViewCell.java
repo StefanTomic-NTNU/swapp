@@ -43,11 +43,12 @@ public class SwappItemListViewCell extends ListCell<SwappItem> {
         } catch (IOException e) {
           e.printStackTrace();
         }
-
+      } 
+      if (titleText != null && statusText != null && usernameText != null) {
+        titleText.setText(swappItem.getName());
+        statusText.setText(swappItem.getStatus());
+        usernameText.setText(swappItem.getUsername());
       }
-      titleText.setText(swappItem.getName());
-      statusText.setText(swappItem.getStatus());
-      usernameText.setText(swappItem.getUsername());
       setText(null);
       setGraphic(hbox);
     }

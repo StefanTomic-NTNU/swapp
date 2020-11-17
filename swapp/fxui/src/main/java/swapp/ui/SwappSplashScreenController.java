@@ -48,7 +48,6 @@ public class SwappSplashScreenController {
     if (endpointUri != null) {
       swappAccess = new RemoteSwappAccess(new URI(endpointUri));
     } else if (filename != null) {
-      System.out.println(filename);
       swappAccess = new DirectSwappAccess(filename);
     }
     if (!usernameTextField.getText().replaceAll("\\s+", "").isEmpty()) {
