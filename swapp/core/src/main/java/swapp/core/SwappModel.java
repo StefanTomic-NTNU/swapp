@@ -23,6 +23,10 @@ public class SwappModel implements Iterable<SwappList> {
     return putSwappList(new SwappList(username));
   }
 
+    public SwappList createNewSwappList(String name) {
+    return new SwappList(name);
+  }
+
   public boolean hasSwappItem(String username, String itemName) {
     return getSwappList(username).hasSwappItem(itemName);
   }
@@ -86,19 +90,15 @@ public class SwappModel implements Iterable<SwappList> {
    * @param username username which is associated with the item to change.
    * @param oldItem SwappItem which attributes are changed.
    * @param newItem SwappItem which oldItem's attributes are set to.
-   * @throws IllegalArgumentException if oldItem doesn't exist or if names of input match
+   * @return SwappItem that has been changed.
    */
   public SwappItem changeSwappItem(String username, SwappItem oldItem, SwappItem newItem) {
     getSwappList(username).changeSwappItem(oldItem, newItem);
     return getSwappList(username).getSwappItem(newItem);
   }
 
-  public SwappList createNewSwappList(String name) {
-    return new SwappList(name);
-  }
-
   /**
-   * Checks if SwappModel contains any SwappItem with all the same attributes as give SwappItem.
+   * Checks if SwappModel contains any SwappItem with all the same attributes as given SwappItem.
    *
    * @param newItem SwappItem to compare with.
    * @return true only if item an item with all the same attributes exists in SwappList. 

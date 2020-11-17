@@ -1,111 +1,119 @@
 package swapp.core;
 
+import java.util.List;
+import java.util.Iterator;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class SwappListTest {
 
   private SwappList swappList;
+  private SwappItem item1, item2;
 
   @BeforeEach
   public void setUp() {
     swappList = new SwappList("username");
+    item1 = new SwappItem("name1", "username");
+    item2 = new SwappItem("name2", "username");
   }
 
   @Test
   public void testCreateAndAddItem() {
-    swappList.createAndAddSwappItem("name", "username", "New", "infoString");
-    swappList.createAndAddSwappItem("name2", "username", "New", "infoString2");
+    swappList.createAndAddSwappItem("name3", "username", "Used", "description");
+    swappList.createAndAddSwappItem("name4", "username", "New", "description");
     Iterator<SwappItem> it = swappList.iterator();
     assertTrue(it.hasNext());
-    assertEquals(it.next().getName(), "name");
+    assertEquals(it.next().getName(), "name3");
     assertTrue(it.hasNext());
-    assertEquals(it.next().getName(), "name2");
+    assertEquals(it.next().getName(), "name4");
     assertFalse(it.hasNext());
   }
 
   @Test
+  public void testAddTwoOfSameItem() {
+    swappList.addSwappItem(item1);
+    SwappItem item1Duplicate = new SwappItem("name1", "username");
+    assertThrows(IllegalArgumentException.class, () -> {
+      swappList.addSwappItem(item1Duplicate);
+    });
+  }
+
+  @Test
+  public void testAdditemWithDifferentUsername() {
+    swappList.addSwappItem(item1);
+    SwappItem illegalItem = new SwappItem("name1", "differentUsername");
+    assertThrows(IllegalArgumentException.class, () -> {
+      swappList.addSwappItem(illegalItem);
+    });
+  }
+
+
+  @Test
   public void testGetSwappItemsByStatus() {
-    swappList.createAndAddSwappItem("name", "username", "New", "infoString");
-    swappList.createAndAddSwappItem("name2", "username", "Used", "infoString2");
-    swappList.createAndAddSwappItem("name3", "username", "New", "infoString");
-    swappList.createAndAddSwappItem("name4", "username", "New", "infoString2");
+    swappList.createAndAddSwappItem("name1", "username", "New", "description");
+    swappList.createAndAddSwappItem("name2", "username", "Used", "description");
+    swappList.createAndAddSwappItem("name3", "username", "New", "description");
     List<SwappItem> usedItems = swappList.getSwappItemsByStatus("Used");
-    assertEquals(usedItems.size(), 1);
-    assertEquals(usedItems.get(0).getName(), "name2");
+    assertEquals(1, usedItems.size());
+    assertEquals("name2", usedItems.get(0).getName());
     List<SwappItem> newItems = swappList.getSwappItemsByStatus("New");
-    assertEquals(newItems.size(), 3);
-    assertEquals(newItems.get(0).getName(), "name");
+    assertEquals(2, newItems.size());
+    assertEquals(newItems.get(0).getName(), "name1");
     assertEquals(newItems.get(1).getName(), "name3");
   }
 
   @Test
   public void hasSwappItem() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
-    SwappItem item2 = new SwappItem("name2", "username", "New", "info");
     swappList.addSwappItem(item1);
-    assertTrue(swappList.hasSwappItem(item1.getName()));
-    assertFalse(swappList.hasSwappItem(item2.getName()));
+    assertTrue(swappList.hasSwappItem(item1));
+    assertFalse(swappList.hasSwappItem(item2));
   }
 
   @Test
   public void testGetSwappItem() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
-    SwappItem item2 = new SwappItem("name2", "username", "New", "info");
-    SwappItem item3 = new SwappItem("name3", "username", "New", "info");
     swappList.addSwappItem(item1);
     swappList.addSwappItem(item2);
-    SwappItem item4 = new SwappItem("name", "username", "New", "info");
-    SwappItem item5 = swappList.getSwappItem(item4);
-    assertTrue(item5.allAttributesEquals(item1));
-    assertFalse(item5.allAttributesEquals(item2));
+    SwappItem item4 = new SwappItem("name1", "username");
+    SwappItem gottenItem = swappList.getSwappItem(item4);
+    assertTrue(gottenItem.allAttributesEquals(item1));
+    assertFalse(gottenItem.allAttributesEquals(item2));
   }
 
   @Test
   public void isItemChanged() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
     swappList.addSwappItem(item1);
-    SwappItem item2 = new SwappItem("name", "username", "New", "info");
-    SwappItem item3 = new SwappItem("name", "username", "Used", "new_info");
-    assertFalse(swappList.isItemChanged(item2));
-    assertTrue(swappList.isItemChanged(item3));
+    SwappItem item3 = new SwappItem("name1", "username");
+    SwappItem item4 = new SwappItem("differentName", "username");
+    assertFalse(swappList.isItemChanged(item3));
+    assertTrue(swappList.isItemChanged(item4));
   }
 
   @Test
   public void testChangeSwappItem() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
-    SwappItem item2 = new SwappItem("name", "username", "Damaged", "new info");
+    SwappItem item1 = new SwappItem("name", "username", "New", "oldDescription");
+    SwappItem item2 = new SwappItem("name", "username", "Damaged", "newDescription");
     swappList.addSwappItem(item1);
-    assertTrue(swappList.getSwappItem(item1.getName()).allAttributesEquals(item1));
+    assertTrue(swappList.getSwappItem(item1).allAttributesEquals(item1));
     swappList.changeSwappItem(item1, item2);
-    assertTrue(swappList.getSwappItem(item1.getName()).allAttributesEquals(item2));
+    assertTrue(swappList.getSwappItem(item1).allAttributesEquals(item2));
   }
 
   private int receivedNotificationCount = 0;
 
   @Test
   public void testFireswappListChanged_addSwappItemAndReceiveNotification() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
+    SwappItem item1 = new SwappItem("name", "username", "New", "description");
     swappList.addSwappListListener(list -> {
       receivedNotificationCount++;
     });
-    assertEquals(0, receivedNotificationCount); 
+    assertEquals(0, receivedNotificationCount);
     swappList.addSwappItem(item1);
     assertEquals(1, receivedNotificationCount);
     assertEquals(swappList.getSwappItems().size(), 1);
@@ -114,10 +122,9 @@ public class SwappListTest {
     assertEquals(swappList.getSwappItems().size(), 0);
   }
 
-  // Mockito test
   @Test
   public void testFireswappListChanged_addSwappItemAndMockReceiveNotification() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
+    SwappItem item1 = new SwappItem("name", "username", "New", "description");
     SwappListListener listener = mock(SwappListListener.class);
     swappList.addSwappListListener(listener);
     verify(listener, times(0)).swappListChanged(swappList);
@@ -129,8 +136,8 @@ public class SwappListTest {
 
   @Test
   public void testRemoveswappListListener() {
-    SwappItem item1 = new SwappItem("name", "username", "New", "info");
-    SwappItem item2 = new SwappItem("name2", "username", "Damaged", "new info");
+    SwappItem item1 = new SwappItem("name", "username", "New", "description");
+    SwappItem item2 = new SwappItem("name2", "username", "Damaged", "newDescription");
     SwappListListener listener = list -> {
       receivedNotificationCount++;
     };

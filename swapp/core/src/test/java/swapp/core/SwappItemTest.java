@@ -8,31 +8,36 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 public class SwappItemTest {
-/**
+
   private SwappItem item;
 
   @BeforeEach
   public void beforeEach() {
-    item = new SwappItem("name", "New", "description", "contactInfo");
+    item = new SwappItem("name", "username", "New", "description");
   }
 
   @Test
   public void testIllegalName() {
     assertThrows(IllegalArgumentException.class, () -> {
-        item = new SwappItem(" ");
+      item = new SwappItem(" ", "username");
     });
   }
 
   @Test
   public void testIllegalStatus() {
     assertThrows(IllegalArgumentException.class, () -> {
-        item = new SwappItem("name", "illegalStatus", "description", "contactInfo");
+      item = new SwappItem("name", "username", "illegalStatus", "description");
     });
   }
 
   @Test
   public void testGetName() {
     assertEquals(item.getName(), "name");
+  }
+
+  @Test
+  public void username() {
+    assertEquals(item.getUsername(), "username");
   }
 
   @Test
@@ -46,45 +51,35 @@ public class SwappItemTest {
   }
 
   @Test
-  public void testGetContactInfo() {
-    assertEquals(item.getUsername(), "contactInfo");
-  }
-
-  @Test
-  public void testSetDescriptionAndContactInfo() {
-    item.setDescription("testDescription");
-    assertEquals("testDescription", item.getDescription());
+  public void testSetDescription() {
+    item.setDescription("description");
+    assertEquals("description", item.getDescription());
     item.setDescription(null);
-    assertEquals("", item.getDescription());
-    item.setDescription("testContactInfo");
-    assertEquals("testContactInfo", item.getDescription());
-    item.setUsername(null);
-    assertEquals("", item.getUsername());
+    assertEquals(SwappItem.defaultDescription, item.getDescription());
   }
 
-/**
+
   @Test
-  public void testToString(){
+  public void testToString() {
     SwappItem item = new SwappItem("name", "username");
-    assertEquals(item.getName() + "    " + 
-    item.getStatus() + "  " + item.getDescription() + 
-    "  " + item.getContactInfo(), item.toString());
-  }*/
-/**
+    assertEquals(item.getName() + "    " + item.getStatus() + "  " + item.getDescription() + "  " + item.getUsername(),
+        item.toString());
+  }
+
   @Test
-  public void testNameEquals(){
-    SwappItem item2 = new SwappItem("name");
-    SwappItem item3 = new SwappItem("differentName");
+  public void nameEquals() {
+    SwappItem item2 = new SwappItem("name", "username2");
+    SwappItem item3 = new SwappItem("differentName", "username3");
     assertTrue(item.nameEquals(item2));
     assertFalse(item.nameEquals(item3));
-  }*/
-/**
+  }
+
   @Test
-  public void testAllAttributesEquals(){
-    SwappItem item2 = new SwappItem("name", "New", "description", "contactInfo");
-    SwappItem item3 = new SwappItem("name", "New", "differentDescription", "contactInfo");
+  public void testAllAttributesEquals() {
+    SwappItem item2 = new SwappItem("name", "username", "New", "description");
+    SwappItem item3 = new SwappItem("name", "username3", "New", "differentDescription");
     assertTrue(item.allAttributesEquals(item2));
     assertFalse(item.allAttributesEquals(item3));
   }
-    */
+
 }
