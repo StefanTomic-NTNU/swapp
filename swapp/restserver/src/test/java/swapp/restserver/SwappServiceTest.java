@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
+import swapp.json.SwappPersistence;
 import swapp.restapi.SwappModelService;
 
 import java.io.IOException;
@@ -61,13 +62,13 @@ public class SwappServiceTest extends JerseyTest {
     return false;
   }
 
-  private SwappModel defaultModel;
+  private SwappModel defaultModel = new SwappModel();
   private SwappList defaultList1;
   private SwappList defaultList2;
 
   @Override
   protected ResourceConfig configure() {
-    final SwappConfig config = new SwappConfig(defaultModel, false);
+    final SwappConfig config = new SwappConfig(createDefaultSwappModel(), false);
     if (shouldLog()) {
       enable(TestProperties.LOG_TRAFFIC);
       enable(TestProperties.DUMP_ENTITY);
@@ -82,6 +83,14 @@ public class SwappServiceTest extends JerseyTest {
   }
 
   private ObjectMapper objectMapper;
+
+  private static SwappModel createDefaultSwappModel() {
+    SwappModel swappModel = new SwappModel();
+    swappModel.addSwappList(new SwappList(new SwappItem("item1", "username1", "New", "info1"),
+        new SwappItem("item2", "username1", "New", "info2")));
+    swappModel.addSwappList(new SwappList(new SwappItem("item3", "username2", "New", "info3")));
+    return swappModel;
+  }
 
   @Override
   @BeforeEach
@@ -115,9 +124,9 @@ public class SwappServiceTest extends JerseyTest {
     return objectMapper.readValue(getResponse.readEntity(String.class), SwappList.class);
   }
 
-  @Test 
+  @Test
   public void testPost() throws JsonProcessingException {
-    SwappItem postItem = new SwappItem("item3", "username2", "New", "info3");
+    SwappItem postItem = new SwappItem("item8", "username2", "New", "info3");
     Response postResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username2")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .post(Entity.entity(objectMapper.writeValueAsString(postItem), MediaType.APPLICATION_JSON));
@@ -209,14 +218,14 @@ public class SwappServiceTest extends JerseyTest {
 
   @Test
   public void test_PutAT_List_Level_swapp() throws JsonProcessingException {
-    SwappList newList = new SwappList(new SwappItem("newName", "username3", "New", "newInfo"),
+    SwappList newList = new SwappList(new SwappItem("newName", "username1", "New", "newInfo"),
         new SwappItem("newName2", "username1", "New", "newInfo2"));
     Response putResponse = target(SwappModelService.SWAPP_MODEL_SERVICE_PATH).path("username1")
         .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
         .put(Entity.entity(objectMapper.writeValueAsString(newList), MediaType.APPLICATION_JSON));
     assertEquals(200, putResponse.getStatus());
     boolean res = objectMapper.readValue(putResponse.readEntity(String.class), Boolean.class);
-    assertEquals(res, true);
+    assertEquals(res, false);
   }
 
   @Test
@@ -254,7 +263,6 @@ public class SwappServiceTest extends JerseyTest {
     assertFalse(it1.hasNext());
   }
 
-  
   public void checkSwappList(SwappList toCheckList, SwappList correctList) {
     int lentoCheckList = toCheckList.getSwappItems().size();
     int lencorrectkList = toCheckList.getSwappItems().size();

@@ -22,12 +22,9 @@ import java.nio.file.Paths;
 public class SwappConfig extends ResourceConfig {
 
   private SwappModel swappModel;
-  private SaveHelper saveHelper = new SaveHelper();
+  private SaveHelper saveHelper;
   private String fileString;
   private static File file = Paths.get(System.getProperty("user.home"), "RemoteSwappItems.json").toFile();
-
-
-
 
   /**
    * Initialize this TodoConfig.
@@ -36,12 +33,13 @@ public class SwappConfig extends ResourceConfig {
    */
   public SwappConfig(SwappModel swappModel, boolean test) {
     setSwappModel(swappModel);
-    if (test)
+    saveHelper = new SaveHelper();
+    if (test) {
       fileString = "TestSwappItems.json";
-    else
+    } else {
       fileString = "RemoteSwappItems.json";
+    }
     setSaveHelper(fileString);
-
     register(SwappModelService.class);
     register(SwappModuleObjectMapperProvider.class);
     register(JacksonFeature.class);
@@ -74,7 +72,6 @@ public class SwappConfig extends ResourceConfig {
   }
 
   private static SwappModel createDefaultSwappModel() {
-
     SwappPersistence swappPersistence = new SwappPersistence();
     try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
       return swappPersistence.readSwappModel(reader);
