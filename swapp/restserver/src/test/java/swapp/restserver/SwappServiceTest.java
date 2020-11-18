@@ -23,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
+import swapp.json.SwappPersistence;
 import swapp.restapi.SwappModelService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
