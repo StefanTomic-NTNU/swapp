@@ -27,3 +27,6 @@ resources-mappen inneholder fxml-filene som utgjør det brukergrensesnittet bruk
 
 ## TESTING !?!?!??!
 
+
+![](../../images/uiclassdiagram.png)
+

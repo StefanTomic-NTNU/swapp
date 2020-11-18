@@ -14,6 +14,8 @@ Core-mappen inneholder klassene som utgjør kjernelogikken til applikasjonen.
 
 *SwappModel* er den overodnede klassen i kjernelogikken og den holder styr på alle brukerne med tilhørende annonser. Klassen har et LinkedHashMap-attributt *swappLists* som har *username* som nøkkler og *SwappList* som verdier. Klassen har funksjoner for å hente, legge til og fjerne annonser, samt funksjoner for å validere annonser og brukernavn.
 
+![](../../images/classdiagram.png)
+
 ## Json
 
 Json-mappen inneholder serializers og deserializers, samt hjelpeklasser for å benytte disse.
