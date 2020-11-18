@@ -2,6 +2,7 @@
 
 Fxui inneholder brukergrensesnittet til applikasjonen. Fxui-mappen er skilt i to undermapper: *ui* og *resources*
 
+
 ## ui
 
 ui-mappen inneholder klassene som benyttes til logikken i brukergrensesnittet. Her er det noen klasser og interfaces som benyttes av både den lokale og den remote versjonen, mens noen klasser benyttes av kun den éne versjonen.
@@ -21,12 +22,14 @@ Det er egne kontrollere for hver av de ulike vinduene i brukergrensesnittet. Dis
 * *SwappSplashScreenController* er kontrolleren for innloggings-vinduet. 
 * *ViewSwappItemController* er kontrolleren for vinduet der man ser mer informasjon om en enkelt annonse.
 
+![](../../images/uiclassdiagram.png)
+
 ## resources
 
 resources-mappen inneholder fxml-filene som utgjør det brukergrensesnittet brukeren ser når applikasjonen kjøres. Her er de fleste filene felles for begge versjonene av applikasjonen. fxml-filene er navngitt etter kontrollerne de tilhører. Vi benyttet Scenebuilder til å designe brukergrensesnittet og lage fxml-filene. De to versjonene av applikasjonen har ulike SplashScreen-filer for innlogging, da filnavnet (lokal) og URI'en (remote) settes eksplisitt i disse filene.
 
-## TESTING !?!?!??!
+## Testing
 
+Både den lokale og den reomte versjonen av applikasjonen testes. På den lokale testen testes funksjonaliteten, mens i testingen av den remote versjonen opprettes et mock-objekt og det testes at oppsettet fungerer. Vi mener det er tilstrekkelig å teste funksjonaliteten på kun den lokale versjonen, da kontrollerene til begge versjonene av applikasjonen er basert på samme interface og de benytter de samme fxui-filene.
 
-![](../../images/uiclassdiagram.png)
 

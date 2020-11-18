@@ -53,7 +53,7 @@ For å få rapport om testdekningsgrad, kjør følgende kommando i terminalen:
 ```
 mvn clean verify
 ```
-Kommandoen gjør at det genereres en fil som viser testdekningsgrad. Testdekningsgrad-filen ligger i *target/site/jacoco* og heter *index.html*.
+Kommandoen gjør at det genereres en fil som viser testdekningsgrad. Testdekningsgrad-filene ligger i *target/site/jacoco* i hver undermappe og heter *index.html*.
 
 ## Organisering av koden 
 
@@ -78,8 +78,8 @@ API'et er satt opp til å håndtere GET, PUT, POST og DELETE-forespørsler. Se e
 
 Serveren er satt opp til å lagre til og lese fra en json-fil på hjemmeområdet. Hver gang API'et mottar en GET-, PUT- eller POST-request oppdateres filen med den nåverende dataen. Til lagring og lesing benyttes serializers og deserializers som ligger i **/core/src/main/javas/swapp/json**. Hele hash-map'et er lagret i filen og når filen leses inn ved serverstart opprettes hash-mapet slik at API'et har tilgang til den samme dataen som da serveren ble avsluttet sist.
 
+ ![](../../images/seqdiag.png)
+
 ### Bygging med maven 
 Prosjektet er konfigurert til å bruke byggeverktøyet maven, og har dermed en pom.xml-fil for konfigurasjon.
-
-![](../../images/seqdiag.png)
 
