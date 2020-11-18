@@ -34,6 +34,10 @@ component restapi {
 
 swapp.restapi ..> swapp.core
 
+component integrationstest {
+	
+}
+
 component jaxrs {
 }
 
