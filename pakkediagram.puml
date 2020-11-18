@@ -1,0 +1,60 @@
+@startuml
+component core {
+	package swapp.core
+	package swapp.json
+}
+
+component jackson {
+}
+
+swapp.json ..> jackson
+
+
+
+component fxui {
+	package swapp.ui
+}
+
+
+swapp.ui ..> swapp.core
+swapp.ui ..> swapp.json
+
+component javafx {
+	component fxml {
+	}
+}
+
+fxui ..> javafx
+fxui ..> fxml
+
+
+component restapi {
+	package swapp.restapi
+}
+
+swapp.restapi ..> swapp.core
+
+component jaxrs {
+}
+
+restapi ..> jaxrs
+
+component restserver {
+	package swapp.restserver
+}
+
+swapp.restserver ..> swapp.core
+swapp.restserver ..> swapp.json
+swapp.restserver ..> swapp.restapi
+
+component jersey {
+}
+
+component grizzly2 {
+}
+
+restserver ..> jersey
+restserver ..> grizzly2
+
+
+@enduml

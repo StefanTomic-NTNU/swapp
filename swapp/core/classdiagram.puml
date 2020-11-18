@@ -1,0 +1,5 @@
+@startuml
+SwappList"1" *-- "many" SwappItem: contains
+
+SwappModel"1" *-- "many" SwappList: contains
+@enduml

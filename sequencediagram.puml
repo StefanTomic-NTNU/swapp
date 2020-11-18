@@ -1,0 +1,13 @@
+@startuml
+User-> SwappAppController: addSwappItem
+SwappAppController-> RemoteSwappAccess: addSwappItem
+RemoteSwappAccess->ObjectMapper: writeValueAsString
+ObjectMapper-->RemoteSwappAccess: a JSON String
+RemoteSwappAccess->SwappModelService: HTTP POST "swapp/username"
+SwappModelService-->RemoteSwappAccess : a JSON string
+RemoteSwappAccess ->ObjectMapper: readValue
+ObjectMapper-->RemoteSwappAccess : SwappItem
+RemoteSwappAccess -->SwappAppController: swappItem
+SwappAppController->SwappListViewVell: update listview
+SwappListViewVell-->User: read list
+@enduml
