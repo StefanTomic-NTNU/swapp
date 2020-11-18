@@ -1,23 +1,21 @@
 package swapp.restapi;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
-import swapp.core.SwappItem;
 
 /**
- * Used for all requests referring to TodoLists by name.
+ * Used for all requests referring to SwappLists by name.
  */
 public class SwappListResource {
 
@@ -29,14 +27,16 @@ public class SwappListResource {
   private final SaveHelper saveHelper;
 
   /**
-   * Initializes this TodoListResource with appropriate context information. Each
-   * method will check and use what it needs.
+   * Initializes this SwappListResource with appropriate context information. Each method will check
+   * and use what it needs.
    *
-   * @param todoModel the TodoModel, needed for DELETE and rename
-   * @param name      the todo list name, needed for most requests
-   * @param todoList  the TodoList, or null, needed for PUT
+   * @param swappModel the swappModel, needed for DELETE and rename
+   * @param name      the swapp list name, needed for most requests
+   * @param swappList  the swappList, or null, needed for PUT
+   * @param saveHelper  the saveHelper, needed for saving on DELETE, PUT and POST-request
    */
-  public SwappListResource(SwappModel swappModel, String name, SwappList swappList, SaveHelper saveHelper) {
+  public SwappListResource(SwappModel swappModel, String name, 
+      SwappList swappList, SaveHelper saveHelper) {
     this.swappModel = swappModel;
     this.name = name;
     this.swappList = swappList;
@@ -44,9 +44,9 @@ public class SwappListResource {
   }
 
   /**
-   * Gets the corresponding TodoList.
+   * Gets the corresponding SwappList.
    *
-   * @return the corresponding TodoList
+   * @return the corresponding SwappList
    */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +55,12 @@ public class SwappListResource {
     return this.swappList;
   }
 
+  /**
+   * Creates new swappItem belonging to this SwappList.
+   *
+   * @param item the SwappItem to add
+   * @return item
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -66,9 +72,9 @@ public class SwappListResource {
   }
 
   /**
-   * Replaces or adds a TodoList.
+   * Replaces or adds a SwappList.
    *
-   * @param todoListArg the todoList to add
+   * @param swappListArg the SwappList to add
    * @return true if it was added, false if it replaced
    */
   // Delete all items
@@ -83,22 +89,17 @@ public class SwappListResource {
   }
 
   /**
-   * Replaces or adds a TodoList.
+   * Returns the SwappItem with the provided name (as a resource to support chaining path elements).
+   * This supports all requests referring to SwappItems by name. Note that the SwappItem needn't
+   * exist, since it can be a PUT.
    *
-   * @param todoListArg the todoList to add
-   * @return true if it was added, false if it replaced
+   * @param name the name of the swappItem
    */
-  /**
-   * @PUT
-   * @Produces(MediaType.APPLICATION_JSON) public boolean putSwappList() { return
-   *                                       putSwappList(new SwappList(name)); }
-   */
-
   @Path("/{name}")
   public SwappItemResource getSwappItem(@PathParam("name") String name) {
     SwappItem swappItem = getSwappList().getSwappItem(name);
     LOG.debug("Sub-resource for SwappItem " + name + ": " + swappItem);
-    return new SwappItemResource(this.swappModel, this.swappList, name, swappItem, this.saveHelper);
+    return new SwappItemResource(this.swappModel, name, swappItem, this.saveHelper);
   }
 
 }

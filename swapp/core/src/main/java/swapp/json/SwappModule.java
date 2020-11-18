@@ -1,10 +1,7 @@
 package swapp.json;
 
 import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;

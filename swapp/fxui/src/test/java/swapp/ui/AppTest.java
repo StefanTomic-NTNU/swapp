@@ -6,37 +6,21 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import javafx.scene.input.KeyCode;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.ModuleLayer.Controller;
-import java.nio.file.Paths;
 import java.util.Collection;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.testfx.framework.junit5.ApplicationTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import swapp.core.SwappItem;
-import swapp.core.SwappList;
-import swapp.core.SwappModel;
 import swapp.json.SwappPersistence;
 
 public class AppTest extends ApplicationTest {
@@ -114,7 +98,6 @@ public class AppTest extends ApplicationTest {
     RadioButton usedRadio = (RadioButton) root.lookup("#usedRadio");
     RadioButton damagedRadio = (RadioButton) root.lookup("#damagedRadio");
     RadioButton allRadio = (RadioButton) root.lookup("#allRadio");
-    RadioButton mineRadio = (RadioButton) root.lookup("#mineRadio");
     ListView<SwappItem> listView = (ListView<SwappItem>) root.lookup("#listView");
     clickOn(allRadio);
     assertEquals(3, listView.getItems().size());
@@ -146,36 +129,3 @@ public class AppTest extends ApplicationTest {
   }
 
 }
-
-/*
- * @Test public void testAdd() { setUp(); testName = "testName"; testDescription
- * = "Bla bla bla"; testContactInfo = "kontaktinfo@email.no";
- * clickOn(nameField).write(testName); clickOn(usedRadio);
- * clickOn(descriptionFieldArea).write(testDescription); if
- * (contactInfoField.getText().isBlank()) {
- * clickOn(contactInfoField).write(testContactInfo); } clickOn(addButton);
- * Assertions.assertTrue(listView.getItems().get(listView.getItems().size()-1)
- * .toString().equals(testName + "  " + "  " + "Used" + "  " + testDescription +
- * "  " + testContactInfo)); }
- * 
- * 
- * // TODO look through cell see ep.8 todolist
- * 
- * @Test public void testRemove() { final ListView<SwappItem> list =
- * lookup("#list").query(); final Button addButton = (Button)
- * parent.lookup("#addButton"); final TextField textField = (TextField)
- * parent.lookup("#textField"); SwappItem item = new
- * SwappItem("testRemoveName"); SwappItem item2 = new
- * SwappItem("testRemoveName2"); clickOn(textField).write(item.getName());
- * clickOn(addButton); clickOn(textField).write(item2.getName());
- * clickOn(addButton);
- * Assertions.assertEquals(list.getSwappItems().get(list.getSwappItems().size()
- * - 1).getName(), item2.getName()); int lengthBeforeRemoval =
- * list.getSwappItems().size(); list.getSelectionModel().selectLast();
- * clickOn("#removeButton"); Assertions.assertEquals(lengthBeforeRemoval-1,
- * list.getSwappItems().size());
- * //Assertions.assertNotEquals(list.getSwappItems().get(list.getSwappItems().
- * size() - 1).getName(), item2.getName());
- * 
- * }
- */
