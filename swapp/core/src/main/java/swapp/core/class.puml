@@ -1,6 +1,0 @@
-@startuml
-SwappItemList o-- SwappItem
-
-SwappItemList : item:List
-SwappItem : name:String
-@enduml

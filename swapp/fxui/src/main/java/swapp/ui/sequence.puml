@@ -1,9 +1,0 @@
-actor User
-User -> "~#addSwappItemButton: Button" as addSwappItemButton: click
-addSwappItemButton -> AppController: addSwappItem
-AppController -> "~#newItemText: TextField" as newItemText: getText
-AppController -> SwappItemList: addSwappItem
-SwappItemList -> SwappItemList: fireSwappItemListChanged
-SwappItemList -> SwappItemListListener: SwappItemListChanged
-SwappItemListListener -> AppController: autoSaveSwappItemList
-SwappItemListListener -> AppController: updateSwappItemListView
