@@ -65,7 +65,7 @@ Koden til prosjektet ligger i **swapp**-mappen. Herunder er koden organisert sli
 - **/restapi** for koden til restapiet
 - **/integrationstest** for oppsettet for å kjøre restserveren og integrasjonstest
  
- ![](images/packagediagram.png)
+ ![](images/pakkediagram.png)
 
 ### Kjernelogikken
 Applikasjonen samler annonse-data i et hashmap. Nøkklene i hash-map'et er e-post-adressene til brukerene. Verdien som tilhører hver nøkkel i hash-mappet er en liste med annonser. Hver annonse inneholder tittel, beskrivelse, tilstand og e-post-adresse.
@@ -79,7 +79,7 @@ API'et er satt opp til å håndtere GET, PUT, POST og DELETE-forespørsler. Se e
 
 Serveren er satt opp til å lagre til og lese fra en json-fil på hjemmeområdet. Hver gang API'et mottar en GET-, PUT- eller POST-request oppdateres filen med den nåverende dataen. Til lagring og lesing benyttes serializers og deserializers som ligger i **/core/src/main/javas/swapp/json**. Hele hash-map'et er lagret i filen og når filen leses inn ved serverstart opprettes hash-mapet slik at API'et har tilgang til den samme dataen som da serveren ble avsluttet sist.
 
- ![](../../images/seqdiag.png)
+ ![](images/sequenceDiagramSwapp.png)
 
 ### Bygging med maven 
 Prosjektet er konfigurert til å bruke byggeverktøyet maven, og har dermed en pom.xml-fil for konfigurasjon.
