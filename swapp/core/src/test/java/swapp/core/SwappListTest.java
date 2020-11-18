@@ -1,6 +1,7 @@
 package swapp.core;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,20 @@ public class SwappListTest {
     item1 = new SwappItem("name1", "username");
     item2 = new SwappItem("name2", "username");
   }
+
+  @Test
+  public void testConstructors() {
+    swappList = new SwappList(item1, item2);
+    assertEquals(item1, swappList.getSwappItems().get(0));
+    assertEquals(item2, swappList.getSwappItems().get(1));
+    List<SwappItem> list = new ArrayList<>();
+    list.add(item1);
+    list.add(item2);
+    swappList = new SwappList(list);
+    assertEquals(item1, swappList.getSwappItems().get(0));
+    assertEquals(item2, swappList.getSwappItems().get(1));
+  }
+
 
   @Test
   public void testCreateAndAddItem() {
