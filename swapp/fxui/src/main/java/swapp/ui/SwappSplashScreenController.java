@@ -58,7 +58,7 @@ public class SwappSplashScreenController {
       appController.init(usernameTextField.getText().replaceAll("\\s+", ""));
       Stage stage = new Stage();
       stage.setScene(new Scene(root, 900, 600));
-      stage.setTitle("Item");
+      stage.setTitle("SwApp");
       stage.show();
       stage = (Stage) loginButton.getScene().getWindow();
       stage.close();

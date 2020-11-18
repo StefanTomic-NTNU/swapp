@@ -24,13 +24,6 @@ public class SwappModuleTest {
     mapper.registerModule(new SwappModule());
   }
 
-  //TODO Blir ikke tatt i bruk. Fjern?
-  private final static String swappListWithTwoItems =
-      "{\"lists\":[{\"username\":\"swapp\",\"items\":["
-      + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
-      + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
-      + "{\"itemName\":\"item2\",\"itemUsername\":\"username2\","
-      + "\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]}]}";
   private final static String defaultSwappModel =
       "{\"lists\":[{\"username\":\"username1\",\"items\":["
       + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","

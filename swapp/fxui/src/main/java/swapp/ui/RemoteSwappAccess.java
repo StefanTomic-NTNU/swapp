@@ -218,7 +218,6 @@ public class RemoteSwappAccess implements SwappDataAccess {
     }
   }
 
-  // TODO remove exception
   /**
    * Sends HTTP Post request for SwappItem to REST-API.
    *

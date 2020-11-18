@@ -37,7 +37,6 @@ public class SwappItemListViewCell extends ListCell<SwappItem> {
       if (fxmlLoader == null) {
         fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
         fxmlLoader.setController(this);
-
         try {
           fxmlLoader.load();
         } catch (IOException e) {

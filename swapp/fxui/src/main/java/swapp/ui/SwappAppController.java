@@ -68,11 +68,9 @@ public class SwappAppController {
     initializeFxml();
   }
 
-  //TODO evt skriv javadoc. hvorfor kaster denne en IOException? 
   @FXML
   void initializeFxml() throws IOException {
     initializeToggleGroup();
-    // initializeChoiceBox();
     initializeListView();
   }
 
