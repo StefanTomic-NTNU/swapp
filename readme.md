@@ -31,6 +31,7 @@ Når man kjører den remote versjonen må man også kjøre restAPI og rest serve
 ```
 mvn -pl fxui javafx:run
 ```
+i swapp-mappen
 
 ### Kjør remote
 ```
@@ -40,7 +41,7 @@ mvn -pl integrationtests jetty:run -D"jetty.port=8999"
 ```
 mvn -Premoteapp -pl fxui javafx:run
 ```
-(begge må kjøre samtidig)
+i swapp-mappen (begge må kjøre samtidig)
 
 ## Testing av koden
 Koden testes ved å kjøre følgende kommando i terminalen:

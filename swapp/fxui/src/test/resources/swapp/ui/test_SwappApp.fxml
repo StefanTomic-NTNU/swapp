@@ -64,7 +64,7 @@
                 <Font size="18.0" />
               </font>
             </Button>
-            <Button fx:id="addButton1" layoutX="45.0" layoutY="59.0" mnemonicParsing="false" onAction="#removeAllSwappItems" prefHeight="39.0" prefWidth="203.0" text="Delete all your items">
+            <Button fx:id="addButton1" layoutX="45.0" layoutY="59.0" mnemonicParsing="false" onAction="#removeAllSwappItems" prefHeight="39.0" prefWidth="203.0" text="Delete all my items">
               <font>
                 <Font size="18.0" />
               </font>
