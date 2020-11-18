@@ -9,17 +9,15 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import swapp.core.SwappList;
-import swapp.ui.RemoteSwappAccess;
+
 
 public class RemoteSwappAccessTest {
 
@@ -27,8 +25,15 @@ public class RemoteSwappAccessTest {
   private WireMockServer wireMockServer;
 
   private RemoteSwappAccess swappModelAccess;
-  private final static String defaultSwappModel = "{\"lists\":[{\"username\":\"username1\",\"items\":[{\"itemName\":\"item1\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},{\"itemName\":\"item2\",\"itemUsername\":\"username1\",\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},{\"username\":\"username2\",\"items\":[{\"itemName\":\"item3\",\"itemUsername\":\"username2\",\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
-  
+  private final static String defaultSwappModel =
+      "{\"lists\":[{\"username\":\"username1\",\"items\":["
+      + "{\"itemName\":\"item1\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info1\"},"
+      + "{\"itemName\":\"item2\",\"itemUsername\":\"username1\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info2\"}]},"
+      + "{\"username\":\"username2\",\"items\":["
+      + "{\"itemName\":\"item3\",\"itemUsername\":\"username2\","
+      + "\"itemStatus\":\"New\",\"itemDescription\":\"info3\"}]}]}";
 
   @BeforeEach
   public void startWireMockServerAndSetup() throws URISyntaxException {
@@ -40,7 +45,7 @@ public class RemoteSwappAccessTest {
   }
 
   @Test
-  public void testGetTodoListNames() {
+  public void testGetSwappListNames() {
     stubFor(get(urlEqualTo("/swapp"))
         .withHeader("Accept", equalTo("application/json"))
         .willReturn(aResponse()

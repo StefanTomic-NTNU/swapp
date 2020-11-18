@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeEach;
 import swapp.core.SwappItem;
 import swapp.core.SwappList;
 import swapp.core.SwappModel;
-import swapp.json.SwappPersistence;
 import swapp.restapi.SwappModelService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,7 +40,7 @@ public class SwappServiceTest extends JerseyTest {
 
   @Override
   protected ResourceConfig configure() {
-    final SwappConfig config = new SwappConfig(createDefaultSwappModel(), false);
+    final SwappConfig config = new SwappConfig(createDefaultSwappModel(), true);
     if (shouldLog()) {
       enable(TestProperties.LOG_TRAFFIC);
       enable(TestProperties.DUMP_ENTITY);
