@@ -35,7 +35,7 @@
                <font>
                   <Font size="24.0" />
                </font></RadioButton>
-                <Text layoutX="246.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SwappItem condition:" wrappingWidth="249.0">
+                <Text layoutX="246.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Condition:" wrappingWidth="249.0">
                     <font>
                         <Font size="24.0" />
                     </font>
